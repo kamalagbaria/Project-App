@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Project App</string>
+    <string name="name">AskApp</string>
+    <string name="profile">Profile</string>
+    <string name="categories">Categories</string>
+    <string name="others">others</string>
+    <string name="settings">settings</string>
+    <string name="user">User</string>
+    <string name="verfied">Verfied</string>
+    <string name="about">About</string>
+    <string name="home">Home</string>
+    <string name="welcome">Welcome</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="error_view">Error View</string>
+    <string name="password">Password</string>
+    <string name="email_hint">user@domain.com</string>
+    <string name="email">Email</string>
+    <string name="email_verify_again">Send Verify Email Again</string>
+    <string name="logout">SIGNOUT</string>
+    <string name="username">name</string>
+    <string name="submit">Submit Question</string>
+    <string name="details">You can add more details to your question here</string>
+    <string name="question">What is your question title</string>
+    <string name="title">Question Title</string>
+    <string name="already_signed_in">Already Signed In</string>
+    <string name="addAnswer">Answer Question</string>
+    <string name="SubmittedAnswers">Submitted Answers:</string>
+    <string name="difficulty">difficulty</string>
+    <string name="comments">Comments</string>
+    <string name="addComment">Add Comment</string>
+</resources>

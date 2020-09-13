@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SubmitQuestionActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="144dp"
+        android:layout_height="51dp"
+        android:text="@string/title"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/titleET"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:hint="@string/question" />
+
+    <EditText
+        android:id="@+id/contentET"
+        android:layout_width="match_parent"
+        android:layout_height="83dp"
+        android:ems="10"
+        android:hint="@string/details"
+        android:inputType="textMultiLine" />
+
+    <Button
+        android:id="@+id/submitBtn"
+        android:layout_width="159dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/submit" />
+
+</LinearLayout>
