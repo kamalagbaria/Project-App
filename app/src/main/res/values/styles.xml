@@ -7,5 +7,7 @@
         <item name="colorPrimaryDark">#0A0C0C</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <style name="AppThemeNoActionBar" parent="AppTheme">
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>
