@@ -1,6 +1,5 @@
 package com.example.projectapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -19,9 +18,7 @@ public class MathCategory extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item){
-        Intent i=new Intent(this,MainActivity.class);
-        i.putExtra("fragment_num",3);
-        startActivity(i);
+        super.onBackPressed();
         return true;
     }
 }
