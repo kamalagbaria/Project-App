@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        
         final DrawerLayout drawerLayout=findViewById(R.id.drawerLayout);
         findViewById(R.id.imageMenu).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
         NavController navController= Navigation.findNavController(this,R.id.navHostFragment);
         NavigationUI.setupWithNavController(navigationView,navController);
+
+
 
     }
 
