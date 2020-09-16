@@ -8,15 +8,21 @@ public class Question  implements Serializable {
     private String title;
     private String content;
     private String ownerId;
+    private String category;
+
+    public String getCategory() {
+        return category;
+    }
 
     public Question(){
 
     }
 
-    public Question(String title, String content, String ID){
+    public Question(String title, String content, String ID,String category){
         this.title = title;
         this.content = content;
         this.ownerId = ID;
+        this.category=category;
     }
 
     public String getContent() {

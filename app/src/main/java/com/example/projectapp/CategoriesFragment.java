@@ -62,6 +62,7 @@ public class CategoriesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
+
         CardView mathCat= view.findViewById(R.id.math_category);
         mathCat.setOnClickListener(new View.OnClickListener()
         {
@@ -69,6 +70,17 @@ public class CategoriesFragment extends Fragment {
             public void onClick(View v)
             {
                 Intent intent = new Intent(getActivity(), MathCategory.class);
+                startActivity(intent);
+            }
+        });
+
+        CardView PhysicsCat=view.findViewById(R.id.Physics_Category);
+        PhysicsCat.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(getActivity(), PhysicisCategory.class);
                 startActivity(intent);
             }
         });

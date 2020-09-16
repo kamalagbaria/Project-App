@@ -36,9 +36,10 @@ public class SubmitQuestionActivity extends AppCompatActivity {
                 EditText contentET =  findViewById(R.id.contentET);
                 String title = titleET.getText().toString();
                 String content = contentET.getText().toString();
+                final String category= Objects.requireNonNull(getIntent().getExtras()).getString("Category");
 
                 final Question question = new Question(title, content,
-                        Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                        Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),category);
 
                 FirebaseDatabase.getInstance().getReference().child("questions").push()
                         .setValue(question, new DatabaseReference.CompletionListener() {
@@ -69,7 +70,17 @@ public class SubmitQuestionActivity extends AppCompatActivity {
                                         }
                                     });
                                     //end change
-                                    startActivity(new Intent(SubmitQuestionActivity.this, MainActivity.class));
+                                    switch(category) {
+                                        case "Mathematics":
+                                            startActivity(new Intent(SubmitQuestionActivity.this, MathCategory.class));
+                                            break;
+                                        case "Physics":
+                                            startActivity(new Intent(SubmitQuestionActivity.this, PhysicisCategory.class));
+                                            break;
+                                        default:
+                                            // code block
+                                    }
+
                                     Toast.makeText(SubmitQuestionActivity.this,"Question submitted",
                                             Toast.LENGTH_SHORT).show();
                                 }

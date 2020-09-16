@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".SubmitCommentActivity"></activity>
+        <activity android:name=".PhysicisCategory"></activity>
+        <activity android:name=".SubmitCommentActivity" />
         <activity android:name=".CommentsList" />
         <activity android:name=".SubmitAnswerActivity" />
         <activity android:name=".QuestionDetailActivity" />
@@ -18,10 +19,12 @@
         <activity android:name=".SignInActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".WelcomeActivity" />
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

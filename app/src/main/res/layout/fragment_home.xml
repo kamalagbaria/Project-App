@@ -18,17 +18,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.105" />
-
+        <!--
         <Button
             android:id="@+id/askBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Ask A Question"
+            android:text="@string/ask_a_question"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/questionsLV"
             app:layout_constraintVertical_bias="0.951" />
+            -->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

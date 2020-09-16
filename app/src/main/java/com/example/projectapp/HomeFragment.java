@@ -1,23 +1,16 @@
 package com.example.projectapp;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.io.Serializable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,6 +69,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        /*
         Button askBtn = view.findViewById(R.id.askBtn);
         //start change
         if (mAuth.getCurrentUser() == null){
@@ -113,6 +107,7 @@ public class HomeFragment extends Fragment {
             }
         };
         listView.setAdapter(Adapter);
+         */
         return view;
     }
 }

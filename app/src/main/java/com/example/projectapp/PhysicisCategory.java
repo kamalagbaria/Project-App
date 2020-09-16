@@ -24,40 +24,40 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 
-public class MathCategory extends AppCompatActivity {
+public class PhysicisCategory extends AppCompatActivity {
 
     private DatabaseReference DatabaseRef;
     private FirebaseListAdapter Adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_math_category);
+        setContentView(R.layout.activity_physicis_category);
 
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        Button askMath=findViewById(R.id.askMath);
+        Button askPhysics=findViewById(R.id.askPhysics);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        if (mAuth.getCurrentUser() == null){
-            askMath.setVisibility(View.INVISIBLE);
-        }
 
-        askMath.setOnClickListener(new View.OnClickListener() {
+        if (mAuth.getCurrentUser() == null){
+            askPhysics.setVisibility(View.INVISIBLE);
+        }
+        askPhysics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), SubmitQuestionActivity.class);
-                i.putExtra("Category","Mathematics");
+                i.putExtra("Category","Physics");
                 startActivity(i);
             }
         });
-
-        final ListView listView = findViewById(R.id.rvContacts);
+        ListView listView = findViewById(R.id.PhysicsQuestions);
 
         //get instance of database
         DatabaseRef = FirebaseDatabase.getInstance().getReference().child("questions");
 
-        Adapter = new FirebaseListAdapter<Question>(this, Question.class, android.R.layout.two_line_list_item, DatabaseRef.orderByChild("category").equalTo("Mathematics")) {
+        Adapter = new FirebaseListAdapter<Question>(this, Question.class, android.R.layout.two_line_list_item, DatabaseRef.orderByChild("category").equalTo("Physics")) {
             @Override
             protected void populateView(View view, Question question, final int position) {
                 ((TextView)view.findViewById(android.R.id.text1)).setText(question.getTitle());
@@ -91,7 +91,6 @@ public class MathCategory extends AppCompatActivity {
             }
         });
     }
-
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         super.onBackPressed();
         return true;

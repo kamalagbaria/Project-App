@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MathCategory">
+    tools:context=".PhysicisCategory">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -24,10 +24,10 @@
         android:layout_height="match_parent"
         android:visibility="gone">
     <ListView
-        android:id="@+id/rvContacts"
-        android:layout_width="407dp"
-        android:layout_height="669dp"
-        app:layout_constraintBottom_toTopOf="@+id/askMath"
+        android:id="@+id/PhysicsQuestions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/askPhysics"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +35,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/askMath"
+        android:id="@+id/askPhysics"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/ask_a_question"
@@ -43,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.48" />
+        app:layout_constraintVertical_bias="1.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
