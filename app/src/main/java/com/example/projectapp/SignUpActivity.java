@@ -95,8 +95,8 @@ public class SignUpActivity extends AppCompatActivity {
                                                             // show it
                                                             alertDialog.show();
                                                             String name = userName.getText().toString();
-                                                            User user = new User(Auth.getCurrentUser().getUid(), Auth.getCurrentUser().getEmail(),name);
-                                                            UsersReference.child(Auth.getCurrentUser().getUid()).setValue(user);
+                                                            //User user = new User(Auth.getCurrentUser().getUid(), Auth.getCurrentUser().getEmail(),name);
+                                                            //UsersReference.child(Auth.getCurrentUser().getUid()).setValue(user);
                                                         }
                                                     }
                                                 });

@@ -75,7 +75,7 @@ public class SubmitQuestionActivity extends AppCompatActivity {
                                             startActivity(new Intent(SubmitQuestionActivity.this, MathCategory.class));
                                             break;
                                         case "Physics":
-                                            startActivity(new Intent(SubmitQuestionActivity.this, PhysicisCategory.class));
+                                            startActivity(new Intent(SubmitQuestionActivity.this, PhysicsCategory.class));
                                             break;
                                         default:
                                             // code block

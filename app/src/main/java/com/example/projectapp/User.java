@@ -4,36 +4,72 @@ import java.util.ArrayList;
 
 public class User {
 
-    private String UserId;
-    private String UserEmail;
-    private String UserLocation;
-    private String UserName;
     private ArrayList<Question> myQuestions;
+    private String fullName;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String id;
+    private String location;
 
-    public User(String userId, String userEmail, String name) {
-        UserId = userId;
-        UserEmail = userEmail;
-        UserName = name;
+    public User(String fullName, String firstName, String lastName, String email, String location, String id) {
+        this.fullName = fullName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.id = id;
+        this.location = location;
     }
 
-    public String getUserEmail() {
-        return UserEmail;
+    public String getFullName() {
+        return fullName;
     }
 
-    public String getUserId() {
-        return UserId;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public String getUserLocation() {
-        return UserLocation;
+    public User() {
     }
 
-    public String getUserName() {
-        return UserName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUserLocation(String userLocation) {
-        UserLocation = userLocation;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public ArrayList<Question> AddQuestion(Question newQuestion){

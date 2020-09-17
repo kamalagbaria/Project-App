@@ -34,4 +34,9 @@
     <string name="physics">Physics</string>
     <string name="computer_science">Computer Science</string>
     <string name="ask_a_question">Ask A Question</string>
+    <string name="sign_out">\Sign-Out\</string>
+
+    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
+    <string name="facebook_application_id" translatable="false">351140462696956</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">5e5966047f991334cc0407e30bac034e</string>
 </resources>

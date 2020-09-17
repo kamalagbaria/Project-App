@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 
-public class PhysicisCategory extends AppCompatActivity {
+public class PhysicsCategory extends AppCompatActivity {
 
     private DatabaseReference DatabaseRef;
     private FirebaseListAdapter Adapter;
@@ -32,7 +32,7 @@ public class PhysicisCategory extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_physicis_category);
+        setContentView(R.layout.activity_physics_category);
 
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;

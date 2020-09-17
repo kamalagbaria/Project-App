@@ -80,7 +80,7 @@ public class CategoriesFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(getActivity(), PhysicisCategory.class);
+                Intent intent = new Intent(getActivity(), PhysicsCategory.class);
                 startActivity(intent);
             }
         });

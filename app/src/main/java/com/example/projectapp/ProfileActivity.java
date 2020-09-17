@@ -1,21 +1,17 @@
 package com.example.projectapp;
 
-import android.app.Activity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,24 +20,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Arrays;
 import java.util.List;
 
-import static android.app.Activity.RESULT_OK;
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
+public class ProfileActivity extends AppCompatActivity {
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ProfileFragment extends Fragment {
-
-    public Integer REQUEST_EXIT = 9;
-    public FirebaseUser currentUser;
-    Button signUpButton;
-    Button signInButton;
-
-
-    private Activity activity;
     private static final int RC_SIGN_IN = 1;
     private final static String users = "users";
     private Button buttonSignIn;
@@ -52,59 +32,27 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        final View root = inflater.inflate(R.layout.fragment_profile, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
 
-        this.activity = getActivity();
+
         this.providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
                 new AuthUI.IdpConfig.FacebookBuilder().build());
 
-        this.buttonSignIn = root.findViewById(R.id.button_sign_in);
-        this.buttonSignOut = root.findViewById(R.id.button_sign_out);
+        this.buttonSignIn = findViewById(R.id.button_sign_in);
+        this.buttonSignOut = findViewById(R.id.button_sign_out);
         this.mAuth = FirebaseAuth.getInstance();
 
         this.listenForAuth();
         this.buttonSignInPressed();
         this.buttonSignOutPressed();
 
-        return root;
     }
+
     private void listenForAuth()
     {
         this.mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -114,17 +62,17 @@ public class ProfileFragment extends Fragment {
                 if(firebaseAuth.getCurrentUser() != null)
                 {
                     //Is logged in
-                    ProfileFragment.this.buttonSignIn.setVisibility(View.INVISIBLE);
-                    ProfileFragment.this.buttonSignOut.setVisibility(View.VISIBLE);
-                    Toast.makeText(activity, "1", Toast.LENGTH_SHORT).show();
+                    ProfileActivity.this.buttonSignIn.setVisibility(View.INVISIBLE);
+                    ProfileActivity.this.buttonSignOut.setVisibility(View.VISIBLE);
+                    Toast.makeText(ProfileActivity.this, "1", Toast.LENGTH_SHORT).show();
                 }
 
                 else
                 {
                     //Is logged out
-                    ProfileFragment.this.buttonSignOut.setVisibility(View.INVISIBLE);
-                    ProfileFragment.this.buttonSignIn.setVisibility(View.VISIBLE);
-                    Toast.makeText(activity, "2", Toast.LENGTH_SHORT).show();
+                    ProfileActivity.this.buttonSignOut.setVisibility(View.INVISIBLE);
+                    ProfileActivity.this.buttonSignIn.setVisibility(View.VISIBLE);
+                    Toast.makeText(ProfileActivity.this, "2", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -139,7 +87,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view)
             {
-                ProfileFragment.this.signOut();
+                ProfileActivity.this.signOut();
             }
         });
 
@@ -150,7 +98,7 @@ public class ProfileFragment extends Fragment {
         this.buttonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ProfileFragment.this.signIn();
+                ProfileActivity.this.signIn();
             }
         });
 
@@ -170,7 +118,7 @@ public class ProfileFragment extends Fragment {
     private void signOut()
     {
         AuthUI.getInstance()
-                .signOut(activity)
+                .signOut(this)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     public void onComplete(@NonNull Task<Void> task) {
                         // ...
@@ -179,7 +127,7 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
@@ -189,7 +137,7 @@ public class ProfileFragment extends Fragment {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 addUserToFireStore(user);
-                Toast.makeText(activity, "Reached here", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, "Reached here", Toast.LENGTH_SHORT).show();
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the
@@ -207,9 +155,8 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
+    protected void onStart() {
         super.onStart();
         this.mAuth.addAuthStateListener(this.mAuthStateListener);
     }
-
 }
