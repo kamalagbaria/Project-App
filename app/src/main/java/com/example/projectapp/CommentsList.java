@@ -10,9 +10,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class CommentsList extends AppCompatActivity {
 
@@ -32,10 +34,15 @@ public class CommentsList extends AppCompatActivity {
             addComment.setVisibility(View.INVISIBLE);
         }
         String questionKey = getIntent().getStringExtra("question_key");
-        DatabaseReference commentsDatabase = FirebaseDatabase.getInstance().getReference()
+        Query commentsDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("comments").child(questionKey);
-        FirebaseListAdapter answerAdapter = new FirebaseListAdapter<Comment>(this, Comment.class,
-                android.R.layout.simple_list_item_1, commentsDatabase) {
+
+        FirebaseListOptions<Comment> options = new FirebaseListOptions.Builder<Comment>()
+                .setQuery(commentsDatabase, Comment.class)
+                .setLayout(android.R.layout.simple_list_item_1)
+                .build();
+
+        FirebaseListAdapter answerAdapter = new FirebaseListAdapter<Comment>(options) {
             @Override
             protected void populateView(View v, Comment model, int position) {
                 ((TextView)v.findViewById(android.R.id.text1)).setText(model.getText());

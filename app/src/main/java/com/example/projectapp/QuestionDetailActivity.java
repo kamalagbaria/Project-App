@@ -11,9 +11,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class QuestionDetailActivity extends AppCompatActivity {
 
@@ -42,17 +44,20 @@ public class QuestionDetailActivity extends AppCompatActivity {
         String questionKey = getIntent().getStringExtra("question_key");
 
         //get instance of database
-        DatabaseReference answersDatabase = FirebaseDatabase.getInstance().getReference()
+        Query answersDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("answers").child(questionKey);
 
-        FirebaseListAdapter answerAdapter = new FirebaseListAdapter<Answer>(this, Answer.class,
-                android.R.layout.simple_list_item_1, answersDatabase) {
+        FirebaseListOptions<Answer> options = new FirebaseListOptions.Builder<Answer>()
+                .setQuery(answersDatabase, Answer.class)
+                .setLayout(android.R.layout.simple_list_item_1)
+                .build();
+
+        FirebaseListAdapter<Answer> answerAdapter = new FirebaseListAdapter<Answer>(options) {
             @Override
             protected void populateView(View view, Answer answer, final int position) {
                 ((TextView)view.findViewById(android.R.id.text1)).setText(answer.getText());
             }
         };
-
         listView.setAdapter(answerAdapter);
     }
 

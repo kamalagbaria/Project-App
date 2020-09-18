@@ -15,18 +15,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 
 public class MathCategory extends AppCompatActivity {
 
-    private DatabaseReference DatabaseRef;
+    private Query DatabaseRef;
     private FirebaseListAdapter Adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,12 @@ public class MathCategory extends AppCompatActivity {
         //get instance of database
         DatabaseRef = FirebaseDatabase.getInstance().getReference().child("questions");
 
-        Adapter = new FirebaseListAdapter<Question>(this, Question.class, android.R.layout.two_line_list_item, DatabaseRef.orderByChild("category").equalTo("Mathematics")) {
+        FirebaseListOptions<Question> options = new FirebaseListOptions.Builder<Question>()
+                .setQuery(DatabaseRef.orderByChild("category").equalTo("Mathematics"), Question.class)
+                .setLayout(android.R.layout.two_line_list_item)
+                .build();
+
+        Adapter = new FirebaseListAdapter<Question>(options) {
             @Override
             protected void populateView(View view, Question question, final int position) {
                 ((TextView)view.findViewById(android.R.id.text1)).setText(question.getTitle());
