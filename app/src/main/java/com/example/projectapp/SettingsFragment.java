@@ -1,6 +1,5 @@
 package com.example.projectapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +8,12 @@ import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SettingsFragment extends Fragment implements View.OnClickListener {
+public class SettingsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -63,23 +60,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        logout =  view.findViewById(R.id.logout);
-        logout.setOnClickListener(this);
         return view;
-    }
-
-    private void sendToLoginActivity() {
-        //To send user to Login Activity
-        Intent loginIntent = new Intent(getActivity(),WelcomeActivity.class);
-        startActivity(loginIntent);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (! SignInActivity.sighInWithGoogle) {
-            FirebaseAuth.getInstance().signOut();
-        }
-        //After logging out send user to Login Activity to login again
-        sendToLoginActivity();
     }
 }

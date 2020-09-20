@@ -1,15 +1,12 @@
 package com.example.projectapp;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,8 +15,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -115,10 +110,18 @@ public class CategoriesFragment extends Fragment {
 
         adapter = new FirestoreRecyclerAdapter<Category, CategoryViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull CategoryViewHolder holder, int position, @NonNull Category model) {
+            protected void onBindViewHolder(@NonNull CategoryViewHolder holder, int position, @NonNull final Category model) {
                 holder.textViewCategory.setText(model.getName());
                 int resId = view.getContext().getResources().getIdentifier(model.getImageName(), "drawable", view.getContext().getPackageName());
                 holder.imageViewCategory.setImageResource(resId);
+                holder.buttonCategory.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(),GeneralCategory.class);
+                        intent.putExtra("Category",model.getName());
+                        startActivity(intent);
+                    }
+                });
             }
 
             @NonNull
