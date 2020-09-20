@@ -2,9 +2,15 @@
 <resources>
     <color name="colorPrimary">#673AB7</color>
     <color name="colorPrimaryDark">#72bcd4</color>
-    <color name="colorAccent">#FF5252</color>
+    <color name="colorAccent">#D5C244</color>
     <color name="colorPrimaryText">#72bcd4</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorGreen">#32Cd32</color>
+    <color name="colorGreen">#368E6A</color>
+    <color name="material_green_50">#E8F5E9</color>
+    <color name="material_green_500">#249772</color>
+    <color name="material_green_700">#348C54</color>
+    <color name="material_green_a200">#EDFBF4</color>
+    <color name="material_lime_a700">#2F9E6A</color>
+    <color name="material_purple_a700">#06E497</color>
 
 </resources>

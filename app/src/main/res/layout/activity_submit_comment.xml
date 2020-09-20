@@ -14,10 +14,12 @@
         android:id="@+id/commentET" />
 
     <Button
+        android:id="@+id/submitCommentBtn"
+        style="@style/FirebaseUI.Button.AccountChooser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit Comment"
-        android:id="@+id/submitCommentBtn"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorPrimaryDark"
         android:onClick="submitComment"
-        android:layout_gravity="center_horizontal" />
+        android:text="Submit Comment" />
 </LinearLayout>

@@ -125,6 +125,7 @@ public class ProfileFragment extends Fragment {
                     ProfileFragment.this.buttonSignOut.setVisibility(View.INVISIBLE);
                     ProfileFragment.this.buttonSignIn.setVisibility(View.VISIBLE);
                     Toast.makeText(activity, "2", Toast.LENGTH_SHORT).show();
+                    MainActivity.changeProfilePic();
                 }
 
             }
@@ -140,6 +141,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view)
             {
                 ProfileFragment.this.signOut();
+
             }
         });
 
@@ -153,7 +155,6 @@ public class ProfileFragment extends Fragment {
                 ProfileFragment.this.signIn();
             }
         });
-
     }
 
     private void signIn()
@@ -163,6 +164,7 @@ public class ProfileFragment extends Fragment {
                         .createSignInIntentBuilder()
                         .setIsSmartLockEnabled(false, true)
                         .setAvailableProviders(this.providers)
+                        .setTheme(R.style.GreenTheme)
                         .build(),
                 RC_SIGN_IN);
     }

@@ -29,9 +29,11 @@
 
     <Button
         android:id="@+id/submitBtn"
-        android:layout_width="159dp"
+        style="@style/FirebaseUI.Button.AccountChooser"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:background="@color/colorPrimaryDark"
         android:text="@string/submit" />
 
 </LinearLayout>

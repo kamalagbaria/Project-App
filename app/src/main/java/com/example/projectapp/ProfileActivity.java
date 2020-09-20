@@ -113,6 +113,7 @@ public class ProfileActivity extends AppCompatActivity {
                         .setAvailableProviders(this.providers)
                         .build(),
                 RC_SIGN_IN);
+
     }
 
     private void signOut()
@@ -124,6 +125,7 @@ public class ProfileActivity extends AppCompatActivity {
                         // ...
                     }
                 });
+
     }
 
     @Override
@@ -150,7 +152,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void addUserToFireStore(FirebaseUser user)
     {
-        User newUser = new User(user.getDisplayName(), "", "", user.getEmail(), "", user.getUid());
+        User newUser = new User(user.getDisplayName(), user.getDisplayName(), "", user.getEmail(), "", user.getUid());
         db.collection(users).document(newUser.getId()).set(newUser);
     }
 
