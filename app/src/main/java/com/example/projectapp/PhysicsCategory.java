@@ -67,7 +67,7 @@ PhysicsCategory extends AppCompatActivity {
 
         Adapter = new FirebaseListAdapter<Question>(options) {
             @Override
-            protected void populateView(View view, Question question, final int position) {
+            protected void populateView(@NonNull View view, @NonNull Question question, final int position) {
                 ((TextView)view.findViewById(android.R.id.text1)).setText(question.getTitle());
                 ((TextView)view.findViewById(android.R.id.text2)).setText(question.getContent());
 
@@ -102,5 +102,18 @@ PhysicsCategory extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         super.onBackPressed();
         return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Adapter.startListening();
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Adapter.stopListening();
     }
 }

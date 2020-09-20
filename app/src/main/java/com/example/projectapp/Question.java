@@ -9,6 +9,7 @@ public class Question  implements Serializable {
     private String content;
     private String ownerId;
     private String category;
+    private float difficulty;
 
     public String getCategory() {
         return category;
@@ -23,6 +24,7 @@ public class Question  implements Serializable {
         this.content = content;
         this.ownerId = ID;
         this.category=category;
+        this.difficulty = 0;
     }
 
     public String getContent() {
@@ -48,5 +50,12 @@ public class Question  implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-    
+
+    public float getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(float difficulty) {
+        this.difficulty = difficulty;
+    }
 }

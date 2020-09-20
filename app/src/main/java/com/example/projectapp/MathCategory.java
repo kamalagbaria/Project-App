@@ -103,4 +103,17 @@ public class MathCategory extends AppCompatActivity {
         super.onBackPressed();
         return true;
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Adapter.startListening();
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Adapter.stopListening();
+    }
 }
