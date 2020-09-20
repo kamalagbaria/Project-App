@@ -16,4 +16,7 @@ public class QuestionViewHolder extends RecyclerView.ViewHolder{
         this.questionTitle = itemView.findViewById(R.id.question_title);
         this.questionContent = itemView.findViewById(R.id.question_content);
     }
+
+
 }
+
