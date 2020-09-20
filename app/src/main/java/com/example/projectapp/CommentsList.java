@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
@@ -21,6 +20,7 @@ public class CommentsList extends AppCompatActivity {
     public FirebaseAuth mAuth;
     private ListView commentsLV;
     private Button addComment;
+    FirebaseListAdapter commentsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,19 +42,32 @@ public class CommentsList extends AppCompatActivity {
                 .setLayout(android.R.layout.simple_list_item_1)
                 .build();
 
-        FirebaseListAdapter answerAdapter = new FirebaseListAdapter<Comment>(options) {
+         commentsAdapter = new FirebaseListAdapter<Comment>(options) {
             @Override
             protected void populateView(View v, Comment model, int position) {
                 ((TextView)v.findViewById(android.R.id.text1)).setText(model.getText());
             }
         };
 
-        commentsLV.setAdapter(answerAdapter);
+        commentsLV.setAdapter(commentsAdapter);
     }
 
     public void addComment(View view){
         Intent i = new Intent(this, SubmitCommentActivity.class);
         i.putExtra("question_key", getIntent().getStringExtra("question_key"));
         startActivity(i);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        commentsAdapter.startListening();
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        commentsAdapter.stopListening();
     }
 }
