@@ -7,11 +7,13 @@
     tools:context=".QuestionDetailActivity">
 
     <TextView
+        android:id="@+id/questionTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/questionTV" />
+        android:textAllCaps="false"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="italic" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,34 +36,41 @@
 
         <ImageButton
             android:id="@+id/imageButton"
-            android:layout_width="83dp"
-            android:layout_height="61dp"
-            android:background="@drawable/rate_btn"
+            android:layout_width="74dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/__rate"
             tools:ignore="contentDescription" />
 
     </LinearLayout>
 
 
     <Button
+        android:id="@+id/answerBtn"
+        style="@style/FirebaseUI.Button.AccountChooser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/addAnswer"
-        android:id="@+id/answerBtn"
+        android:layout_gravity="center_horizontal"
+        android:background="#179A8E"
         android:onClick="submitAnswer"
-        android:layout_gravity="center_horizontal" />
+        android:text="@string/addAnswer"
+        android:textColor="@color/colorWhite" />
+
     <Button
         android:id="@+id/button3"
+        style="@style/FirebaseUI.Button.AccountChooser"
         android:layout_width="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:text="@string/comments"
-        android:onClick="GoTOComments"/>
+        android:layout_gravity="center_horizontal"
+        android:onClick="GoTOComments"
+        android:text="@string/comments" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/SubmittedAnswers"/>
+        android:text="@string/SubmittedAnswers"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textStyle="italic" />
 
     <ListView
         android:layout_width="match_parent"

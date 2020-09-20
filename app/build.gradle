@@ -48,6 +48,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
     implementation 'com.firebaseui:firebase-ui-database:6.3.0'
     implementation 'com.firebaseui:firebase-ui:3.2.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     // FirebaseUI for Firebase Auth
     implementation 'com.firebaseui:firebase-ui-auth:6.3.0'
