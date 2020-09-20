@@ -110,10 +110,6 @@ public class MathCategory extends AppCompatActivity {
         Adapter.startListening();
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 9d80c84c045343f47244a8a9565717a2f3c130c4
     @Override
     protected void onStop() {
         super.onStop();
