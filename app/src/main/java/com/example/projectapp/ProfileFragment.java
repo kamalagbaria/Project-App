@@ -35,11 +35,6 @@ import static android.view.View.VISIBLE;
  */
 public class ProfileFragment extends Fragment {
 
-    public Integer REQUEST_EXIT = 9;
-    public FirebaseUser currentUser;
-    Button signUpButton;
-    Button signInButton;
-
 
     private Activity activity;
     private static final int RC_SIGN_IN = 1;
@@ -116,7 +111,7 @@ public class ProfileFragment extends Fragment {
                     //Is logged in
                     ProfileFragment.this.buttonSignIn.setVisibility(View.INVISIBLE);
                     ProfileFragment.this.buttonSignOut.setVisibility(View.VISIBLE);
-                    Toast.makeText(activity, "1", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Logged-In", Toast.LENGTH_SHORT).show();
                 }
 
                 else
@@ -124,7 +119,7 @@ public class ProfileFragment extends Fragment {
                     //Is logged out
                     ProfileFragment.this.buttonSignOut.setVisibility(View.INVISIBLE);
                     ProfileFragment.this.buttonSignIn.setVisibility(View.VISIBLE);
-                    Toast.makeText(activity, "2", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Logged-Out", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -189,7 +184,7 @@ public class ProfileFragment extends Fragment {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 addUserToFireStore(user);
-                Toast.makeText(activity, "Reached here", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Signed-In Successfully", Toast.LENGTH_SHORT).show();
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the

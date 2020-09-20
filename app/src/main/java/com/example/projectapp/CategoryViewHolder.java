@@ -1,5 +1,6 @@
 package com.example.projectapp;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,13 +14,27 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder {
     LinearLayout buttonCategory;
     ImageView imageViewCategory;
     TextView textViewCategory;
-
     public CategoryViewHolder(@NonNull View itemView)
     {
         super(itemView);
         buttonCategory = itemView.findViewById(R.id.button_single_category);
         imageViewCategory = itemView.findViewById(R.id.image_category);
         textViewCategory = itemView.findViewById(R.id.category_name);
+
+        //this.pressedButton();
     }
+
+//    private void pressedButton()
+//    {
+//        this.buttonCategory.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                Intent intent = new Intent(view.getContext(), QuestionsActivity.class);
+//                view.getContext().startActivity(intent);
+//            }
+//        });
+//    }
+
 
 }
