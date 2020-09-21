@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -37,7 +38,7 @@ public class GeneralCategory extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general_category);
 
-        category= Objects.requireNonNull(getIntent().getExtras()).getString("Category");
+        category = Objects.requireNonNull(getIntent().getExtras()).getString("Category");
 
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -88,8 +89,8 @@ public class GeneralCategory extends AppCompatActivity {
         DatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ProgressBar bar=findViewById(R.id.progressBar);
-                ConstraintLayout main=findViewById(R.id.mainContent);
+                ProgressBar bar = findViewById(R.id.progressBar);
+                LinearLayout main = findViewById(R.id.mainContent);
                 bar.setVisibility(View.GONE);
                 main.setVisibility(View.VISIBLE);
             }

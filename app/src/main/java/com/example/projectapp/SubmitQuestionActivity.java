@@ -48,19 +48,13 @@ public class SubmitQuestionActivity extends AppCompatActivity {
                                     Toast.makeText(SubmitQuestionActivity.this,"Unable to submit question",
                                             Toast.LENGTH_SHORT).show();
                                 } else {
-                                    switch(category) {
-                                        case "Mathematics":
-                                            startActivity(new Intent(SubmitQuestionActivity.this, MathCategory.class));
-                                            break;
-                                        case "Physics":
-                                            startActivity(new Intent(SubmitQuestionActivity.this, PhysicsCategory.class));
-                                            break;
-                                        default:
-                                            // code block
-                                    }
+                                    Intent i = new Intent(getApplicationContext(), GeneralCategory.class);
+                                    i.putExtra("Category",category);
+                                    startActivity(i);
 
                                     Toast.makeText(SubmitQuestionActivity.this,"Question submitted",
                                             Toast.LENGTH_SHORT).show();
+                                    finish();
                                 }
                             }
                         });

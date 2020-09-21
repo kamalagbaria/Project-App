@@ -37,9 +37,9 @@ public class SubmitCommentActivity extends AppCompatActivity {
                             Toast.makeText(SubmitCommentActivity.this,"Unable to submit comment",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            finish();
                             Toast.makeText(SubmitCommentActivity.this,"comment submitted",
                                     Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     }
                 });

@@ -9,16 +9,18 @@
 
     <Button
         android:id="@+id/addbutton"
+        style="@style/FirebaseUI.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="addComment"
         android:text="@string/addComment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/commentsLV"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/commentsLV"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976"
-        android:onClick="addComment"/>
+        android:layout_gravity="left"
+        app:layout_constraintVertical_bias="0.976" />
 
     <ListView
         android:id="@+id/commentsLV"

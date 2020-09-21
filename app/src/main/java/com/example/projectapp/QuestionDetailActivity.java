@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,7 +31,6 @@ public class QuestionDetailActivity extends AppCompatActivity {
     private RatingBar ratingBar;
     public FirebaseAuth mAuth;
     FirebaseListAdapter answerAdapter;
-    private TextView difficulty;
     private ImageButton rateBtn;
     private float rateValue;
 
@@ -46,12 +46,10 @@ public class QuestionDetailActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         answerbt = findViewById(R.id.answerBtn);
         rateBtn = findViewById(R.id.imageButton);
-        //difficulty =findViewById(R.id.DifficultyTextView);
         ratingBar = findViewById(R.id.rating_rating_bar);
         ratingBar.setRating(question.getDifficulty());
         if (mAuth.getCurrentUser() == null){
             answerbt.setVisibility(View.INVISIBLE);
-         //   difficulty.setVisibility(View.INVISIBLE);
             rateBtn.setVisibility(View.INVISIBLE);
         }
         ratingBar.setOnTouchListener(new View.OnTouchListener() {
@@ -82,8 +80,8 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
          answerAdapter = new FirebaseListAdapter<Answer>(options) {
             @Override
-            protected void populateView(View view, Answer answer, final int position) {
-                ((TextView)view.findViewById(android.R.id.text1)).setText(answer.getText());
+            protected void populateView(@NonNull View view, @NonNull Answer answer, final int position) {
+                ((TextView)view.findViewById(R.id.text1)).setText(answer.getText());
             }
         };
         listView.setAdapter(answerAdapter);
@@ -122,6 +120,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
                 rateValue = rating_Bar.getRating();
                 rateValue = (((question.getDifficulty() + rateValue) / 2) % 5);
                 question.setDifficulty(rateValue);
+                ratingBar.setRating(question.getDifficulty());
                 FirebaseDatabase.getInstance().getReference()
                         .child("questions").child(Key).child("difficulty").setValue(rateValue);
             }
