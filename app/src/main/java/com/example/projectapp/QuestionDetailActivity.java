@@ -20,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
@@ -77,7 +76,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
         FirebaseListOptions<Answer> options = new FirebaseListOptions.Builder<Answer>()
                 .setQuery(answersDatabase, Answer.class)
-                .setLayout(android.R.layout.simple_list_item_1)
+                .setLayout(R.layout.simple_list_item_1)
                 .build();
 
          answerAdapter = new FirebaseListAdapter<Answer>(options) {

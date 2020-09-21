@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
-        <androidx.recyclerview.widget.RecyclerView
+        <ListView
             android:id="@+id/QuestionsList"
             android:layout_width="407dp"
             android:layout_height="669dp"
