@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         View headerView = navigationView.getHeaderView(0);
         TextView username = headerView.findViewById(R.id.username);
         ImageView navUserPhoto = headerView.findViewById(R.id.imageProfile);
+
         if (user != null) {
             for (UserInfo profile : user.getProviderData()) {
                 name = profile.getDisplayName();

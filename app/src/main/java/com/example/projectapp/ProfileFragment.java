@@ -85,6 +85,7 @@ public class ProfileFragment extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
         this.activity = getActivity();
+
         this.providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
@@ -111,7 +112,6 @@ public class ProfileFragment extends Fragment {
                     //Is logged in
                     ProfileFragment.this.buttonSignIn.setVisibility(View.INVISIBLE);
                     ProfileFragment.this.buttonSignOut.setVisibility(View.VISIBLE);
-                    Toast.makeText(activity, "Logged-In", Toast.LENGTH_SHORT).show();
                 }
 
                 else
@@ -120,10 +120,7 @@ public class ProfileFragment extends Fragment {
                     ProfileFragment.this.buttonSignOut.setVisibility(View.INVISIBLE);
                     ProfileFragment.this.buttonSignIn.setVisibility(View.VISIBLE);
 
-                    Toast.makeText(activity, "2", Toast.LENGTH_SHORT).show();
                     MainActivity.changeProfilePic();
-
-                    Toast.makeText(activity, "Logged-Out", Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -174,7 +171,10 @@ public class ProfileFragment extends Fragment {
                 .signOut(activity)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     public void onComplete(@NonNull Task<Void> task) {
-                        // ...
+                        if(task.isSuccessful())
+                        {
+                            Toast.makeText(activity, "Signed-Out Successfully", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }

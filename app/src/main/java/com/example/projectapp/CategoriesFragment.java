@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -117,8 +118,8 @@ public class CategoriesFragment extends Fragment {
                 holder.buttonCategory.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(getActivity(),GeneralCategory.class);
-                        intent.putExtra("Category",model.getName());
+                        Intent intent = new Intent(getActivity(), GeneralCategory.class);
+                        intent.putExtra("Category", model.getName());
                         startActivity(intent);
                     }
                 });

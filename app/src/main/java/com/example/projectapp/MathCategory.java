@@ -41,6 +41,7 @@ public class MathCategory extends AppCompatActivity {
 
         Button askMath=findViewById(R.id.askMath);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
         if (mAuth.getCurrentUser() == null){
             askMath.setVisibility(View.INVISIBLE);
         }

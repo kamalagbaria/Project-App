@@ -21,20 +21,5 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder {
         imageViewCategory = itemView.findViewById(R.id.image_category);
         textViewCategory = itemView.findViewById(R.id.category_name);
 
-        //this.pressedButton();
     }
-
-//    private void pressedButton()
-//    {
-//        this.buttonCategory.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view)
-//            {
-//                Intent intent = new Intent(view.getContext(), QuestionsActivity.class);
-//                view.getContext().startActivity(intent);
-//            }
-//        });
-//    }
-
-
 }
