@@ -21,4 +21,11 @@
         <item name="colorControlHighlight">@color/material_green_a200</item>
         <item name="android:windowBackground">@color/material_green_50</item>
     </style>
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
 </resources>

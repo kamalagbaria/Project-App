@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 public class GeneralCategory extends AppCompatActivity {
@@ -72,9 +73,20 @@ public class GeneralCategory extends AppCompatActivity {
                 .setQuery(categoryQuestions, Question.class).build();
         adapter = new FirestoreRecyclerAdapter<Question, QuestionViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull QuestionViewHolder holder, int position, @NonNull Question model) {
+            protected void onBindViewHolder(@NonNull QuestionViewHolder holder, final int position, @NonNull Question model)
+            {
                 holder.questionTitle.setText(model.getTitle());
                 holder.questionContent.setText(model.getContent());
+
+                holder.questionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(getApplicationContext(), QuestionDetailActivity.class);
+                        i.putExtra("question", adapter.getItem(position)); //Document itself
+                        i.putExtra("question_key", (Serializable) adapter.getSnapshots().getSnapshot(position).getId()); // Document ID
+                        startActivity(i);
+                    }
+                });
             }
             @NonNull
             @Override
@@ -99,6 +111,9 @@ public class GeneralCategory extends AppCompatActivity {
             }
         });
     }
+
+    //Add askQuestion Button
+
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         super.onBackPressed();
         return true;
