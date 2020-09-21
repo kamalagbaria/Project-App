@@ -40,7 +40,6 @@ public class SubmitQuestionActivity extends AppCompatActivity {
 
                 final Question question = new Question(title, content,
                         Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),category);
-
                 FirebaseDatabase.getInstance().getReference().child("questions").push()
                         .setValue(question, new DatabaseReference.CompletionListener() {
                             @Override

@@ -13,21 +13,23 @@
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/answerET"
-        android:hint="@string/writeHere" />
+        android:hint="@string/writeHere"
+        android:layout_marginBottom="20sp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="450dp"
         android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/imageButton2"
+        <Button
+            android:id="@+id/imageButton"
             android:layout_width="67dp"
             android:layout_height="65dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/addimg" />
 
         <ImageView
+            android:id="@+id/image_answer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical">

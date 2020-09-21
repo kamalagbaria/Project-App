@@ -2,29 +2,26 @@ package com.example.projectapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -32,9 +29,8 @@ import java.util.Objects;
 public class GeneralCategory extends AppCompatActivity {
 
     String category;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirestoreRecyclerOptions<Question> options;
-    private FirestoreRecyclerAdapter<Question, QuestionViewHolder> adapter;
+    private Query DatabaseRef;
+    private FirebaseListAdapter Adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,71 +57,63 @@ public class GeneralCategory extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        final ListView listView = findViewById(R.id.QuestionsList);
 
-        CollectionReference categories = db.collection("questions");
-        Query categoryQuestions = categories.whereEqualTo("category", category);
+        //get instance of database
+        DatabaseRef = FirebaseDatabase.getInstance().getReference().child("questions");
 
-        RecyclerView recyclerView=findViewById(R.id.QuestionsList);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        options = new FirestoreRecyclerOptions.Builder<Question>()
-                .setQuery(categoryQuestions, Question.class).build();
-        adapter = new FirestoreRecyclerAdapter<Question, QuestionViewHolder>(options) {
+        FirebaseListOptions<Question> options = new FirebaseListOptions.Builder<Question>()
+                .setQuery(DatabaseRef.orderByChild("category").equalTo(category), Question.class)
+                .setLayout(R.layout.two_line_list_item)
+                .build();
+        Adapter = new FirebaseListAdapter<Question>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull QuestionViewHolder holder, final int position, @NonNull Question model)
-            {
-                holder.questionTitle.setText(model.getTitle());
-                holder.questionContent.setText(model.getContent());
+            protected void populateView(View view, Question question, final int position) {
+                ((TextView)view.findViewById(android.R.id.text1)).setText(question.getTitle());
+                ((TextView)view.findViewById(android.R.id.text2)).setText(question.getContent());
 
-                holder.questionButton.setOnClickListener(new View.OnClickListener() {
+                view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent i = new Intent(getApplicationContext(), QuestionDetailActivity.class);
-                        i.putExtra("question", adapter.getItem(position)); //Document itself
-                        i.putExtra("question_key", (Serializable) adapter.getSnapshots().getSnapshot(position).getId()); // Document ID
+                        i.putExtra("question", (Serializable) Adapter.getItem(position));
+                        i.putExtra("question_key", Adapter.getRef(position).getKey());
                         startActivity(i);
                     }
                 });
-            }
-            @NonNull
-            @Override
-            public QuestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_question_view_holder,
-                        parent, false);
-                return new QuestionViewHolder(view);
+
             }
         };
-        recyclerView.setAdapter(adapter);
-
-        categoryQuestions.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        listView.setAdapter(Adapter);
+        DatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful())
-                {
-                    ProgressBar bar=findViewById(R.id.progressBar);
-                    ConstraintLayout main=findViewById(R.id.mainContent);
-                    bar.setVisibility(View.GONE);
-                    main.setVisibility(View.VISIBLE);
-                }
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ProgressBar bar=findViewById(R.id.progressBar);
+                ConstraintLayout main=findViewById(R.id.mainContent);
+                bar.setVisibility(View.GONE);
+                main.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
+
     }
-
-    //Add askQuestion Button
-
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         super.onBackPressed();
         return true;
     }
     protected void onStart() {
         super.onStart();
-        adapter.startListening();
+        Adapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        adapter.stopListening();
+        Adapter.stopListening();
     }
+
 }
