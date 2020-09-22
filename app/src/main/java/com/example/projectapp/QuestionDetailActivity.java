@@ -4,25 +4,33 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 public class QuestionDetailActivity extends AppCompatActivity {
 
@@ -40,6 +48,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_detail);
+
         final Question question = (Question) getIntent().getSerializableExtra("question");
         assert question != null;
         loadQuestion(question);
@@ -83,7 +92,27 @@ public class QuestionDetailActivity extends AppCompatActivity {
          answerAdapter = new FirebaseListAdapter<Answer>(options) {
             @Override
             protected void populateView(View view, Answer answer, final int position) {
-                ((TextView)view.findViewById(android.R.id.text1)).setText(answer.getText());
+
+                ((TextView)view.findViewById(R.id.answerText)).setText(answer.getText());
+                final ImageView imageView=view.findViewById(R.id.answerImage);
+
+                if (answer.getImageUrl()!=null && !answer.getImageUrl().equals("None")){
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference storageRef = storage.getReference();
+                    storageRef.child("images/Answers/"+answer.getImageUrl()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Picasso.get().load(uri).into(imageView);
+                            imageView.setVisibility(View.VISIBLE);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
             }
         };
         listView.setAdapter(answerAdapter);

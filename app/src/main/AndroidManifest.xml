@@ -10,15 +10,11 @@
         android:theme="@style/AppTheme">
         <activity android:name=".GeneralCategory"></activity>
         <activity android:name=".QuestionsActivity" />
-        <activity android:name=".PhysicsCategory" />
         <activity android:name=".SubmitCommentActivity" />
         <activity android:name=".CommentsList" />
         <activity android:name=".SubmitAnswerActivity" />
         <activity android:name=".QuestionDetailActivity" />
         <activity android:name=".SubmitQuestionActivity" />
-        <activity android:name=".MathCategory" />
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".SignUpActivity" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppThemeNoActionBar">

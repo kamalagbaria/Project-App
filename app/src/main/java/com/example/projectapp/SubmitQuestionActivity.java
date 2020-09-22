@@ -69,17 +69,8 @@ public class SubmitQuestionActivity extends AppCompatActivity {
                                         }
                                     });
                                     //end change
-                                    switch(category) {
-                                        case "Mathematics":
-                                            startActivity(new Intent(SubmitQuestionActivity.this, MathCategory.class));
-                                            break;
-                                        case "Physics":
-                                            startActivity(new Intent(SubmitQuestionActivity.this, PhysicsCategory.class));
-                                            break;
-                                        default:
-                                            // code block
-                                    }
-
+                                    Intent intent=new Intent(SubmitQuestionActivity.this,GeneralCategory.class);
+                                    intent.putExtra("Category",category);
                                     Toast.makeText(SubmitQuestionActivity.this,"Question submitted",
                                             Toast.LENGTH_SHORT).show();
                                 }

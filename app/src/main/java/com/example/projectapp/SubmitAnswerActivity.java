@@ -35,6 +35,7 @@ public class SubmitAnswerActivity extends AppCompatActivity {
     ImageView imageView;
     FirebaseStorage storage;
     StorageReference storageReference;
+    String imageId=UUID.randomUUID().toString();
     private Uri filePath;
 
     @Override
@@ -61,7 +62,7 @@ public class SubmitAnswerActivity extends AppCompatActivity {
         String text = answerET.getText().toString();
         String imageUrl="None";
         if (filePath!=null){
-            imageUrl=filePath.getPath();
+            imageUrl=imageId;
         }
         Answer answer = new Answer(text, FirebaseAuth.getInstance().getCurrentUser().getUid(),imageUrl);
         String questionKey = getIntent().getStringExtra("question_key");
@@ -106,7 +107,7 @@ public class SubmitAnswerActivity extends AppCompatActivity {
             progressDialog.show();
 
             // Defining the child of storageReference
-            StorageReference ref = storageReference.child("images/Answers/" + UUID.randomUUID().toString());
+            StorageReference ref = storageReference.child("images/Answers/" + imageId);
             // adding listeners on upload
             // or failure of image
             ref.putFile(filePath)
