@@ -78,9 +78,9 @@ public class SubmitAnswerActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             uploadImage();
-                            finish();
                             Toast.makeText(SubmitAnswerActivity.this,"Answer submitted",
                                     Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     }
                 });

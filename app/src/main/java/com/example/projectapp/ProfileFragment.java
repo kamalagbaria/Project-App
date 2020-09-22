@@ -2,11 +2,14 @@ package com.example.projectapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,7 +22,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,11 +47,16 @@ public class ProfileFragment extends Fragment {
     private final static String users = "users";
     private Button buttonSignIn;
     private Button buttonSignOut;
+    private Button buttonQuestions;
 
     private List<AuthUI.IdpConfig> providers;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private TextView fullName;
+    private TextView email;
+    private ImageView profile_image;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -93,9 +104,15 @@ public class ProfileFragment extends Fragment {
 
         this.buttonSignIn = root.findViewById(R.id.button_sign_in);
         this.buttonSignOut = root.findViewById(R.id.button_sign_out);
+        this.profile_image = root.findViewById(R.id.image_user_profile_image);
+        this.fullName = root.findViewById(R.id.fullName);
+        this.email = root.findViewById(R.id.text_user_profile_email);
+        this.buttonQuestions = root.findViewById(R.id.QuestionsButton);
+
         this.mAuth = FirebaseAuth.getInstance();
 
         this.listenForAuth();
+        this.ReviewQuestion();
         this.buttonSignInPressed();
         this.buttonSignOutPressed();
 
@@ -107,26 +124,26 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
-                if(firebaseAuth.getCurrentUser() != null)
-                {
+                if (firebaseAuth.getCurrentUser() != null) {
                     //Is logged in
                     ProfileFragment.this.buttonSignIn.setVisibility(View.INVISIBLE);
                     ProfileFragment.this.buttonSignOut.setVisibility(View.VISIBLE);
-                }
-
-                else
-                {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    updateProfile(user);
+                } else {
                     //Is logged out
                     ProfileFragment.this.buttonSignOut.setVisibility(View.INVISIBLE);
                     ProfileFragment.this.buttonSignIn.setVisibility(View.VISIBLE);
+                    profile_image.setVisibility(INVISIBLE);
+                    fullName.setVisibility(INVISIBLE);
+                    email.setVisibility(INVISIBLE);
+                    buttonQuestions.setVisibility(INVISIBLE);
 
                     MainActivity.changeProfilePic();
 
                 }
-
             }
         };
-
 
     }
 
@@ -177,6 +194,36 @@ public class ProfileFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    private void updateProfile(FirebaseUser user){
+        Uri photoUrl = null;
+        if (user != null) {
+            for (UserInfo profile : user.getProviderData()) {
+                photoUrl = profile.getPhotoUrl();
+            }
+            if(photoUrl != null) {
+                Picasso.get().load(photoUrl).into(profile_image);
+            }
+            //  profile_image.setVisibility(INVISIBLE);
+            fullName.setText(user.getDisplayName());
+            email.setText(user.getEmail());
+        }
+    }
+
+    public void ReviewQuestion(){
+        if(mAuth.getCurrentUser() != null) {
+            this.buttonQuestions.setVisibility(VISIBLE);
+            buttonQuestions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), UserQuestionList.class);
+                    // i.putExtra("question_key", getIntent().getStringExtra("question_key"));
+                    startActivity(i);
+                }
+            });
+
+        }
     }
 
     @Override

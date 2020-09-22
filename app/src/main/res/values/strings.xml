@@ -15,9 +15,7 @@
     <string name="password">Password</string>
     <string name="email_hint">user@domain.com</string>
     <string name="email">Email</string>
-    <string name="email_verify_again">Send Verify Email Again</string>
-    <string name="logout">SIGNOUT</string>
-    <string name="username">name</string>
+    <string name="username">full Name</string>
     <string name="submit">Submit Question</string>
     <string name="details">You can add more details to your question here</string>
     <string name="question">What is your question title</string>
@@ -34,9 +32,11 @@
     <string name="physics">Physics</string>
     <string name="computer_science">Computer Science</string>
     <string name="ask_a_question">Ask A Question</string>
-    <string name="sign_out">\Sign-Out\</string>
+    <string name="sign_out">Sign Out</string>
     <string name="SubmitAnswer">Submit Answer</string>
     <string name="writeHere">type your answer</string>
+    <string name="questionList">Question List</string>
+    <string name="userQuestionBtn">Review My Questions</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">351140462696956</string>
