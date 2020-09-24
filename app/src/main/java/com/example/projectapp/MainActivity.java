@@ -1,6 +1,5 @@
 package com.example.projectapp;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -15,10 +14,14 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         //Adapter.cleanup();
     }
 
-    public static void changeProfilePic(){
+    public static void resetProfilePic(){
         View headerView = navigationView.getHeaderView(0);
         TextView username = headerView.findViewById(R.id.username);
         ImageView navUserPhoto = headerView.findViewById(R.id.imageProfile);
@@ -62,26 +65,48 @@ public class MainActivity extends AppCompatActivity {
         navUserPhoto.setImageResource(R.drawable.profile_pic);
 
     }
+
+    public static void updateUserImage(FirebaseUser user){
+        View headerView = navigationView.getHeaderView(0);
+        final ImageView navUserPhoto = headerView.findViewById(R.id.imageProfile);
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        updateUserName(user);
+        photoUrl = user.getPhotoUrl();
+        StorageReference profileRef = storageReference.child("profilePictures/"+
+                FirebaseAuth.getInstance().getCurrentUser().getUid());
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).resize(2048, 1600)
+                        .onlyScaleDown().into(navUserPhoto);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if(photoUrl != null) {
+                    Picasso.get().load(photoUrl).into(navUserPhoto);
+                }
+            }
+        });
+
+    }
+
+    public static void updateUserName(FirebaseUser user){
+        View headerView = navigationView.getHeaderView(0);
+        TextView username = headerView.findViewById(R.id.username);
+        name = user.getDisplayName();
+        username.setText(name);
+    }
     @Override
     protected void onStart() {
         super.onStart();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        View headerView = navigationView.getHeaderView(0);
-        TextView username = headerView.findViewById(R.id.username);
-        ImageView navUserPhoto = headerView.findViewById(R.id.imageProfile);
 
         if (user != null) {
-            for (UserInfo profile : user.getProviderData()) {
-                name = profile.getDisplayName();
-                photoUrl = profile.getPhotoUrl();
-            }
-            username.setText(name);
-            if(photoUrl != null) {
-                Picasso.get().load(photoUrl).into(navUserPhoto);
-            }
+            updateUserImage(user);
         }
         else {
-            changeProfilePic();
+            resetProfilePic();
         }
     }
 }

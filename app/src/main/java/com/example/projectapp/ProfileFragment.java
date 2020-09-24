@@ -1,30 +1,41 @@
 package com.example.projectapp;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
@@ -49,6 +60,7 @@ public class ProfileFragment extends Fragment {
     private Button buttonSignOut;
     private Button buttonQuestions;
 
+    private static final int GALLERY_REQUEST_CODE =100;
     private List<AuthUI.IdpConfig> providers;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -56,7 +68,12 @@ public class ProfileFragment extends Fragment {
     private TextView fullName;
     private TextView email;
     private ImageView profile_image;
-
+    private ImageButton name_image;
+    private ImageView mail_image;
+    private ImageView list_image;
+    private ImageButton editBtn ;
+    FirebaseStorage storage;
+    StorageReference storageReference;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -108,14 +125,22 @@ public class ProfileFragment extends Fragment {
         this.fullName = root.findViewById(R.id.fullName);
         this.email = root.findViewById(R.id.text_user_profile_email);
         this.buttonQuestions = root.findViewById(R.id.QuestionsButton);
+        this.editBtn = root.findViewById(R.id.edit_profilePicture);
+        this.name_image = root.findViewById(R.id.imageName);
+        this.mail_image = root.findViewById(R.id.imageMail);
+        this.list_image = root.findViewById(R.id.imagelist);
 
         this.mAuth = FirebaseAuth.getInstance();
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         this.listenForAuth();
         this.ReviewQuestion();
         this.buttonSignInPressed();
         this.buttonSignOutPressed();
-
+        this.buttonEditPicture();
+        this.updateUserName();
         return root;
     }
     private void listenForAuth()
@@ -138,8 +163,12 @@ public class ProfileFragment extends Fragment {
                     fullName.setVisibility(INVISIBLE);
                     email.setVisibility(INVISIBLE);
                     buttonQuestions.setVisibility(INVISIBLE);
+                    editBtn.setVisibility(INVISIBLE);
+                    mail_image.setVisibility(INVISIBLE);
+                    name_image.setVisibility(INVISIBLE);
+                    list_image.setVisibility(INVISIBLE);
 
-                    MainActivity.changeProfilePic();
+                    MainActivity.resetProfilePic();
 
                 }
             }
@@ -166,6 +195,58 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ProfileFragment.this.signIn();
+            }
+        });
+    }
+    private void buttonEditPicture(){
+        this.editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //selectPicture
+                Intent openGallery = new Intent(Intent.ACTION_PICK,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(openGallery, GALLERY_REQUEST_CODE);
+            }
+        });
+    }
+    private void updateUserName(){
+        name_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog dialogBuilder = new AlertDialog.Builder(getActivity()).create();
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.change_user_name, null);
+
+                final EditText editText = (EditText) dialogView.findViewById(R.id.edt_comment);
+                Button submitBtn = (Button) dialogView.findViewById(R.id.buttonSubmit);
+                Button cancelBtn = (Button) dialogView.findViewById(R.id.buttonCancel);
+
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialogBuilder.dismiss();
+                    }
+                });
+                submitBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(editText.getText().toString())
+                                .build();
+                        user.updateProfile(profileUpdates).addOnSuccessListener
+                                (new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                MainActivity.updateUserName(user);
+                            }
+                        });
+                        fullName.setText(editText.getText());
+                        dialogBuilder.dismiss();
+                    }
+                });
+                dialogBuilder.setView(dialogView);
+                dialogBuilder.show();
             }
         });
     }
@@ -196,19 +277,37 @@ public class ProfileFragment extends Fragment {
                 });
     }
 
-    private void updateProfile(FirebaseUser user){
-        Uri photoUrl = null;
-        if (user != null) {
-            for (UserInfo profile : user.getProviderData()) {
-                photoUrl = profile.getPhotoUrl();
+    private void updateProfile(final FirebaseUser user){
+        StorageReference profileRef = storageReference.child("profilePictures/"+
+                mAuth.getCurrentUser().getUid());
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).resize(2048, 1600)
+                        .onlyScaleDown().into(profile_image);
             }
-            if(photoUrl != null) {
-                Picasso.get().load(photoUrl).into(profile_image);
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Uri photoUrl = null;
+                for (UserInfo profile : user.getProviderData()) {
+                    photoUrl = profile.getPhotoUrl();
+                }
+                if(photoUrl != null){
+                    Picasso.get().load(photoUrl).into(profile_image);
+                }
             }
-            //  profile_image.setVisibility(INVISIBLE);
-            fullName.setText(user.getDisplayName());
-            email.setText(user.getEmail());
-        }
+        });
+        profile_image.setVisibility(VISIBLE);
+        fullName.setVisibility(VISIBLE);
+        fullName.setText(user.getDisplayName());
+        email.setText(user.getEmail());
+        email.setVisibility(VISIBLE);
+        buttonQuestions.setVisibility(VISIBLE);
+        editBtn.setVisibility(VISIBLE);
+        mail_image.setVisibility(VISIBLE);
+        name_image.setVisibility(VISIBLE);
+        list_image.setVisibility(VISIBLE);
     }
 
     public void ReviewQuestion(){
@@ -246,6 +345,12 @@ public class ProfileFragment extends Fragment {
                 // ...
             }
         }
+        if(requestCode == GALLERY_REQUEST_CODE){
+            if (resultCode == RESULT_OK) {
+                Uri imageUri = data.getData();
+                uploadPicture(imageUri);
+            }
+        }
     }
 
     private void addUserToFireStore(FirebaseUser user)
@@ -260,4 +365,37 @@ public class ProfileFragment extends Fragment {
         this.mAuth.addAuthStateListener(this.mAuthStateListener);
     }
 
+    private void uploadPicture(final Uri imgUri){
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setTitle("Uploading...");
+        progressDialog.show();
+        final StorageReference fileRef = storageReference.
+                child("profilePictures/"+mAuth.getCurrentUser().getUid());
+        fileRef.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Toast.makeText(getActivity(), "Image Uploaded!!",
+                                        Toast.LENGTH_SHORT).show();
+                        Picasso.get().load(uri).resize(2048, 1600)
+                                .onlyScaleDown().into(profile_image);
+                        progressDialog.dismiss();
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        MainActivity.updateUserImage(user);
+                 }
+        });
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null){
+            updateProfile(user);
+        }
+    }
 }

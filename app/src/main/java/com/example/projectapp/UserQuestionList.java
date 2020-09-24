@@ -40,8 +40,8 @@ public class UserQuestionList extends AppCompatActivity {
         Adapter = new FirebaseListAdapter<Question>(options) {
             @Override
             protected void populateView(View view, Question question, final int position) {
-                ((TextView)view.findViewById(android.R.id.text1)).setText(question.getTitle());
-                ((TextView)view.findViewById(android.R.id.text2)).setText(question.getContent());
+                ((TextView)view.findViewById(R.id.text1)).setText(question.getTitle());
+                ((TextView)view.findViewById(R.id.text2)).setText(question.getContent());
 
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
