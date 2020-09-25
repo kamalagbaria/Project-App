@@ -7,64 +7,162 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Button
-        android:id="@+id/button_sign_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_in"
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/image_user_profile_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        app:riv_oval="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/profile_pic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.167"
+        app:layout_constraintHorizontal_bias="0.459"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.839"
-        android:visibility="visible"/>
+        app:layout_constraintVertical_bias="0.061" />
+
+    <TextView
+        android:id="@+id/text_user_profile_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_sign_in"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.192"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fullName"
+        app:layout_constraintVertical_bias="0.115"
+        tools:text="example@mail.com" />
+
+    <Button
+        android:id="@+id/button_sign_in"
+        style="@android:style/Widget.Button.Inset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/button_sign_out"
+        android:layout_alignBottom="@+id/button_sign_out"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorPrimaryText"
+        android:text="@string/sign_in"
+        android:textColor="@color/colorWhite"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.034"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.944" />
 
     <Button
         android:id="@+id/button_sign_out"
+        style="@android:style/Widget.Button.Inset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/image_user_profile_image"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="339dp"
+        android:layout_marginEnd="318dp"
+        android:layout_marginBottom="52dp"
+        android:background="#95B4B8"
         android:text="@string/sign_out"
+        android:textColor="@color/colorWhite"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/button_sign_in"
         app:layout_constraintEnd_toEndOf="@+id/button_sign_in"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/button_sign_in"
         app:layout_constraintTop_toTopOf="@+id/button_sign_in"
-        app:layout_constraintVertical_bias="0.0"
-        android:visibility="invisible"/>
-    <!--
-    <Button
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        app:layout_constraintVertical_bias="0.773"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0.763"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="@string/sign_in"
-        android:id="@+id/sign_in"/>
-
-    <Button
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        app:layout_constraintVertical_bias="0.773"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0.45"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="@string/sign_up"
-        android:id="@+id/sign_up"/>
+        app:layout_constraintVertical_bias="0.867" />
 
     <TextView
-        android:layout_height="wrap_content"
+        android:id="@+id/fullName"
         android:layout_width="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/text_user_profile_email"
+        android:layout_below="@+id/image_user_profile_image"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:text="@string/username"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="@string/already_signed_in"
-        android:id="@+id/signed" android:visibility="invisible"/>
-    -->
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.161"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_user_profile_image"
+        app:layout_constraintVertical_bias="0.123" />
+
+
+    <Button
+        android:id="@+id/QuestionsButton"
+        style="@android:style/Widget.Button.Inset"
+        android:layout_width="135dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="28dp"
+        android:background="@color/colorWhite"
+        android:text="@string/userQuestionBtn"
+        android:textColor="#0E0E0E"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.195"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_user_profile_email"
+        app:layout_constraintVertical_bias="0.013" />
+
+    <ImageButton
+        android:id="@+id/edit_profilePicture"
+        android:layout_width="61dp"
+        android:layout_height="45dp"
+        android:background="@drawable/__edit_icon_"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.337"
+        app:layout_constraintStart_toEndOf="@+id/image_user_profile_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.236" />
+
+    <ImageButton
+        android:id="@+id/imageName"
+        android:layout_width="32dp"
+        android:layout_height="43dp"
+        android:layout_marginEnd="11dp"
+        android:background="@drawable/nameicon"
+        app:layout_constraintBottom_toTopOf="@+id/text_user_profile_email"
+        app:layout_constraintEnd_toStartOf="@+id/fullName"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_user_profile_image"
+        app:layout_constraintVertical_bias="0.552" />
+
+    <ImageView
+        android:id="@+id/imageMail"
+        android:layout_width="32dp"
+        android:layout_height="43dp"
+        android:background="@drawable/mail_icon"
+        app:layout_constraintBottom_toTopOf="@+id/QuestionsButton"
+        app:layout_constraintEnd_toStartOf="@+id/text_user_profile_email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageName" />
+
+    <ImageView
+        android:id="@+id/imagelist"
+        android:layout_width="32dp"
+        android:layout_height="43dp"
+        android:background="@drawable/list_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/QuestionsButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageMail"
+        app:layout_constraintVertical_bias="0.095" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

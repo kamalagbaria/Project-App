@@ -37,6 +37,12 @@
     <string name="sign_out">\Sign-Out\</string>
     <string name="SubmitAnswer">Submit Answer</string>
     <string name="writeHere">type your answer</string>
+    <string name="questionList">Question List</string>
+    <string name="userQuestionBtn">Review My Questions</string>
+    <string name="label_submit">Submit</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="new_name">New Name</string>
+    <string name="type_your_name"> type your name</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">351140462696956</string>

@@ -2,11 +2,10 @@ package com.example.projectapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,24 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -40,8 +30,7 @@ import java.util.Objects;
 public class GeneralCategory extends AppCompatActivity {
 
     String category;
-
-    private com.google.firebase.database.Query DatabaseRef;
+    private Query DatabaseRef;
     private FirebaseListAdapter Adapter;
 
     @Override
@@ -55,15 +44,13 @@ public class GeneralCategory extends AppCompatActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        Button askMath=findViewById(R.id.askMath);
-
+        Button askQuestion=findViewById(R.id.askQuestion);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
         if (mAuth.getCurrentUser() == null){
-            askMath.setVisibility(View.INVISIBLE);
+            askQuestion.setVisibility(View.INVISIBLE);
         }
 
-        askMath.setOnClickListener(new View.OnClickListener() {
+        askQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), SubmitQuestionActivity.class);
@@ -71,22 +58,20 @@ public class GeneralCategory extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
-        final ListView listView = findViewById(R.id.rvContacts);
+        final ListView listView = findViewById(R.id.QuestionsList);
 
         //get instance of database
         DatabaseRef = FirebaseDatabase.getInstance().getReference().child("questions");
 
         FirebaseListOptions<Question> options = new FirebaseListOptions.Builder<Question>()
                 .setQuery(DatabaseRef.orderByChild("category").equalTo(category), Question.class)
-                .setLayout(android.R.layout.two_line_list_item)
+                .setLayout(R.layout.two_line_list_item)
                 .build();
-
         Adapter = new FirebaseListAdapter<Question>(options) {
             @Override
             protected void populateView(View view, Question question, final int position) {
-                ((TextView)view.findViewById(android.R.id.text1)).setText(question.getTitle());
-                ((TextView)view.findViewById(android.R.id.text2)).setText(question.getContent());
+                ((TextView)view.findViewById(R.id.text1)).setText(question.getTitle());
+                ((TextView)view.findViewById(R.id.text2)).setText(question.getContent());
 
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -97,15 +82,14 @@ public class GeneralCategory extends AppCompatActivity {
                         startActivity(i);
                     }
                 });
-
             }
         };
         listView.setAdapter(Adapter);
         DatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ProgressBar bar=findViewById(R.id.progressBar);
-                ConstraintLayout main=findViewById(R.id.mainContent);
+                ProgressBar bar = findViewById(R.id.progressBar);
+                LinearLayout main = findViewById(R.id.mainContent);
                 bar.setVisibility(View.GONE);
                 main.setVisibility(View.VISIBLE);
             }
@@ -115,9 +99,8 @@ public class GeneralCategory extends AppCompatActivity {
 
             }
         });
+
     }
-
-
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         super.onBackPressed();
         return true;
@@ -132,4 +115,5 @@ public class GeneralCategory extends AppCompatActivity {
         super.onStop();
         Adapter.stopListening();
     }
+
 }

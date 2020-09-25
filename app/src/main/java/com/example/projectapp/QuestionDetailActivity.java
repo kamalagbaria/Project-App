@@ -4,26 +4,39 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 public class QuestionDetailActivity extends AppCompatActivity {
 
@@ -31,9 +44,9 @@ public class QuestionDetailActivity extends AppCompatActivity {
     private RatingBar ratingBar;
     public FirebaseAuth mAuth;
     FirebaseListAdapter answerAdapter;
-    private TextView difficulty;
     private ImageButton rateBtn;
     private float rateValue;
+    private String questionKey ;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -41,18 +54,17 @@ public class QuestionDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_detail);
+
         final Question question = (Question) getIntent().getSerializableExtra("question");
         assert question != null;
         loadQuestion(question);
         mAuth = FirebaseAuth.getInstance();
         answerbt = findViewById(R.id.answerBtn);
         rateBtn = findViewById(R.id.imageButton);
-        //difficulty =findViewById(R.id.DifficultyTextView);
         ratingBar = findViewById(R.id.rating_rating_bar);
         ratingBar.setRating(question.getDifficulty());
         if (mAuth.getCurrentUser() == null){
             answerbt.setVisibility(View.INVISIBLE);
-         //   difficulty.setVisibility(View.INVISIBLE);
             rateBtn.setVisibility(View.INVISIBLE);
         }
         ratingBar.setOnTouchListener(new View.OnTouchListener() {
@@ -62,7 +74,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
         });
         ratingBar.setFocusable(false);
 
-        final String questionKey = getIntent().getStringExtra("question_key");
+        questionKey = getIntent().getStringExtra("question_key");
         rateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,17 +90,76 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
         FirebaseListOptions<Answer> options = new FirebaseListOptions.Builder<Answer>()
                 .setQuery(answersDatabase, Answer.class)
-                .setLayout(android.R.layout.simple_list_item_1)
+                .setLayout(R.layout.simple_list_item_1)
                 .build();
 
-         answerAdapter = new FirebaseListAdapter<Answer>(options) {
+        answerAdapter = new FirebaseListAdapter<Answer>(options) {
             @Override
             protected void populateView(View view, Answer answer, final int position) {
-                ((TextView)view.findViewById(android.R.id.text1)).setText(answer.getText());
+
+                ((TextView)view.findViewById(R.id.answerText)).setText(answer.getText());
+                final ImageView imageView=view.findViewById(R.id.answerImage);
+
+                if (answer.getImageUrl()!=null && !answer.getImageUrl().equals("None")){
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference storageRef = storage.getReference();
+                    storageRef.child("images/Answers/"+answer.getImageUrl()).getDownloadUrl().
+                            addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Picasso.get().load(Uri.parse(uri.toString())).into(imageView);
+                                    imageView.setVisibility(View.VISIBLE);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
             }
         };
         listView.setAdapter(answerAdapter);
+
     }
+
+    /*private void getAllAnswers(String questionKey){
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().
+                getReference().child("answers").child(questionKey);
+        //DatabaseReference friendsRef = rootRef.child("answers");
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        final StorageReference storageRef = storage.getReference();
+
+        rootRef.addValueEventListener( new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Answer> answers = new ArrayList<>();
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    final Answer answer = ds.getValue(Answer.class);
+                    answers.add(answer);
+                    assert answer != null;
+                    //  answerList.add(new ItemAnswer(answer.getText(),
+                    //        storageRef.child("images/Answers/"+answer.getImageUrl()).getDownloadUrl().getResult()));
+                    if (answer.getImageUrl() != null && !answer.getImageUrl().equals("None")) {
+                        storageRef.child("images/Answers/" + answer.getImageUrl()).getDownloadUrl().
+                                addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        AnswerMap.put(answer, uri);
+                                    }
+                                });
+                    }else {
+                        AnswerMap.put(answer, null);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+            });
+        //friendsRef.addListenerForSingleValueEvent(eventListener);
+    }*/
 
     private void loadQuestion(Question question){
         TextView questionTextView = findViewById(R.id.questionTV);
@@ -123,6 +194,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
                 rateValue = rating_Bar.getRating();
                 rateValue = (((question.getDifficulty() + rateValue) / 2) % 5);
                 question.setDifficulty(rateValue);
+                ratingBar.setRating(question.getDifficulty());
                 FirebaseDatabase.getInstance().getReference()
                         .child("questions").child(Key).child("difficulty").setValue(rateValue);
             }
@@ -137,7 +209,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
         builder.setView(layout);
         builder.show();
     }
-    
+
     @Override
     protected void onStart() {
         super.onStart();

@@ -40,7 +40,6 @@ public class SubmitQuestionActivity extends AppCompatActivity {
 
                 final Question question = new Question(title, content,
                         Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),category);
-
                 FirebaseDatabase.getInstance().getReference().child("questions").push()
                         .setValue(question, new DatabaseReference.CompletionListener() {
                             @Override
@@ -49,38 +48,9 @@ public class SubmitQuestionActivity extends AppCompatActivity {
                                     Toast.makeText(SubmitQuestionActivity.this,"Unable to submit question",
                                             Toast.LENGTH_SHORT).show();
                                 } else {
-                                    //start change
-                                    // can't find out if it works
-                                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().
-                                            child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                    mDatabase.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            User user= dataSnapshot.getValue(User.class);
-                                            assert user != null;
-                                            ArrayList<Question> newList = user.AddQuestion(question);
-                                            Log.w("TAG", "add question");
-                                            FirebaseDatabase.getInstance().getReference().
-                                                    child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                    .child("myQuestions").setValue(newList);
-                                        }
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
 
-                                        }
-                                    });
-                                    //end change
-                                    switch(category) {
-                                        case "Mathematics":
-                                            startActivity(new Intent(SubmitQuestionActivity.this, MathCategory.class));
-                                            break;
-                                        case "Physics":
-                                            startActivity(new Intent(SubmitQuestionActivity.this, PhysicsCategory.class));
-                                            break;
-                                        default:
-                                            // code block
-                                    }
-
+                                    Intent intent=new Intent(SubmitQuestionActivity.this,GeneralCategory.class);
+                                    intent.putExtra("Category",category);
                                     Toast.makeText(SubmitQuestionActivity.this,"Question submitted",
                                             Toast.LENGTH_SHORT).show();
                                 }
