@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/name_layout"
@@ -129,86 +129,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#000000" />
-
-        <LinearLayout
-            android:id="@+id/error1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone">
-            <TextView
-                android:id="@+id/error_text1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"/>
-            <Button
-                android:id="@+id/error_button1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/press_to_update"
-                android:textSize="12sp"
-                android:textAllCaps="false"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/error2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone">
-            <TextView
-                android:id="@+id/error_text2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"/>
-            <Button
-                android:id="@+id/error_button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/press_to_update"
-                android:textSize="12sp"
-                android:textAllCaps="false"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/error3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone">
-            <TextView
-                android:id="@+id/error_text3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"/>
-            <Button
-                android:id="@+id/error_button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/press_to_update"
-                android:textSize="12sp"
-                android:textAllCaps="false"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/error4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone">
-            <TextView
-                android:id="@+id/error_text4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"/>
-            <Button
-                android:id="@+id/error_button4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/press_to_update"
-                android:textSize="12sp"
-                android:textAllCaps="false"/>
-        </LinearLayout>
 
     </LinearLayout>
     <TextView

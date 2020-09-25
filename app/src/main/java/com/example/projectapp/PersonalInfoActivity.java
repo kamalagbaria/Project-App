@@ -1,6 +1,7 @@
 package com.example.projectapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +40,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.MetadataChanges;
 
 import org.w3c.dom.Text;
 
@@ -101,7 +105,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         this.progressBar = findViewById(R.id.progress_bar_personal_info);
         this.personalInfoLayout = findViewById(R.id.personal_info_layout);
 
-        this.errorMessages = new ArrayList<>();
+        //this.errorMessages = new ArrayList<>();
 
         this.mAuth = FirebaseAuth.getInstance();
         this.firebaseUser = this.mAuth.getCurrentUser();
@@ -127,6 +131,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         else
         {
             this.getPersonalInfo();
+            //addErrorMessages();
         }
 
 
@@ -193,23 +198,24 @@ public class PersonalInfoActivity extends AppCompatActivity {
     private void removeLayout()
     {
         LinearLayout linearLayout = findViewById(linearLayoutID);
+        if(linearLayout == null)
+        {
+            return;
+        }
         linearLayout.removeAllViews();
         this.personalInfoLayout.removeView(linearLayout);
     }
 
+
     private void getPersonalInfo()
     {
-        if(errorMessages.size() != 0)
-        {
-            removeLayout();
-            errorMessages.clear();
-        }
         DocumentReference documentReference = this.db.collection(USERS).document(this.firebaseUser.getUid());
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful())
                 {
+                    errorMessages = new ArrayList<>();
                     DocumentSnapshot document = task.getResult();
                     if(document != null)
                     {
@@ -217,16 +223,17 @@ public class PersonalInfoActivity extends AppCompatActivity {
                         loadEmail(document.getString("email"));
                         loadPhoneNumber(document.getString("phoneNumber"));
                         loadLocation(document.getString("location"));
+                        removeLayout();
                         addErrorMessages();
                     }
                     progressBar.setVisibility(View.GONE);
                     personalInfoLayout.setVisibility(View.VISIBLE);
-
+                    errorMessages.clear();
                 }
             }
         });
-
     }
+
 
     private void loadFullName(String fullName)
     {
@@ -255,7 +262,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         else
         {
             this.emailText.setText(email);
-            this.fullNameText.setTextColor(Color.BLACK);
+            this.emailText.setTextColor(Color.BLACK);
         }
     }
 
@@ -270,7 +277,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         else
         {
             this.phoneNumberText.setText(phoneNumber);
-            this.fullNameText.setTextColor(Color.BLACK);
+            this.phoneNumberText.setTextColor(Color.BLACK);
         }
     }
 
@@ -285,7 +292,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         else
         {
             this.locationText.setText(location);
-            this.fullNameText.setTextColor(Color.BLACK);
+            this.locationText.setTextColor(Color.BLACK);
         }
     }
 
@@ -324,8 +331,8 @@ public class PersonalInfoActivity extends AppCompatActivity {
                 String textValue = edittext.getText().toString();
                 if(id == fullNameId)
                 {
-                    boolean b = checkFullName(textValue);
-                    if(b)
+                    boolean check = checkFullName(textValue);
+                    if(check)
                     {
                         updateFirestore("fullName", textValue);
 
@@ -336,9 +343,10 @@ public class PersonalInfoActivity extends AppCompatActivity {
                 }
                 if(id == phoneNumberId)
                 {
-                    boolean b = checkPhoneNumber(textValue);
-                    if(b)
+                    boolean check = checkPhoneNumber(textValue);
+                    if(check)
                     {
+                        updateFirestore("phoneNumber", textValue);
                         Toast.makeText(getApplicationContext(), "Correct", Toast.LENGTH_SHORT).show();
                     }
                     else{
@@ -360,6 +368,8 @@ public class PersonalInfoActivity extends AppCompatActivity {
 
     private void updateFirestore(String fieldName, String fieldNewValue)
     {
+        progressBar.setVisibility(View.VISIBLE);
+        personalInfoLayout.setVisibility(View.GONE);
         Map<String, Object> data = new HashMap<>();
         data.put(fieldName, fieldNewValue);
         db.collection(USERS).document(this.firebaseUser.getUid())
@@ -368,6 +378,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid)
                     {
+                        removeLayout();
                         getPersonalInfo();
                         Toast.makeText(getApplicationContext(), "Updated Successfully", Toast.LENGTH_SHORT).show();
                     }
@@ -383,8 +394,6 @@ public class PersonalInfoActivity extends AppCompatActivity {
 
     private boolean checkPhoneNumber(String phoneNumber)
     {
-        //return android.util.Patterns.PHONE.matcher(phoneNumber).matches();
-
         Pattern pattern = Pattern.compile("\\d{3}-\\d{7}");
         Matcher matcher = pattern.matcher(phoneNumber);
         return matcher.matches();
