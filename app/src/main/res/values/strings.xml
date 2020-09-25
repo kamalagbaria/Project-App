@@ -3,9 +3,9 @@
     <string name="name">AskApp</string>
     <string name="profile">Profile</string>
     <string name="others">others</string>
-    <string name="settings">settings</string>
+    <string name="settings">Settings</string>
     <string name="user">User</string>
-    <string name="verfied">Verfied</string>
+    <string name="verified">Verified</string>
     <string name="about">About</string>
     <string name="home">Home</string>
     <string name="welcome">Welcome</string>
@@ -41,4 +41,14 @@
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">351140462696956</string>
     <string name="facebook_login_protocol_scheme" translatable="false">5e5966047f991334cc0407e30bac034e</string>
+    <string name="account">Account</string>
+    <string name="invite_friends">Invite Friends</string>
+    <string name="notifications">Notifications</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="full_name">Full Name</string>
+    <string name="e_mail_address">E-mail Address</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="location">Location</string>
+    <string name="sign_in_up_request">Please Sign-In or Create Account in Profile Page</string>
+    <string name="press_to_update">Press to update</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.projectapp;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private static String name;
     private static Uri photoUrl;
     private static NavigationView navigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         View headerView = navigationView.getHeaderView(0);
         TextView username = headerView.findViewById(R.id.username);

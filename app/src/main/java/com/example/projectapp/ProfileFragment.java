@@ -1,7 +1,9 @@
 package com.example.projectapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
@@ -107,11 +111,13 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
-                if(firebaseAuth.getCurrentUser() != null)
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                if(firebaseUser != null)
                 {
                     //Is logged in
                     ProfileFragment.this.buttonSignIn.setVisibility(View.INVISIBLE);
                     ProfileFragment.this.buttonSignOut.setVisibility(View.VISIBLE);
+
                 }
 
                 else
@@ -129,6 +135,42 @@ public class ProfileFragment extends Fragment {
 
 
     }
+
+    private void getDocumentData(FirebaseUser firebaseUser)
+    {
+        db.collection(users).document(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if(documentSnapshot != null)
+                    {
+                        if("".equals(documentSnapshot.getString("email")))
+                        {
+                            //sendBroadcast(getContext());
+                        }
+
+                        if("".equals(documentSnapshot.getString("fullName")))
+                        {
+                            //sendBroadcast(getContext());
+                        }
+
+                        if("".equals(documentSnapshot.getString("phoneNumber")))
+                        {
+                            //sendBroadcast(getContext());
+                        }
+
+                        if("".equals(documentSnapshot.getString("location")))
+                        {
+                            //sendBroadcast(getContext());
+                        }
+                    }
+                }
+            }
+        });
+    }
+
 
     private void buttonSignOutPressed()
     {
@@ -203,12 +245,13 @@ public class ProfileFragment extends Fragment {
 
     private void addUserToFireStore(FirebaseUser user)
     {
-        User newUser = new User(user.getDisplayName(), "", "", user.getEmail(), "", user.getUid());
+        User newUser = new User(user.getDisplayName(), "", "", user.getEmail(), "", user.getUid(), user.getPhoneNumber());
         db.collection(users).document(newUser.getId()).set(newUser);
     }
 
     @Override
-    public void onStart() {
+    public void onStart()
+    {
         super.onStart();
         this.mAuth.addAuthStateListener(this.mAuthStateListener);
     }

@@ -11,14 +11,24 @@ public class User {
     private String email;
     private String id;
     private String location;
+    private String phoneNumber;
 
-    public User(String fullName, String firstName, String lastName, String email, String location, String id) {
+    public User(String fullName, String firstName, String lastName, String email, String location, String id, String phoneNumber) {
         this.fullName = fullName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.id = id;
         this.location = location;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getFullName() {

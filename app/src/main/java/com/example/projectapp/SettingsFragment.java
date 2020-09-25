@@ -1,5 +1,6 @@
 package com.example.projectapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,11 +56,46 @@ public class SettingsFragment extends Fragment {
         }
     }
 
+    private Button accountButton;
+    private Button notificationsButton;
+    private Button inviteButton;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        this.accountButton = view.findViewById(R.id.account_button);
+        this.notificationsButton = view.findViewById(R.id.notifications_button);
+        this.inviteButton = view.findViewById(R.id.invite_friends_button);
+
+        this.pressedAccountButton();
+
+
+
         return view;
+    }
+
+    private void pressedAccountButton()
+    {
+        this.accountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), AccountActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    private void pressedNotificationsButton()
+    {
+
+    }
+
+    private void pressedInviteButton()
+    {
+
     }
 }

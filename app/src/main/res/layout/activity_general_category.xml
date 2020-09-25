@@ -23,11 +23,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/QuestionsList"
-            android:layout_width="407dp"
-            android:layout_height="669dp"
-            app:layout_constraintBottom_toTopOf="@+id/askQuestion"
+        <ListView
+            android:id="@+id/rvContacts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toTopOf="@+id/askMath"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +35,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/askQuestion"
+            android:id="@+id/askMath"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ask_a_question"
@@ -45,5 +45,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.48" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

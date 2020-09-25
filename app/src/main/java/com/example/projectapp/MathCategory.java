@@ -30,6 +30,7 @@ public class MathCategory extends AppCompatActivity {
 
     private Query DatabaseRef;
     private FirebaseListAdapter Adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
