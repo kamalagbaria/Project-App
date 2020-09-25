@@ -171,8 +171,10 @@ public class ProfileFragment extends Fragment {
                     MainActivity.resetProfilePic();
 
                 }
+
             }
         };
+
 
     }
 
