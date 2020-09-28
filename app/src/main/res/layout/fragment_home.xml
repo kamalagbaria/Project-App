@@ -10,26 +10,23 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
+        <TextView
+            android:id="@+id/lastViewedText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/last_viewed_questions"
+            app:layout_constraintBottom_toTopOf="@+id/LastViewedQuestions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ListView
-            android:id="@+id/questionsLV"
+            android:id="@+id/LastViewedQuestions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.105" />
-        <!--
-        <Button
-            android:id="@+id/askBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/ask_a_question"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/questionsLV"
-            app:layout_constraintVertical_bias="0.951" />
-            -->
+            app:layout_constraintTop_toBottomOf="@+id/lastViewedText"
+             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

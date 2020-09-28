@@ -5,12 +5,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +29,8 @@ public class HomeFragment extends Fragment {
 
     private DatabaseReference DatabaseRef;
     private FirebaseListAdapter Adapter;
+    private ListView lv;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -68,46 +78,27 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        /*
-        Button askBtn = view.findViewById(R.id.askBtn);
-        //start change
-        if (mAuth.getCurrentUser() == null){
-            askBtn.setVisibility(View.INVISIBLE);
-        }
-        //end change
-        askBtn.setOnClickListener(new View.OnClickListener() {
+        final View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(),SubmitQuestionActivity.class));
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user=dataSnapshot.getValue(User.class);
+                assert user != null;
+                showLastViewed(user.getLastViewed(),view);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
-
-        ListView listView = view.findViewById(R.id.questionsLV);
-
-        //get instance of database
-        DatabaseRef = FirebaseDatabase.getInstance().getReference().child("questions");
-
-        Adapter = new FirebaseListAdapter<Question>(getActivity(), Question.class, android.R.layout.two_line_list_item, DatabaseRef) {
-            @Override
-            protected void populateView(View view, Question question, final int position) {
-                ((TextView)view.findViewById(android.R.id.text1)).setText(question.getTitle());
-                ((TextView)view.findViewById(android.R.id.text2)).setText(question.getContent());
-
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent i = new Intent(getActivity(), QuestionDetailActivity.class);
-                        i.putExtra("question", (Serializable) Adapter.getItem(position));
-                        i.putExtra("question_key", Adapter.getRef(position).getKey());
-                        startActivity(i);
-                    }
-                });
-
-            }
-        };
-        listView.setAdapter(Adapter);
-         */
         return view;
     }
+
+    public void showLastViewed(ArrayList<Question> questions,View view){
+        lv = (ListView) view.findViewById(R.id.LastViewedQuestions);
+        HomeQuestionAdapter arrayAdapter = new HomeQuestionAdapter(view.getContext(),0,questions);
+        lv.setAdapter(arrayAdapter);
+    }
+
 }

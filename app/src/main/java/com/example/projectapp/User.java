@@ -11,7 +11,11 @@ public class User {
     private String email;
     private String id;
     private String location;
+    private ArrayList<Question> lastViewed=new ArrayList<>();
 
+    public ArrayList<Question> getLastViewed() {
+        return lastViewed;
+    }
     public User(String fullName, String firstName, String lastName, String email, String location, String id) {
         this.fullName = fullName;
         this.firstName = firstName;
@@ -75,6 +79,10 @@ public class User {
     public ArrayList<Question> AddQuestion(Question newQuestion){
         this.myQuestions.add(newQuestion);
         return myQuestions;
+    }
+    public ArrayList<Question> addLastViewed(Question question){
+        this.lastViewed.add(question);
+        return this.lastViewed;
     }
 
 }
