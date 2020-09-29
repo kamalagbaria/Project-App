@@ -1,10 +1,12 @@
 package com.example.projectapp;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +34,8 @@ public class HomeFragment extends Fragment {
     private DatabaseReference DatabaseRef;
     private FirebaseListAdapter Adapter;
     private ListView lv;
+    private ListView lv2;
+    private HomeQuestionAdapter adapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -79,26 +85,82 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
+        if (mAuth.getCurrentUser() != null){
+            FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener(){
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    User user=dataSnapshot.getValue(User.class);
+                    assert user != null;
+                    ArrayList<QuestionWrapper> questionWrappers=user.getLastViewed();
+                    ArrayList<Question> questions=new ArrayList<>();
+                    for (QuestionWrapper questionWrapper:questionWrappers){
+                        questions.add(questionWrapper.getQuestion());
+                    }
+                    showLastViewed(questionWrappers,questions,view);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-        FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener(){
+                }
+            });
+        }
+
+        FirebaseDatabase.getInstance().getReference().child("questions").orderByChild("questionUploadTime").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user=dataSnapshot.getValue(User.class);
-                assert user != null;
-                showLastViewed(user.getLastViewed(),view);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<QuestionWrapper> wrappersList = new ArrayList<>();
+                ArrayList<Question>  questionsList=new ArrayList<>();
+
+                for(DataSnapshot ds : snapshot.getChildren()) {
+                    Question question=ds.getValue(Question.class);
+                    QuestionWrapper wrapper = new QuestionWrapper(question,ds.getKey());
+                    wrappersList.add(wrapper);
+                    questionsList.add(question);
+                }
+                Collections.reverse(wrappersList);
+                Collections.reverse(questionsList);
+                showNewlyAdded(wrappersList,questionsList,view);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
         return view;
     }
 
-    public void showLastViewed(ArrayList<Question> questions,View view){
+    public void showLastViewed(final ArrayList<QuestionWrapper>questionWrappers, ArrayList<Question> questions, View view){
         lv = (ListView) view.findViewById(R.id.LastViewedQuestions);
         HomeQuestionAdapter arrayAdapter = new HomeQuestionAdapter(view.getContext(),0,questions);
         lv.setAdapter(arrayAdapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getContext(), QuestionDetailActivity.class);
+                intent.putExtra("question", adapter.getItem(i));
+                intent.putExtra("question_key", questionWrappers.get(i).getKey());
+                startActivity(intent);
+
+            }
+        });
+    }
+
+    public  void showNewlyAdded(final ArrayList<QuestionWrapper> wrappers, ArrayList<Question>questions, View view){
+        lv2=view.findViewById(R.id.NewlyAddedQuestions);
+         adapter =new HomeQuestionAdapter(view.getContext(),0,questions);
+        lv2.setAdapter(adapter);
+        lv2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getContext(), QuestionDetailActivity.class);
+                intent.putExtra("question", adapter.getItem(i));
+                intent.putExtra("question_key", wrappers.get(i).getKey());
+                startActivity(intent);
+
+            }
+        });
     }
 
 }

@@ -123,10 +123,9 @@ public class QuestionDetailActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user=dataSnapshot.getValue(User.class);
                 assert user != null;
-                user.addLastViewed(question);
+                user.addLastViewed(new QuestionWrapper(question,questionKey));
                 FirebaseDatabase.getInstance().getReference().child("users")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

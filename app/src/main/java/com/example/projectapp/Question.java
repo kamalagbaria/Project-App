@@ -10,16 +10,13 @@ public class Question  implements Serializable {
     private String ownerId;
     private String category;
     private float difficulty;
+    private long questionUploadTime=System.currentTimeMillis();
 
-    public String getCategory() {
-        return category;
-    }
 
-    public Question(){
 
-    }
+    public Question(){ }
 
-    public Question(String title, String content, String ID,String category){
+    public Question(String title, String content, String ID, String category){
         this.title = title;
         this.content = content;
         this.ownerId = ID;
@@ -57,5 +54,11 @@ public class Question  implements Serializable {
 
     public void setDifficulty(float difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public long getQuestionUploadTime() { return questionUploadTime; }
+
+    public String getCategory() {
+        return category;
     }
 }
