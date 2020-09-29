@@ -1,12 +1,19 @@
 package com.example.projectapp;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -16,13 +23,30 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,10 +54,31 @@ public class MainActivity extends AppCompatActivity {
     private static Uri photoUrl;
     private static NavigationView navigationView;
 
+    //To Create Notification Channel
+    private static final String CHANNEL_ID = "APP_PROJECT";
+    private static final String NOTIFICATION_TITLE = "PROJECT_APP";
+    private SendNotificationBroadcastReceiver br;
+
+    private DatabaseReference mDatabase;
+
+    FirebaseUser user;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        //Create Notification Channel
+        this.createNotificationChannel();
+        this.br = new SendNotificationBroadcastReceiver();
+        registerReceiver(this.br, new IntentFilter(SendNotificationBroadcastReceiver.actionQuestionAnswered));
+        registerReceiver(this.br, new IntentFilter(SendNotificationBroadcastReceiver.actionQuestionRated));
+        //this.listenToDataChangeRealTime();
+        this.listenToDataChangeFirestore();
 
         final DrawerLayout drawerLayout=findViewById(R.id.drawerLayout);
         findViewById(R.id.imageMenu).setOnClickListener(new View.OnClickListener() {
@@ -49,6 +94,102 @@ public class MainActivity extends AppCompatActivity {
         NavController navController= Navigation.findNavController(this,R.id.navHostFragment);
         NavigationUI.setupWithNavController(navigationView,navController);
 
+    }
+
+    private void listenToDataChangeRealTime()
+    {
+        //might need to use ValueEventListener
+        mDatabase.child("answers").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                int x = 0;
+                //Toast.makeText(MainActivity.this, "Changed", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                sendBroadcast(new Intent(SendNotificationBroadcastReceiver.actionQuestionAnswered));
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void listenToDataChangeFirestore() {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null)
+        {
+            final AtomicBoolean isFirstListener = new AtomicBoolean(true);
+            final Query docRef = db.collection("users").document(user.getUid()).collection("questions");
+            docRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if (isFirstListener.get())
+                    {
+                        isFirstListener.set(false);
+                        //TODO Handle the entire list.
+                        return;
+                    }
+                        if (error != null) {
+                            //something bad happened
+                        } else {
+                            sendBroadcast(new Intent(SendNotificationBroadcastReceiver.actionQuestionAnswered));
+                        }
+                    }
+                });
+            }
+//        user = FirebaseAuth.getInstance().getCurrentUser();
+//        if (user != null)
+//        {
+//            final AtomicBoolean isFirstListener = new AtomicBoolean(true);
+//            final DocumentReference docRef = db.collection("users").document(user.getUid()).collection("questions").document("OeyQtemd04MwND5EU1Im");
+//            docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//                @Override
+//                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+//                    if (isFirstListener.get())
+//                    {
+//                        isFirstListener.set(false);
+//                        //TODO Handle the entire list.
+//                        return;
+//                    }
+//                        if (error != null) {
+//                            //something bad happened
+//                        } else {
+//                            sendBroadcast(new Intent(SendNotificationBroadcastReceiver.actionQuestionAnswered));
+//                        }
+//
+//                }
+//            });
+//        }
+
+    }
+
+
+    private void createNotificationChannel()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, NOTIFICATION_TITLE, importance);
+            channel.setDescription(NOTIFICATION_TITLE);
+            NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
     }
 
     @Override
@@ -97,10 +238,12 @@ public class MainActivity extends AppCompatActivity {
         name = user.getDisplayName();
         username.setText(name);
     }
+
+
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
             updateUserImage(user);
