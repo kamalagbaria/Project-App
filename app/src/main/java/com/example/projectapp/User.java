@@ -11,9 +11,13 @@ public class User {
     private String email;
     private String id;
     private String location;
+    private ArrayList<QuestionWrapper> lastViewed=new ArrayList<>();
     private String phoneNumber;
 
-    public User(String fullName, String firstName, String lastName, String email, String location, String id, String phoneNumber) {
+    public ArrayList<QuestionWrapper> getLastViewed() {
+        return lastViewed;
+    }
+    public User(String fullName, String firstName, String lastName, String email, String location, String id) {
         this.fullName = fullName;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -85,6 +89,9 @@ public class User {
     public ArrayList<Question> AddQuestion(Question newQuestion){
         this.myQuestions.add(newQuestion);
         return myQuestions;
+    }
+    public void addLastViewed(QuestionWrapper question){
+        this.lastViewed.add(question);
     }
 
 }
