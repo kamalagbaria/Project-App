@@ -90,13 +90,15 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     User user=dataSnapshot.getValue(User.class);
-                    assert user != null;
-                    ArrayList<QuestionWrapper> questionWrappers=user.getLastViewed();
-                    ArrayList<Question> questions=new ArrayList<>();
-                    for (QuestionWrapper questionWrapper:questionWrappers){
-                        questions.add(questionWrapper.getQuestion());
+                    if(user!=null){
+                        ArrayList<QuestionWrapper> questionWrappers=user.getLastViewed();
+                        ArrayList<Question> questions=new ArrayList<>();
+                        for (QuestionWrapper questionWrapper:questionWrappers){
+                            questions.add(questionWrapper.getQuestion());
+                        }
+                        showLastViewed(questionWrappers,questions,view);
                     }
-                    showLastViewed(questionWrappers,questions,view);
+
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
