@@ -23,14 +23,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -53,7 +50,6 @@ public class QuestionDetailActivity extends AppCompatActivity {
     private float rateValue;
     private String questionKey ;
     ListView listView;
-    private Map<String,String> AnswerMap = new HashMap<>();
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -92,7 +88,6 @@ public class QuestionDetailActivity extends AppCompatActivity {
         listView = findViewById(R.id.answersLV);
         //get instance of database
         assert questionKey != null;
-      //  getAllAnswers(questionKey);
         Query answersDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("answers").child(questionKey);
 
@@ -132,46 +127,11 @@ public class QuestionDetailActivity extends AppCompatActivity {
         };
         listView.setAdapter(answerAdapter);
 
+
     }
 
-    private void getAllAnswers(String questionKey){
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().
-                getReference().child("answers").child(questionKey);
-        //DatabaseReference friendsRef = rootRef.child("answers");
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        final StorageReference storageRef = storage.getReference();
 
-        rootRef.addValueEventListener( new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Answer> answers = new ArrayList<>();
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    final Answer answer = ds.getValue(Answer.class);
-                    answers.add(answer);
-                    assert answer != null;
-                    //  answerList.add(new ItemAnswer(answer.getText(),
-                    //        storageRef.child("images/Answers/"+answer.getImageUrl()).getDownloadUrl().getResult()));
-                    if (answer.getImageUrl() != null && !answer.getImageUrl().equals("None")) {
-                        storageRef.child("images/Answers/" + answer.getImageUrl()).getDownloadUrl().
-                                addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        AnswerMap.put(answer.getImageUrl(), uri.toString());
-                                    }
-                                });
-                    }else {
-                        AnswerMap.put(null, null);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-            });
-        //friendsRef.addListenerForSingleValueEvent(eventListener);
-    }
-
-    private void loadQuestion(Question question){
+    private void loadQuestion(final Question question){
         TextView questionTextView = findViewById(R.id.questionTV);
         questionTextView.setText(question.getTitle());
 

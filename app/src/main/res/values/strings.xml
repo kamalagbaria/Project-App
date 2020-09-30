@@ -45,4 +45,6 @@
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">351140462696956</string>
     <string name="facebook_login_protocol_scheme" translatable="false">5e5966047f991334cc0407e30bac034e</string>
+    <string name="last_viewed_questions">Last Viewed Questions</string>
+    <string name="newly_added_questions">Newly Added Questions</string>
 </resources>
