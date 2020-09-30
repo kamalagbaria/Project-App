@@ -38,6 +38,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class QuestionDetailActivity extends AppCompatActivity {
 
     private Button answerbt;
@@ -47,6 +52,8 @@ public class QuestionDetailActivity extends AppCompatActivity {
     private ImageButton rateBtn;
     private float rateValue;
     private String questionKey ;
+    ListView listView;
+    private Map<String,String> AnswerMap = new HashMap<>();
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -82,9 +89,10 @@ public class QuestionDetailActivity extends AppCompatActivity {
             }
         });
 
-        ListView listView = findViewById(R.id.answersLV);
+        listView = findViewById(R.id.answersLV);
         //get instance of database
         assert questionKey != null;
+      //  getAllAnswers(questionKey);
         Query answersDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("answers").child(questionKey);
 
@@ -101,6 +109,8 @@ public class QuestionDetailActivity extends AppCompatActivity {
                 final ImageView imageView=view.findViewById(R.id.answerImage);
 
                 if (answer.getImageUrl()!=null && !answer.getImageUrl().equals("None")){
+                    //Picasso.get().load(Uri.parse(AnswerMap.get(answer.getImageUrl()))).into(imageView);
+                    //imageView.setVisibility(View.VISIBLE);
                     FirebaseStorage storage = FirebaseStorage.getInstance();
                     StorageReference storageRef = storage.getReference();
                     storageRef.child("images/Answers/"+answer.getImageUrl()).getDownloadUrl().
@@ -124,7 +134,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
     }
 
-    /*private void getAllAnswers(String questionKey){
+    private void getAllAnswers(String questionKey){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().
                 getReference().child("answers").child(questionKey);
         //DatabaseReference friendsRef = rootRef.child("answers");
@@ -146,11 +156,11 @@ public class QuestionDetailActivity extends AppCompatActivity {
                                 addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        AnswerMap.put(answer, uri);
+                                        AnswerMap.put(answer.getImageUrl(), uri.toString());
                                     }
                                 });
                     }else {
-                        AnswerMap.put(answer, null);
+                        AnswerMap.put(null, null);
                     }
                 }
             }
@@ -159,7 +169,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {}
             });
         //friendsRef.addListenerForSingleValueEvent(eventListener);
-    }*/
+    }
 
     private void loadQuestion(Question question){
         TextView questionTextView = findViewById(R.id.questionTV);
