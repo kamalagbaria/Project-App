@@ -57,4 +57,6 @@
     <string name="press_to_update">Press to update</string>
     <string name="last_viewed_questions">Last Viewed Questions</string>
     <string name="newly_added_questions">Newly Added Questions</string>
+    <string name="msg_subscribed">Message Subscribed</string>
+    <string name="msg_subscribe_failed">Message Subscribe Failure</string>
 </resources>

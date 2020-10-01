@@ -17,7 +17,8 @@ public class User {
     public ArrayList<QuestionWrapper> getLastViewed() {
         return lastViewed;
     }
-    public User(String fullName, String firstName, String lastName, String email, String location, String id) {
+
+    public User(String fullName, String firstName, String lastName, String email, String location, String id, String phoneNumber) {
         this.fullName = fullName;
         this.firstName = firstName;
         this.lastName = lastName;

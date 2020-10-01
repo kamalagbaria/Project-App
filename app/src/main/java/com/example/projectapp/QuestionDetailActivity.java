@@ -120,7 +120,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
         listView.setAdapter(answerAdapter);
         FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user=dataSnapshot.getValue(User.class);
                 assert user != null;
                 user.addLastViewed(new QuestionWrapper(question,questionKey));

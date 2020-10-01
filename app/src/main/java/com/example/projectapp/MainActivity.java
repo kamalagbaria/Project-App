@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -35,6 +37,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -42,10 +45,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivity extends AppCompatActivity {
@@ -93,6 +98,24 @@ public class MainActivity extends AppCompatActivity {
 
         NavController navController= Navigation.findNavController(this,R.id.navHostFragment);
         NavigationUI.setupWithNavController(navigationView,navController);
+
+    }
+
+    public void subscribeToTopicEmail()
+    {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseMessaging.getInstance().subscribeToTopic(Objects.requireNonNull(user.getEmail()))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = getString(R.string.msg_subscribed);
+                        if (!task.isSuccessful()) {
+                            msg = getString(R.string.msg_subscribe_failed);
+                        }
+                        //Log.d(TAG, msg);
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 
@@ -147,35 +170,16 @@ public class MainActivity extends AppCompatActivity {
                         if (error != null) {
                             //something bad happened
                         } else {
+                            assert value != null;
+                            for(DocumentChange dc : value.getDocumentChanges())
+                            {
+
+                            }
                             sendBroadcast(new Intent(SendNotificationBroadcastReceiver.actionQuestionAnswered));
                         }
                     }
                 });
             }
-//        user = FirebaseAuth.getInstance().getCurrentUser();
-//        if (user != null)
-//        {
-//            final AtomicBoolean isFirstListener = new AtomicBoolean(true);
-//            final DocumentReference docRef = db.collection("users").document(user.getUid()).collection("questions").document("OeyQtemd04MwND5EU1Im");
-//            docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-//                @Override
-//                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-//                    if (isFirstListener.get())
-//                    {
-//                        isFirstListener.set(false);
-//                        //TODO Handle the entire list.
-//                        return;
-//                    }
-//                        if (error != null) {
-//                            //something bad happened
-//                        } else {
-//                            sendBroadcast(new Intent(SendNotificationBroadcastReceiver.actionQuestionAnswered));
-//                        }
-//
-//                }
-//            });
-//        }
-
     }
 
 
