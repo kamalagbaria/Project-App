@@ -35,10 +35,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class QuestionDetailActivity extends AppCompatActivity {
 
@@ -126,9 +123,22 @@ public class QuestionDetailActivity extends AppCompatActivity {
             }
         };
         listView.setAdapter(answerAdapter);
-
-
+        FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener(){
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        User user=snapshot.getValue(User.class);
+                        assert user != null;
+                        user.addLastViewed(new QuestionWrapper(question,questionKey));
+                        FirebaseDatabase.getInstance().getReference().child("users")
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
     }
+
 
 
     private void loadQuestion(final Question question){
@@ -137,6 +147,8 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
         TextView descriptionTextView = findViewById(R.id.descriptionTV);
         descriptionTextView.setText(question.getContent());
+
+
     }
 
     public void submitAnswer(View view){
