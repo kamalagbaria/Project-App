@@ -8,27 +8,35 @@
     android:orientation="vertical">
 
 
+
+    <TextView
+        android:id="@+id/NewlyAddedText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.TextView.SpinnerItem"
+        android:textColor="#AE021C"
+        android:text="@string/newly_added_questions" />
+
+    <ListView
+        android:id="@+id/NewlyAddedQuestions"
+        android:layout_width="match_parent"
+        android:layout_height="252dp" />
+
     <TextView
         android:id="@+id/lastViewedText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/last_viewed_questions" />
+        android:layout_marginTop="8dp"
+        android:text="@string/last_viewed_questions"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.TextView.SpinnerItem"
+        android:textColor="#AE021C" />
 
     <ListView
         android:id="@+id/LastViewedQuestions"
         android:layout_width="match_parent"
         android:layout_height="252dp" />
 
-    <TextView
-        android:id="@+id/NewlyAddedText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/newly_added_questions" />
-
-    <ListView
-        android:id="@+id/NewlyAddedQuestions"
-        android:layout_width="match_parent"
-        android:layout_height="251dp" />
 </LinearLayout>
