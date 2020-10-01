@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/looking_for_answer"
+    >
 
 
     <TextView
@@ -13,22 +15,57 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/last_viewed_questions" />
+        android:textSize="20sp"
+        android:text="@string/last_viewed_questions"
+        android:shadowColor="#00ccff"
+        android:shadowRadius="1"
+        android:layout_marginBottom="5sp"
+        android:layout_marginTop="5sp"
+        android:background="@drawable/border_title"
+        android:alpha="0.8"
+        />
 
     <ListView
         android:id="@+id/LastViewedQuestions"
         android:layout_width="match_parent"
-        android:layout_height="252dp" />
+        android:layout_weight="0.5"
+        android:background="@drawable/border"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
+        android:layout_marginStart="6sp"
+        android:layout_marginEnd="6sp"
+        android:layout_height="0dp"
+        android:alpha="0.9"
+        />
 
     <TextView
         android:id="@+id/NewlyAddedText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/newly_added_questions" />
+        android:text="@string/newly_added_questions"
+        android:textSize="20sp"
+        android:shadowColor="#00ccff"
+        android:shadowRadius="1"
+        android:layout_marginBottom="5sp"
+        android:layout_marginTop="5sp"
+        android:background="@drawable/border_title"
+        android:alpha="0.8"
+        />
 
     <ListView
         android:id="@+id/NewlyAddedQuestions"
         android:layout_width="match_parent"
-        android:layout_height="251dp" />
+        android:layout_weight="0.5"
+        android:background="@drawable/border"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
+        android:layout_marginStart="6sp"
+        android:layout_marginEnd="6sp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10sp"
+        android:layout_marginTop="5sp"
+        android:alpha="0.9"
+
+        />
 </LinearLayout>

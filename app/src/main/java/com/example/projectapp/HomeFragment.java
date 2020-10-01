@@ -36,6 +36,7 @@ public class HomeFragment extends Fragment {
     private ListView lv;
     private ListView lv2;
     private HomeQuestionAdapter adapter;
+    private HomeQuestionAdapter arrayAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -96,9 +97,10 @@ public class HomeFragment extends Fragment {
                         for (QuestionWrapper questionWrapper:questionWrappers){
                             questions.add(questionWrapper.getQuestion());
                         }
+                        Collections.reverse(questionWrappers);
+                        Collections.reverse(questions);
                         showLastViewed(questionWrappers,questions,view);
                     }
-
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
@@ -132,15 +134,15 @@ public class HomeFragment extends Fragment {
     }
 
     public void showLastViewed(final ArrayList<QuestionWrapper>questionWrappers, ArrayList<Question> questions, View view){
-        lv = (ListView) view.findViewById(R.id.LastViewedQuestions);
-        HomeQuestionAdapter arrayAdapter = new HomeQuestionAdapter(view.getContext(),0,questions);
+        lv =  view.findViewById(R.id.LastViewedQuestions);
+        arrayAdapter = new HomeQuestionAdapter(view.getContext(),0,questions);
         lv.setAdapter(arrayAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getContext(), QuestionDetailActivity.class);
-                intent.putExtra("question", adapter.getItem(i));
+                intent.putExtra("question", arrayAdapter.getItem(i));
                 intent.putExtra("question_key", questionWrappers.get(i).getKey());
                 startActivity(intent);
 
