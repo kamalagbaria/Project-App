@@ -35,6 +35,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class QuestionDetailActivity extends AppCompatActivity {
 
     private Button answerbt;
@@ -44,6 +49,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
     private ImageButton rateBtn;
     private float rateValue;
     private String questionKey ;
+    ListView listView;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -79,7 +85,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
             }
         });
 
-        ListView listView = findViewById(R.id.answersLV);
+        listView = findViewById(R.id.answersLV);
         //get instance of database
         assert questionKey != null;
         Query answersDatabase = FirebaseDatabase.getInstance().getReference()
@@ -98,6 +104,8 @@ public class QuestionDetailActivity extends AppCompatActivity {
                 final ImageView imageView=view.findViewById(R.id.answerImage);
 
                 if (answer.getImageUrl()!=null && !answer.getImageUrl().equals("None")){
+                    //Picasso.get().load(Uri.parse(AnswerMap.get(answer.getImageUrl()))).into(imageView);
+                    //imageView.setVisibility(View.VISIBLE);
                     FirebaseStorage storage = FirebaseStorage.getInstance();
                     StorageReference storageRef = storage.getReference();
                     storageRef.child("images/Answers/"+answer.getImageUrl()).getDownloadUrl().
@@ -118,21 +126,10 @@ public class QuestionDetailActivity extends AppCompatActivity {
             }
         };
         listView.setAdapter(answerAdapter);
-        FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener(){
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user=dataSnapshot.getValue(User.class);
-                assert user != null;
-                user.addLastViewed(new QuestionWrapper(question,questionKey));
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+
     }
+
 
     private void loadQuestion(final Question question){
         TextView questionTextView = findViewById(R.id.questionTV);

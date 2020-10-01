@@ -5,67 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment"
-    android:orientation="vertical"
-    android:background="@drawable/looking_for_answer"
-    >
+    android:orientation="vertical">
 
 
-    <TextView
-        android:id="@+id/lastViewedText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="20sp"
-        android:text="@string/last_viewed_questions"
-        android:shadowColor="#00ccff"
-        android:shadowRadius="1"
-        android:layout_marginBottom="5sp"
-        android:layout_marginTop="5sp"
-        android:background="@drawable/border_title"
-        android:alpha="0.8"
-        />
-
-    <ListView
-        android:id="@+id/LastViewedQuestions"
-        android:layout_width="match_parent"
-        android:layout_weight="0.5"
-        android:background="@drawable/border"
-        android:paddingEnd="5dp"
-        android:paddingStart="5dp"
-        android:layout_marginStart="6sp"
-        android:layout_marginEnd="6sp"
-        android:layout_height="0dp"
-        android:alpha="0.9"
-        />
 
     <TextView
         android:id="@+id/NewlyAddedText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/newly_added_questions"
-        android:textSize="20sp"
-        android:shadowColor="#00ccff"
-        android:shadowRadius="1"
-        android:layout_marginBottom="5sp"
-        android:layout_marginTop="5sp"
-        android:background="@drawable/border_title"
-        android:alpha="0.8"
-        />
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.TextView.SpinnerItem"
+        android:textColor="#AE021C"
+        android:text="@string/newly_added_questions" />
 
     <ListView
         android:id="@+id/NewlyAddedQuestions"
         android:layout_width="match_parent"
-        android:layout_weight="0.5"
-        android:background="@drawable/border"
-        android:paddingEnd="5dp"
-        android:paddingStart="5dp"
-        android:layout_marginStart="6sp"
-        android:layout_marginEnd="6sp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="10sp"
-        android:layout_marginTop="5sp"
-        android:alpha="0.9"
+        android:layout_height="252dp" />
 
-        />
+    <TextView
+        android:id="@+id/lastViewedText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:text="@string/last_viewed_questions"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.TextView.SpinnerItem"
+        android:textColor="#AE021C" />
+
+    <ListView
+        android:id="@+id/LastViewedQuestions"
+        android:layout_width="match_parent"
+        android:layout_height="252dp" />
+
 </LinearLayout>

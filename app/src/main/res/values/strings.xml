@@ -37,7 +37,7 @@
     <string name="writeHere">type your answer</string>
     <string name="questionList">Question List</string>
     <string name="userQuestionBtn">Review My Questions</string>
-    <string name="label_submit">Submit</string>
+    <string name="label_submit">Save</string>
     <string name="label_cancel">Cancel</string>
     <string name="new_name">New Name</string>
     <string name="type_your_name"> type your name</string>

@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,11 +70,14 @@ public class ProfileFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TextView fullName;
     private TextView email;
+    private TextView NameText;
+    private TextView EmailText;
     private ImageView profile_image;
     private ImageButton name_image;
     private ImageView mail_image;
-    private ImageView list_image;
-    private ImageButton editBtn ;
+   // private ImageView list_image;
+    private Button editBtn ;
+    private RelativeLayout relativeLayout;
     FirebaseStorage storage;
     StorageReference storageReference;
 
@@ -126,10 +131,13 @@ public class ProfileFragment extends Fragment {
         this.fullName = root.findViewById(R.id.fullName);
         this.email = root.findViewById(R.id.text_user_profile_email);
         this.buttonQuestions = root.findViewById(R.id.QuestionsButton);
-        this.editBtn = root.findViewById(R.id.edit_profilePicture);
+        this.editBtn = root.findViewById(R.id.edit_profile);
         this.name_image = root.findViewById(R.id.imageName);
         this.mail_image = root.findViewById(R.id.imageMail);
-        this.list_image = root.findViewById(R.id.imagelist);
+        this.NameText = root.findViewById(R.id.Name);
+        this.EmailText = root.findViewById(R.id.email);
+        //this.list_image = root.findViewById(R.id.imagelist);
+        this.relativeLayout = root.findViewById(R.id.relativeLayout);
 
         this.mAuth = FirebaseAuth.getInstance();
 
@@ -160,14 +168,17 @@ public class ProfileFragment extends Fragment {
                     //Is logged out
                     ProfileFragment.this.buttonSignOut.setVisibility(View.INVISIBLE);
                     ProfileFragment.this.buttonSignIn.setVisibility(View.VISIBLE);
-                    profile_image.setVisibility(INVISIBLE);
+                   // profile_image.setVisibility(INVISIBLE);
                     fullName.setVisibility(INVISIBLE);
                     email.setVisibility(INVISIBLE);
                     buttonQuestions.setVisibility(INVISIBLE);
-                    editBtn.setVisibility(INVISIBLE);
+                   // editBtn.setVisibility(INVISIBLE);
                     mail_image.setVisibility(INVISIBLE);
                     name_image.setVisibility(INVISIBLE);
-                    list_image.setVisibility(INVISIBLE);
+                    EmailText.setVisibility(INVISIBLE);
+                    NameText.setVisibility(INVISIBLE);
+                    //list_image.setVisibility(INVISIBLE);
+                    relativeLayout.setVisibility(INVISIBLE);
 
                     MainActivity.resetProfilePic();
 
@@ -299,6 +310,7 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+        relativeLayout.setVisibility(VISIBLE);
         profile_image.setVisibility(VISIBLE);
         fullName.setVisibility(VISIBLE);
         fullName.setText(user.getDisplayName());
@@ -308,7 +320,9 @@ public class ProfileFragment extends Fragment {
         editBtn.setVisibility(VISIBLE);
         mail_image.setVisibility(VISIBLE);
         name_image.setVisibility(VISIBLE);
-        list_image.setVisibility(VISIBLE);
+        NameText.setVisibility(VISIBLE);
+        EmailText.setVisibility(VISIBLE);
+        //list_image.setVisibility(VISIBLE);
     }
 
     public void ReviewQuestion(){
@@ -406,3 +420,186 @@ public class ProfileFragment extends Fragment {
         }
     }
 }
+/*<androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="235dp"
+            android:background="@drawable/background_8"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/fullName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/image_user_profile_image"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/profile_circular_border_imageview"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile_pic"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.459"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.061"
+                app:riv_oval="true"
+                android:layout_marginTop="8dp"/>
+
+            <Button
+                android:id="@+id/edit_profile"
+                android:layout_width="269dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/transparent"
+                android:text="Change Profile Photo"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/common_google_signin_btn_text_light_pressed"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.337"
+                app:layout_constraintStart_toEndOf="@+id/image_user_profile_image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.236" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_user_profile_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button_sign_in"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.209"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fullName"
+            app:layout_constraintVertical_bias="0.08"
+            tools:text="example@mail.com" />
+
+        <Button
+            android:id="@+id/button_sign_in"
+            style="@android:style/Widget.Button.Inset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/button_sign_out"
+            android:layout_alignBottom="@+id/button_sign_out"
+            android:layout_marginTop="1dp"
+            android:background="#4DAEAE"
+            android:text="@string/sign_in"
+            android:textColor="@color/colorWhite"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.928" />
+
+        <Button
+            android:id="@+id/button_sign_out"
+            style="@android:style/Widget.Button.Inset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="339dp"
+            android:layout_marginEnd="318dp"
+            android:layout_marginBottom="52dp"
+            android:background="#4DAEAE"
+            android:text="@string/sign_out"
+            android:textColor="@color/colorWhite"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/button_sign_in"
+            app:layout_constraintEnd_toEndOf="@+id/button_sign_in"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/button_sign_in"
+            app:layout_constraintTop_toTopOf="@+id/button_sign_in"
+            app:layout_constraintVertical_bias="0.936" />
+
+        <TextView
+            android:id="@+id/fullName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/text_user_profile_email"
+
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:text="@string/username"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.296"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.437" />
+
+
+        <Button
+            android:id="@+id/QuestionsButton"
+            style="@android:style/Widget.Button.Inset"
+            android:layout_width="135dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="28dp"
+            android:background="@color/colorWhite"
+            android:text="@string/userQuestionBtn"
+            android:textColor="#0E0E0E"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.195"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_user_profile_email"
+            app:layout_constraintVertical_bias="0.211" />
+
+        <ImageButton
+            android:id="@+id/imageName"
+            android:layout_width="32dp"
+            android:layout_height="43dp"
+            android:layout_marginEnd="11dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/nameicon"
+            app:layout_constraintBottom_toTopOf="@+id/text_user_profile_email"
+            app:layout_constraintEnd_toStartOf="@+id/fullName"
+            app:layout_constraintHorizontal_bias="0.232"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ImageView
+            android:id="@+id/imageMail"
+            android:layout_width="32dp"
+            android:layout_height="43dp"
+            android:background="@drawable/mail_icon"
+            app:layout_constraintBottom_toTopOf="@+id/QuestionsButton"
+            app:layout_constraintEnd_toStartOf="@+id/text_user_profile_email"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageName" />
+
+        <ImageView
+            android:id="@+id/imagelist"
+            android:layout_width="32dp"
+            android:layout_height="43dp"
+            android:background="@drawable/list_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/QuestionsButton"
+            app:layout_constraintHorizontal_bias="0.59"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageMail"
+            app:layout_constraintVertical_bias="0.151" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>*/
