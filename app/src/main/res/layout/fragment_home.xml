@@ -6,12 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment"
     android:orientation="vertical"
-    android:background="@drawable/looking_for_answer">
+    android:background="@drawable/questions_mark">
 
     <TextView
         android:shadowColor="#00ccff"
         android:shadowRadius="1"
-        android:text="@string/last_viewed_questions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -20,6 +19,7 @@
         android:layout_marginTop="5sp"
         android:background="@drawable/border_title"
         android:alpha="0.85"
+        android:text="@string/last_viewed_questions"
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryText"
         style="@style/FirebaseUI.Button.AccountChooser"
