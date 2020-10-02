@@ -8,14 +8,20 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme">
-        <activity android:name=".UserQuestionList"/>
+        <activity android:name=".UserQuestionList"
+            android:theme="@style/QuestionDetails"/>
         <activity android:name=".GeneralCategory" />
         <activity android:name=".QuestionsActivity" />
-        <activity android:name=".SubmitCommentActivity" />
-        <activity android:name=".CommentsList" />
-        <activity android:name=".SubmitAnswerActivity" />
-        <activity android:name=".QuestionDetailActivity" />
-        <activity android:name=".SubmitQuestionActivity" />
+        <activity android:name=".SubmitCommentActivity"
+            android:label="@string/comment_bar_title"/>
+        <activity android:name=".CommentsList"
+            android:label="@string/comments"/>
+        <activity android:name=".SubmitAnswerActivity"
+            android:label="@string/answer_bar_title"/>
+        <activity android:name=".QuestionDetailActivity"
+            android:theme="@style/QuestionDetails"/>
+        <activity android:name=".SubmitQuestionActivity"
+            android:label="@string/question_bar_title"/>
         <activity android:name=".SplashScreen"
             android:theme="@style/SplashTheme">
             <intent-filter>

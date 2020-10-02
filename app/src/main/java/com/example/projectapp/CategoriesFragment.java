@@ -77,7 +77,7 @@ public class CategoriesFragment extends Fragment {
         // Inflate the layout for this fragment
         //View view = inflater.inflate(R.layout.fragment_categories, container, false);
         final View view = inflater.inflate(R.layout.activity_category_recycler_view, container, false);
-
+        MainActivity.setBarText("Categories");
 //        CardView mathCat= view.findViewById(R.id.math_category);
 //        mathCat.setOnClickListener(new View.OnClickListener()
 //        {

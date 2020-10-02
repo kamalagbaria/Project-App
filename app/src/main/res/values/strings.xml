@@ -42,6 +42,10 @@
     <string name="new_name">New Name</string>
     <string name="type_your_name"> type your name</string>
 
+    <string name="question_bar_title">Add New Question</string>
+    <string name="answer_bar_title">Add New Answer</string>
+    <string name="comment_bar_title">Add New Comment</string>
+
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">351140462696956</string>
     <string name="facebook_login_protocol_scheme" translatable="false">5e5966047f991334cc0407e30bac034e</string>

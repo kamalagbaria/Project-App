@@ -74,8 +74,9 @@ public class ProfileFragment extends Fragment {
     private TextView EmailText;
     private ImageView profile_image;
     private ImageButton name_image;
-    private ImageView mail_image;
+ //   private ImageView mail_image;
    // private ImageView list_image;
+    private LinearLayout card_view ;
     private Button editBtn ;
     private RelativeLayout relativeLayout;
     FirebaseStorage storage;
@@ -120,6 +121,7 @@ public class ProfileFragment extends Fragment {
 
         this.activity = getActivity();
 
+        MainActivity.setBarText("Profile");
         this.providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
@@ -133,11 +135,12 @@ public class ProfileFragment extends Fragment {
         this.buttonQuestions = root.findViewById(R.id.QuestionsButton);
         this.editBtn = root.findViewById(R.id.edit_profile);
         this.name_image = root.findViewById(R.id.imageName);
-        this.mail_image = root.findViewById(R.id.imageMail);
+     //   this.mail_image = root.findViewById(R.id.imageMail);
         this.NameText = root.findViewById(R.id.Name);
         this.EmailText = root.findViewById(R.id.email);
         //this.list_image = root.findViewById(R.id.imagelist);
         this.relativeLayout = root.findViewById(R.id.relativeLayout);
+        this.card_view = root.findViewById(R.id.card_view);
 
         this.mAuth = FirebaseAuth.getInstance();
 
@@ -173,12 +176,13 @@ public class ProfileFragment extends Fragment {
                     email.setVisibility(INVISIBLE);
                     buttonQuestions.setVisibility(INVISIBLE);
                    // editBtn.setVisibility(INVISIBLE);
-                    mail_image.setVisibility(INVISIBLE);
+                   // mail_image.setVisibility(INVISIBLE);
                     name_image.setVisibility(INVISIBLE);
                     EmailText.setVisibility(INVISIBLE);
                     NameText.setVisibility(INVISIBLE);
                     //list_image.setVisibility(INVISIBLE);
                     relativeLayout.setVisibility(INVISIBLE);
+                    card_view.setVisibility(INVISIBLE);
 
                     MainActivity.resetProfilePic();
 
@@ -317,8 +321,9 @@ public class ProfileFragment extends Fragment {
         email.setText(user.getEmail());
         email.setVisibility(VISIBLE);
         buttonQuestions.setVisibility(VISIBLE);
+        card_view.setVisibility(VISIBLE);
         editBtn.setVisibility(VISIBLE);
-        mail_image.setVisibility(VISIBLE);
+       // mail_image.setVisibility(VISIBLE);
         name_image.setVisibility(VISIBLE);
         NameText.setVisibility(VISIBLE);
         EmailText.setVisibility(VISIBLE);

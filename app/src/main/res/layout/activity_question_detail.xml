@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:text="Large Text"
         android:textAllCaps="false"
+        android:layout_marginStart="8dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="italic" />
 
@@ -20,6 +21,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
+        android:layout_marginStart="6dp"
         android:id="@+id/descriptionTV" />
 
 
@@ -61,6 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:background="@color/colorAccent"
         android:onClick="GoTOComments"
         android:text="@string/comments" />
 
@@ -68,6 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/SubmittedAnswers"
+        android:layout_marginStart="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textStyle="italic" />
@@ -75,6 +79,7 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
         android:id="@+id/answersLV" />
 
 
