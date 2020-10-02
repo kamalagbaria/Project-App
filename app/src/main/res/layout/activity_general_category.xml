@@ -46,6 +46,7 @@
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryText"
 
+
             />
 
         <ListView

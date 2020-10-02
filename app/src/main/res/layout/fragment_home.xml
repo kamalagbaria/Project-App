@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment"
     android:orientation="vertical"
-    android:background="@drawable/looking_for_answer">
+    android:background="@drawable/questions_mark">
 
     <TextView
     android:layout_width="wrap_content"
@@ -17,7 +17,7 @@
     android:layout_marginBottom="5sp"
     android:layout_marginTop="5sp"
     android:background="@drawable/border_title"
-    android:alpha="0.9"
+    android:alpha="0.85"
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryText"
 
@@ -47,7 +47,7 @@
     android:layout_marginBottom="5sp"
     android:layout_marginTop="5sp"
     android:background="@drawable/border_title"
-    android:alpha="0.9"
+    android:alpha="0.85"
         android:textStyle="bold"
     />
 
