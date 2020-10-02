@@ -60,23 +60,24 @@
 
                     <android.widget.Button
                         android:id="@+id/edit_profile"
-                        android:layout_width="261dp"
-                        android:layout_height="32dp"
+                        style="@style/FirebaseUI.Button.AccountChooser"
+                        android:layout_width="269dp"
+                        android:layout_height="46dp"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginStart="51dp"
-                        android:layout_marginTop="29dp"
+                        android:layout_marginStart="43dp"
+                        android:layout_marginTop="20dp"
                         android:layout_marginEnd="50dp"
-                        android:layout_marginBottom="29dp"
+                        android:layout_marginBottom="15dp"
                         android:background="@android:color/transparent"
                         android:text="Change Profile Photo"
-                        android:textAllCaps="true"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textAlignment="center"
                         android:textColor="@color/colorPrimaryText"
-                        android:textStyle="bold" />
+                        android:textSize="17sp"
+                         />
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
@@ -145,11 +146,12 @@
 
         <Button
             android:id="@+id/QuestionsButton"
-            style="@android:style/Widget.Button.Inset"
+            style="@style/FirebaseUI.Button.AccountChooser"
             android:layout_width="wrap_content"
             android:layout_height="52dp"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="25dp"
+            android:layout_gravity="start"
             android:background="@android:color/transparent"
             android:text="@string/userQuestionBtn"
             android:textColor="#238B98"
@@ -159,20 +161,20 @@
            android:layout_height="wrap_content"
            android:orientation="horizontal">
            <android.widget.Button
-               android:id="@+id/button_sign_in"
-               style="@android:style/Widget.Button.Inset"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginTop="15dp"
-               android:background="#4DAEAE"
-               android:text="@string/sign_in"
-               android:textColor="@color/colorWhite"
-               android:visibility="visible"
-               android:layout_marginStart="15dp"/>
+           android:id="@+id/button_sign_in"
+           style="@style/FirebaseUI.Button.AccountChooser"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="15dp"
+           android:background="#4DAEAE"
+           android:text="@string/sign_in"
+           android:textColor="@color/colorWhite"
+           android:visibility="visible"
+           android:layout_marginStart="15dp"/>
 
            <android.widget.Button
                android:id="@+id/button_sign_out"
-               style="@android:style/Widget.Button.Inset"
+               style="@style/FirebaseUI.Button.AccountChooser"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_marginBottom="52dp"

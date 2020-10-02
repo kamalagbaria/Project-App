@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,8 +74,6 @@ public class ProfileFragment extends Fragment {
     private TextView EmailText;
     private ImageView profile_image;
     private ImageButton name_image;
- //   private ImageView mail_image;
-   // private ImageView list_image;
     private LinearLayout card_view ;
     private Button editBtn ;
     private RelativeLayout relativeLayout;

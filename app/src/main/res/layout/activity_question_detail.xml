@@ -8,11 +8,15 @@
 
     <TextView
         android:id="@+id/questionTV"
+        style="@style/FirebaseUI.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Large Text"
-        android:textAllCaps="false"
         android:layout_marginStart="8dp"
+        android:background="@android:color/transparent"
+        android:text="Large Text"
+        android:layout_gravity="start"
+        android:textAlignment="gravity"
+        android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="italic" />
 
@@ -46,41 +50,63 @@
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/answerBtn"
-        style="@style/FirebaseUI.Button.AccountChooser"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="#179A8E"
-        android:onClick="submitAnswer"
-        android:text="@string/addAnswer"
-        android:textColor="@color/colorWhite" />
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+        <Button
+            android:id="@+id/answerBtn"
+            style="@style/FirebaseUI.Button.AccountChooser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="#179A8E"
+            android:onClick="submitAnswer"
+            android:text="@string/addAnswer"
+            android:textColor="@color/colorWhite"
+            android:layout_marginStart="10dp"
+            />
 
-    <Button
-        android:id="@+id/button3"
-        style="@style/FirebaseUI.Button.AccountChooser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/colorAccent"
-        android:onClick="GoTOComments"
-        android:text="@string/comments" />
+        <Button
+            android:id="@+id/button3"
+            style="@style/FirebaseUI.Button.AccountChooser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorAccent"
+            android:onClick="GoTOComments"
+            android:text="@string/comments"
+            android:layout_marginStart="160dp"/>
+
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/SubmittedAnswers"
         android:layout_marginStart="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_gravity="start"
+        android:textAlignment="gravity"
+        android:background="@android:color/transparent"
+        style="@style/FirebaseUI.Button.AccountChooser"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textStyle="italic" />
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:id="@+id/answersLV" />
+        android:id="@+id/answersLV"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/border"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
+        android:layout_marginStart="6sp"
+        android:layout_marginEnd="6sp"
+        android:layout_marginBottom="10sp"
+        android:layout_marginTop="5sp"
+        android:alpha="0.95"/>
 
 
 </LinearLayout>
