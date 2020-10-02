@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -350,7 +349,9 @@ public class ProfileFragment extends Fragment {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                addUserToFireStore(user);
+                if (user==null){
+                    addUserToFireStore(user);
+                }
                 Toast.makeText(activity, "Signed-In Successfully", Toast.LENGTH_SHORT).show();
                 // ...
             } else {
@@ -372,6 +373,7 @@ public class ProfileFragment extends Fragment {
     {
         User newUser = new User(user.getDisplayName(), "", "", user.getEmail(), "", user.getUid());
         db.collection(users).document(newUser.getId()).set(newUser);
+
         FirebaseDatabase.getInstance().getReference().child(users).child(newUser.getId())
                 .setValue(newUser, new DatabaseReference.CompletionListener() {
                     @Override

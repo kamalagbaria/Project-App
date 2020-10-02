@@ -97,8 +97,12 @@ public class HomeFragment extends Fragment {
                         for (QuestionWrapper questionWrapper:questionWrappers){
                             questions.add(questionWrapper.getQuestion());
                         }
-                        Collections.reverse(questionWrappers);
-                        Collections.reverse(questions);
+                        int last=10;
+                        if(questionWrappers.size()<10){
+                            last=questionWrappers.size();
+                        }
+                        Collections.reverse(questionWrappers.subList(0,last));
+                        Collections.reverse(questions.subList(0,last));
                         showLastViewed(questionWrappers,questions,view);
                     }
                 }
@@ -121,8 +125,12 @@ public class HomeFragment extends Fragment {
                     wrappersList.add(wrapper);
                     questionsList.add(question);
                 }
-                Collections.reverse(wrappersList);
-                Collections.reverse(questionsList);
+                int last=10;
+                if(wrappersList.size()<10){
+                    last=wrappersList.size();
+                }
+                Collections.reverse(wrappersList.subList(0,last));
+                Collections.reverse(questionsList.subList(0,last));
                 showNewlyAdded(wrappersList,questionsList,view);
             }
 
@@ -134,7 +142,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void showLastViewed(final ArrayList<QuestionWrapper>questionWrappers, ArrayList<Question> questions, View view){
-        lv =  view.findViewById(R.id.LastViewedQuestions);
+        lv = (ListView) view.findViewById(R.id.LastViewedQuestions);
         arrayAdapter = new HomeQuestionAdapter(view.getContext(),0,questions);
         lv.setAdapter(arrayAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -14,12 +14,13 @@
     android:layout_gravity="center"
     android:textSize="20sp"
     android:text="@string/last_viewed_questions"
-    android:shadowColor="#00ccff"
-    android:shadowRadius="1"
     android:layout_marginBottom="5sp"
     android:layout_marginTop="5sp"
     android:background="@drawable/border_title"
-    android:alpha="0.8"
+    android:alpha="0.9"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryText"
+
     />
 
     <ListView
@@ -42,12 +43,12 @@
         android:layout_gravity="center"
     android:text="@string/newly_added_questions"
     android:textSize="20sp"
-    android:shadowColor="#00ccff"
-    android:shadowRadius="1"
+        android:textColor="@color/colorPrimaryText"
     android:layout_marginBottom="5sp"
     android:layout_marginTop="5sp"
     android:background="@drawable/border_title"
-    android:alpha="0.8"
+    android:alpha="0.9"
+        android:textStyle="bold"
     />
 
     <ListView

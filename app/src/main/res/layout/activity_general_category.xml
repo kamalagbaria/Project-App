@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GeneralCategory">
+    tools:context=".GeneralCategory"
+    android:background="@drawable/questions_mark"
+    >
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -36,31 +38,39 @@
             android:text="@string/questionList"
             android:textSize="20sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#2D5B6A"/>
+            android:layout_gravity="center"
+            android:layout_marginBottom="5sp"
+            android:layout_marginTop="5sp"
+            android:background="@drawable/border_title"
+            android:alpha="0.8"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryText"
+
+            />
+
+        <ListView
+            android:id="@+id/QuestionsList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/border"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
+            android:layout_marginStart="6sp"
+            android:layout_marginEnd="6sp"
+            android:layout_marginBottom="10sp"
+            android:layout_marginTop="5sp"
+            android:alpha="0.95"
+             />
 
         <Button
             android:id="@+id/askQuestion"
             style="@style/FirebaseUI.Button.AccountChooser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="@string/ask_a_question"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.48" />
-
-        <ListView
-            android:id="@+id/QuestionsList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/askQuestion"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            android:layout_gravity="center"
+            android:padding="12sp"
+            android:text="@string/ask_a_question" />
 
 
     </LinearLayout>
