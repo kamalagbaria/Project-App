@@ -9,18 +9,21 @@
     android:background="@drawable/looking_for_answer">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="5sp"
-        android:layout_marginBottom="5sp"
-        android:alpha="0.8"
-        android:background="@drawable/border_title"
         android:shadowColor="#00ccff"
         android:shadowRadius="1"
         android:text="@string/last_viewed_questions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_marginBottom="5sp"
+        android:layout_marginTop="5sp"
+        android:background="@drawable/border_title"
+        android:alpha="0.9"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryText"
+
+    />
 
     <ListView
         android:id="@+id/LastViewedQuestions"
@@ -48,7 +51,9 @@
         android:shadowRadius="1"
         android:text="@string/newly_added_questions"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textColor="@color/colorPrimaryText"
+        android:textStyle="bold"
+    />
 
     <ListView
     android:id="@+id/NewlyAddedQuestions"

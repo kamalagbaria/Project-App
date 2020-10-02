@@ -99,10 +99,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
                 ((TextView)view.findViewById(R.id.answerText)).setText(answer.getText());
                 final ImageView imageView=view.findViewById(R.id.answerImage);
-
                 if (answer.getImageUrl()!=null && !answer.getImageUrl().equals("None")){
-                    //Picasso.get().load(Uri.parse(AnswerMap.get(answer.getImageUrl()))).into(imageView);
-                    //imageView.setVisibility(View.VISIBLE);
                     FirebaseStorage storage = FirebaseStorage.getInstance();
                     StorageReference storageRef = storage.getReference();
                     storageRef.child("images/Answers/"+answer.getImageUrl()).getDownloadUrl().
@@ -123,20 +120,25 @@ public class QuestionDetailActivity extends AppCompatActivity {
             }
         };
         listView.setAdapter(answerAdapter);
-        FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener(){
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        User user=snapshot.getValue(User.class);
-                        assert user != null;
-                        user.addLastViewed(new QuestionWrapper(question,questionKey));
-                        FirebaseDatabase.getInstance().getReference().child("users")
-                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-                });
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                    .addListenerForSingleValueEvent(new ValueEventListener(){
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            User user=snapshot.getValue(User.class);
+                            if( user != null){
+                                user.addLastViewed(new QuestionWrapper(question,questionKey));
+                                FirebaseDatabase.getInstance().getReference().child("users")
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
+                            }
+
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+        }
+
     }
 
 
