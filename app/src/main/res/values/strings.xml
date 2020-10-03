@@ -51,4 +51,9 @@
     <string name="facebook_login_protocol_scheme" translatable="false">5e5966047f991334cc0407e30bac034e</string>
     <string name="last_viewed_questions">Last Viewed Questions</string>
     <string name="newly_added_questions">Newly Added Questions</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
+    <string name="search2">Search:</string>
+    <string name="you_can_search_here">You Can Search here</string>
 </resources>

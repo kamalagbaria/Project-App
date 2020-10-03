@@ -81,12 +81,12 @@ public class SubmitAnswerActivity extends AppCompatActivity {
                             uploadImage();
                             Toast.makeText(SubmitAnswerActivity.this,"Answer submitted",
                                     Toast.LENGTH_SHORT).show();
-                            finish();
+
                         }
                     }
                 });
 
-
+            finish();
     }
 
     @Override
@@ -102,10 +102,9 @@ public class SubmitAnswerActivity extends AppCompatActivity {
     private void uploadImage()
     {
         if (filePath != null) {
+            final ProgressDialog progressDialog= new ProgressDialog(this);
 
             // Code for showing progressDialog while uploading
-            final ProgressDialog progressDialog
-                    = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
@@ -116,35 +115,20 @@ public class SubmitAnswerActivity extends AppCompatActivity {
             ref.putFile(filePath)
                     .addOnSuccessListener(
                             new OnSuccessListener<UploadTask.TaskSnapshot>() {
-
                                 @Override
-                                public void onSuccess(
-                                        UploadTask.TaskSnapshot taskSnapshot)
-                                {
-
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                     // Image uploaded successfully
                                     // Dismiss dialog
-                                    progressDialog.dismiss();
-                                    Toast
-                                            .makeText(SubmitAnswerActivity.this,
-                                                    "Image Uploaded!!",
-                                                    Toast.LENGTH_SHORT)
-                                            .show();
+                                    Toast.makeText(SubmitAnswerActivity.this, "Image Uploaded!!", Toast.LENGTH_SHORT).show();
+
                                 }
                             })
-
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e)
                         {
-
                             // Error, Image not uploaded
-                            progressDialog.dismiss();
-                            Toast
-                                    .makeText(SubmitAnswerActivity.this,
-                                            "Failed " + e.getMessage(),
-                                            Toast.LENGTH_SHORT)
-                                    .show();
+                            Toast.makeText(SubmitAnswerActivity.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(
@@ -165,6 +149,7 @@ public class SubmitAnswerActivity extends AppCompatActivity {
                                                     + (int)progress + "%");
                                 }
                             });
+            progressDialog.dismiss();
         }
     }
 }

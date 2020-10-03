@@ -31,4 +31,10 @@
         android:name="com.example.projectapp.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/menuSearch"
+        android:name="com.example.projectapp.Search"
+        android:label="Search"
+        tools:layout="@layout/fragment_search"
+        />
 </navigation>
