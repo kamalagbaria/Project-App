@@ -106,7 +106,8 @@ public class QuestionDetailActivity extends AppCompatActivity {
                             addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            Picasso.get().load(Uri.parse(uri.toString())).into(imageView);
+                            Picasso.get().load(Uri.parse(uri.toString())).resize(1200, 1600)
+                                    .onlyScaleDown().into(imageView);
                             imageView.setVisibility(View.VISIBLE);
                         }
                     }).addOnFailureListener(new OnFailureListener() {

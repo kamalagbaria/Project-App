@@ -88,7 +88,9 @@ public class HomeFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
         MainActivity.setBarText("Home");
         if (mAuth.getCurrentUser() != null){
-            FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener(){
+            FirebaseDatabase.getInstance().getReference().child("users")
+                    .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                    .addListenerForSingleValueEvent(new ValueEventListener(){
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     User user=dataSnapshot.getValue(User.class);
@@ -114,7 +116,8 @@ public class HomeFragment extends Fragment {
             });
         }
 
-        FirebaseDatabase.getInstance().getReference().child("questions").orderByChild("questionUploadTime").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("questions").
+                orderByChild("questionUploadTime").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<QuestionWrapper> wrappersList = new ArrayList<>();

@@ -24,6 +24,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.UUID;
 
@@ -93,7 +94,9 @@ public class SubmitAnswerActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode ==GALLERY_REQUEST_CODE && resultCode == RESULT_OK && data !=null){
             filePath=data.getData();
-            imageView.setImageURI(filePath);
+          //  imageView.setImageURI(filePath);
+            Picasso.get().load(filePath).resize(2048, 1600)
+                    .onlyScaleDown().into(imageView);
         }
     }
     private void uploadImage()

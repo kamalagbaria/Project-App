@@ -73,12 +73,11 @@
             style="@style/FirebaseUI.Button.AccountChooser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="130dp"
             android:background="@color/colorAccent"
+            android:drawableStart="@drawable/comment_img"
             android:onClick="GoTOComments"
-            android:text="@string/comments"
-            android:layout_marginStart="160dp"/>
-
+            android:text="@string/comments" />
 
     </LinearLayout>
 
