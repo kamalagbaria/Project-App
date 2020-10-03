@@ -30,27 +30,38 @@
 
 
     <LinearLayout
-        android:layout_width="353dp"
-        android:layout_height="57dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        >
 
         <RatingBar
             android:id="@+id/rating_rating_bar"
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:numStars="5"
-            android:stepSize=".5" />
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:stepSize=".5"
+            android:layout_marginRight="-20dp"
+
+            />
 
         <ImageButton
             android:id="@+id/imageButton"
-            android:layout_width="74dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:background="@drawable/__rate"
-            tools:ignore="contentDescription" />
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            tools:ignore="contentDescription"
+
+            />
 
     </LinearLayout>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -65,7 +76,7 @@
             android:onClick="submitAnswer"
             android:text="@string/addAnswer"
             android:textColor="@color/colorWhite"
-            android:layout_marginStart="10dp"
+            android:layout_alignParentStart="true"
             />
 
         <Button
@@ -77,9 +88,13 @@
             android:background="@color/colorAccent"
             android:drawableStart="@drawable/comment_img"
             android:onClick="GoTOComments"
-            android:text="@string/comments" />
+            android:text="@string/comments"
+            android:layout_alignParentEnd="true"
+            />
 
-    </LinearLayout>
+
+
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -91,7 +106,9 @@
         android:background="@android:color/transparent"
         style="@style/FirebaseUI.Button.AccountChooser"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        android:textSize="18sp"
+        />
 
     <ListView
         android:layout_width="match_parent"
@@ -104,7 +121,7 @@
         android:layout_marginStart="6sp"
         android:layout_marginEnd="6sp"
         android:layout_marginBottom="10sp"
-        android:layout_marginTop="5sp"
+        android:layout_marginTop="1sp"
         android:alpha="0.95"/>
 
 

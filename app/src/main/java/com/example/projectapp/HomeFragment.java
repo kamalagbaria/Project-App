@@ -86,6 +86,8 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
+        showNewlyAddedLists(view);
+        showLastViewedList(view);
         MainActivity.setBarText("Home");
         if (mAuth.getCurrentUser() != null){
             FirebaseDatabase.getInstance().getReference().child("users")
@@ -179,4 +181,69 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    public void showNewlyAddedLists(final View view){
+        FirebaseDatabase.getInstance().getReference().child("questions").orderByChild("questionUploadTime").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<QuestionWrapper> wrappersList = new ArrayList<>();
+                ArrayList<Question>  questionsList=new ArrayList<>();
+
+                for(DataSnapshot ds : snapshot.getChildren()) {
+                    Question question=ds.getValue(Question.class);
+                    QuestionWrapper wrapper = new QuestionWrapper(question,ds.getKey());
+                    wrappersList.add(wrapper);
+                    questionsList.add(question);
+                }
+                int last=10;
+                if(wrappersList.size()<10){
+                    last=wrappersList.size();
+                }
+                Collections.reverse(wrappersList.subList(0,last));
+                Collections.reverse(questionsList.subList(0,last));
+                showNewlyAdded(wrappersList,questionsList,view);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+
+    }
+
+    public void showLastViewedList(final View view){
+        if (mAuth.getCurrentUser() != null){
+            FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener(){
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    User user=dataSnapshot.getValue(User.class);
+                    if(user!=null){
+
+                        ArrayList<QuestionWrapper> questionWrappers=user.getLastViewed();
+                        ArrayList<Question> questions=new ArrayList<>();
+                        for (QuestionWrapper questionWrapper:questionWrappers){
+                            questions.add(questionWrapper.getQuestion());
+                        }
+                        int last=10;
+                        if(questionWrappers.size()<10){
+                            last=questionWrappers.size();
+                        }
+                        //Collections.reverse(questionWrappers.subList(0,last));
+                        //Collections.reverse(questions.subList(0,last));
+                        showLastViewed(new ArrayList<>(questionWrappers.subList(0, last)), new ArrayList<>(questions.subList(0, last)),view);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showLastViewedList(getView());
+    }
 }
