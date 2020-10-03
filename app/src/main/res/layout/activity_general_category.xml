@@ -33,6 +33,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/CategoryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/questionList"
@@ -45,9 +46,10 @@
             android:background="@drawable/border_title"
             android:alpha="0.8"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimaryText"
+            android:textColor="@color/colorWhite"
 
-
+            android:layout_marginLeft="3sp"
+            android:layout_marginRight="3sp"
             />
 
         <ListView

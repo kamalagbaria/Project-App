@@ -81,7 +81,7 @@ public class User {
         return myQuestions;
     }
     public void addLastViewed(QuestionWrapper question){
-        this.lastViewed.add(question);
+        this.lastViewed.add(0,question);
     }
 
 }
