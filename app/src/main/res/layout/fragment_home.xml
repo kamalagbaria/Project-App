@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment"
     android:orientation="vertical"
-    android:background="@drawable/questions_mark">
+    android:background="@drawable/looking_for_answer">
 
     <TextView
         android:shadowColor="#00ccff"
