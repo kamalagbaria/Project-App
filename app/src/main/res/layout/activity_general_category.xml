@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GeneralCategory"
-    android:background="@drawable/questions_mark"
+    android:background="@drawable/looking_for_answer"
     >
 
     <ProgressBar
