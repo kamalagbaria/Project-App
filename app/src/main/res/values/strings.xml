@@ -45,6 +45,8 @@
     <string name="question_bar_title">Add New Question</string>
     <string name="answer_bar_title">Add New Answer</string>
     <string name="comment_bar_title">Add New Comment</string>
+    <string name="answerList">Answer List</string>
+    <string name="userAnswerBtn">Review My Answers</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">351140462696956</string>

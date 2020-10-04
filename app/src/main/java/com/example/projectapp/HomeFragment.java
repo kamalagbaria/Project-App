@@ -85,6 +85,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        MainActivity.setBarText("Home");
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
         showNewlyAddedLists(view);
         showLastViewedList(view);
@@ -157,7 +158,8 @@ public class HomeFragment extends Fragment {
 
     public void showLastViewedList(final View view){
         if (mAuth.getCurrentUser() != null){
-            FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener(){
+            FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().
+                    getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener(){
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     User user=dataSnapshot.getValue(User.class);

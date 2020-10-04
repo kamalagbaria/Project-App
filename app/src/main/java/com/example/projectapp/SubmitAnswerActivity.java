@@ -14,18 +14,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -38,6 +44,9 @@ public class SubmitAnswerActivity extends AppCompatActivity {
     StorageReference storageReference;
     String imageId=UUID.randomUUID().toString();
     private Uri filePath;
+    private String questionKey;
+    private String questionTitle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +55,8 @@ public class SubmitAnswerActivity extends AppCompatActivity {
 
         imageButton=findViewById(R.id.imageButton);
         imageView=findViewById(R.id.image_answer);
+        questionKey = getIntent().getStringExtra("question_key");
+        questionTitle = getIntent().getStringExtra("question_title");
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +76,9 @@ public class SubmitAnswerActivity extends AppCompatActivity {
         if (filePath!=null){
             imageUrl=imageId;
         }
-        Answer answer = new Answer(text, FirebaseAuth.getInstance().getCurrentUser().getUid(),imageUrl);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final Answer answer = new Answer(text, user.getUid(), imageUrl,
+               user.getDisplayName(),questionKey,questionTitle);
         String questionKey = getIntent().getStringExtra("question_key");
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -78,15 +91,25 @@ public class SubmitAnswerActivity extends AppCompatActivity {
                             Toast.makeText(SubmitAnswerActivity.this,"Unable to submit answer",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            uploadImage();
-                            Toast.makeText(SubmitAnswerActivity.this,"Answer submitted",
+                           /* Toast.makeText(SubmitAnswerActivity.this,"Answer submitted",
                                     Toast.LENGTH_SHORT).show();
+                            uploadImage();
+                            addAnswerToUser(answer);*/
+                            if(filePath == null){
+                                Toast.makeText(SubmitAnswerActivity.this,"Answer submitted",
+                                        Toast.LENGTH_SHORT).show();
+                                addAnswerToUser(answer);
+                                finish();
 
+                            }else {
+                                uploadImage();
+                                addAnswerToUser(answer);
+                            }
                         }
                     }
                 });
 
-            finish();
+           // finish();
     }
 
     @Override
@@ -99,6 +122,35 @@ public class SubmitAnswerActivity extends AppCompatActivity {
                     .onlyScaleDown().into(imageView);
         }
     }
+    private void addAnswerToUser(final Answer answer){
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            FirebaseDatabase.getInstance().getReference().child("users").
+                    child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                    .addListenerForSingleValueEvent(new ValueEventListener(){
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            User user=snapshot.getValue(User.class);
+                            if( user != null){
+                                user.addNewAnswer(answer);
+                                FirebaseDatabase.getInstance().getReference().child("users")
+                                        .child(FirebaseAuth.getInstance().getCurrentUser()
+                                                .getUid()).child("UserAnswers").setValue(user.getUserAnswers())
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(SubmitAnswerActivity.this,
+                                                "added Answer", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+        }
+    }
+
     private void uploadImage()
     {
         if (filePath != null) {
@@ -119,7 +171,9 @@ public class SubmitAnswerActivity extends AppCompatActivity {
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                     // Image uploaded successfully
                                     // Dismiss dialog
-                                    Toast.makeText(SubmitAnswerActivity.this, "Image Uploaded!!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SubmitAnswerActivity.this,
+                                            "Image Uploaded!!", Toast.LENGTH_SHORT).show();
+                                    finish();
 
                                 }
                             })

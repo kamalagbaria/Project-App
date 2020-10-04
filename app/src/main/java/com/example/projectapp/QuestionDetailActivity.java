@@ -47,7 +47,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
     private float rateValue;
     private String questionKey ;
     ListView listView;
-
+    private Question question;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -55,7 +55,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_detail);
 
-        final Question question = (Question) getIntent().getSerializableExtra("question");
+        question = (Question) getIntent().getSerializableExtra("question");
         assert question != null;
         loadQuestion(question);
         mAuth = FirebaseAuth.getInstance();
@@ -90,14 +90,17 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
         FirebaseListOptions<Answer> options = new FirebaseListOptions.Builder<Answer>()
                 .setQuery(answersDatabase, Answer.class)
-                .setLayout(R.layout.simple_list_item_1)
+                .setLayout(R.layout.answer_layout)
                 .build();
 
         answerAdapter = new FirebaseListAdapter<Answer>(options) {
             @Override
             protected void populateView(View view, Answer answer, final int position) {
 
+                ((TextView)view.findViewById(R.id.owner_name)).setText(answer.getOwnerName());
                 ((TextView)view.findViewById(R.id.answerText)).setText(answer.getText());
+                if(answer.getText().equals("")){
+                    ((TextView)view.findViewById(R.id.answerText)).setVisibility(View.GONE);}
                 final ImageView imageView=view.findViewById(R.id.answerImage);
                 if (answer.getImageUrl()!=null && !answer.getImageUrl().equals("None")){
                     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -130,9 +133,9 @@ public class QuestionDetailActivity extends AppCompatActivity {
                             if( user != null){
                                 user.addLastViewed(new QuestionWrapper(question,questionKey));
                                 FirebaseDatabase.getInstance().getReference().child("users")
-                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .child("lastViewed").setValue(user.getLastViewed());
                             }
-
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
@@ -157,6 +160,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
     public void submitAnswer(View view){
         Intent i = new Intent(this, SubmitAnswerActivity.class);
         i.putExtra("question_key", getIntent().getStringExtra("question_key"));
+        i.putExtra("question_title",question.getTitle());
         startActivity(i);
     }
     //Added for comments

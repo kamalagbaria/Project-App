@@ -62,6 +62,7 @@ public class ProfileFragment extends Fragment {
     private Button buttonSignIn;
     private Button buttonSignOut;
     private Button buttonQuestions;
+    private Button buttonAnswers;
 
     private static final int GALLERY_REQUEST_CODE =100;
     private List<AuthUI.IdpConfig> providers;
@@ -131,6 +132,7 @@ public class ProfileFragment extends Fragment {
         this.fullName = root.findViewById(R.id.fullName);
         this.email = root.findViewById(R.id.text_user_profile_email);
         this.buttonQuestions = root.findViewById(R.id.QuestionsButton);
+        this.buttonAnswers = root.findViewById(R.id.AnswersButton);
         this.editBtn = root.findViewById(R.id.edit_profile);
         this.name_image = root.findViewById(R.id.imageName);
      //   this.mail_image = root.findViewById(R.id.imageMail);
@@ -147,12 +149,15 @@ public class ProfileFragment extends Fragment {
 
         this.listenForAuth();
         this.ReviewQuestion();
+        this.ReviewAnswers();
         this.buttonSignInPressed();
         this.buttonSignOutPressed();
         this.buttonEditPicture();
         this.updateUserName();
         return root;
     }
+
+
     private void listenForAuth()
     {
         this.mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -173,6 +178,7 @@ public class ProfileFragment extends Fragment {
                     fullName.setVisibility(INVISIBLE);
                     email.setVisibility(INVISIBLE);
                     buttonQuestions.setVisibility(INVISIBLE);
+                    buttonAnswers.setVisibility(INVISIBLE);
                    // editBtn.setVisibility(INVISIBLE);
                    // mail_image.setVisibility(INVISIBLE);
                     name_image.setVisibility(INVISIBLE);
@@ -319,6 +325,7 @@ public class ProfileFragment extends Fragment {
         email.setText(user.getEmail());
         email.setVisibility(VISIBLE);
         buttonQuestions.setVisibility(VISIBLE);
+        buttonAnswers.setVisibility(VISIBLE);
         card_view.setVisibility(VISIBLE);
         editBtn.setVisibility(VISIBLE);
        // mail_image.setVisibility(VISIBLE);
@@ -341,6 +348,22 @@ public class ProfileFragment extends Fragment {
             });
 
         }
+    }
+
+    private void ReviewAnswers() {
+        if(mAuth.getCurrentUser() != null) {
+            this.buttonAnswers.setVisibility(VISIBLE);
+            buttonAnswers.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), UserAnswerList.class);
+                    // i.putExtra("question_key", getIntent().getStringExtra("question_key"));
+                    startActivity(i);
+                }
+            });
+
+        }
+
     }
 
     @Override

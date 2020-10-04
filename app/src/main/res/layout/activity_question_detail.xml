@@ -75,6 +75,7 @@
             android:background="#179A8E"
             android:onClick="submitAnswer"
             android:text="@string/addAnswer"
+            android:layout_marginStart="5dp"
             android:textColor="@color/colorWhite"
             android:layout_alignParentStart="true"
             />
@@ -89,6 +90,7 @@
             android:drawableStart="@drawable/comment_img"
             android:onClick="GoTOComments"
             android:text="@string/comments"
+            android:layout_marginEnd="5dp"
             android:layout_alignParentEnd="true"
             />
 
