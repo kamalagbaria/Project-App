@@ -15,6 +15,11 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -59,6 +64,7 @@ public class UserAnswersAdapter extends ArrayAdapter<Answer> {
 
                 holder.text1 = (TextView) vi.findViewById(R.id.owner_name);
                 holder.text2 = (TextView) vi.findViewById(R.id.answerText);
+                holder.text3 = (TextView) vi.findViewById(R.id.questionState);
                 holder.imageView = vi.findViewById(R.id.answerImage);
                 vi.setTag(holder);
             } else {
@@ -67,7 +73,7 @@ public class UserAnswersAdapter extends ArrayAdapter<Answer> {
             holder.text1.setText(list.get(position).getQuestion_title());
             holder.text2.setText(list.get(position).getText());
             if (list.get(position).getText().equals("")){holder.text2.setVisibility(View.GONE);}
-            Answer answer = list.get(position);
+            final Answer answer = list.get(position);
             if (answer.getImageUrl()!=null && !answer.getImageUrl().equals("None")){
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageRef = storage.getReference();
@@ -79,17 +85,24 @@ public class UserAnswersAdapter extends ArrayAdapter<Answer> {
                                         .onlyScaleDown().into(holder.imageView);
                                 holder.imageView.setVisibility(View.VISIBLE);
                             }
-                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        Toast.makeText(getContext(),
-                                "Done", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        });
             }
+            FirebaseDatabase.getInstance().getReference().child("questions").
+                    addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(!snapshot.hasChild(answer.getKey())){
+                        holder.text3.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
 
         } catch (Exception e) {
-
 
         }
         return vi;
@@ -98,6 +111,7 @@ public class UserAnswersAdapter extends ArrayAdapter<Answer> {
     protected static class ViewHolder{
         protected TextView text1;
         protected TextView text2;
+        protected TextView text3;
         protected ImageView imageView;
     }
     @Override

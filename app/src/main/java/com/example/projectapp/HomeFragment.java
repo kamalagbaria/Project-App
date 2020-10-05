@@ -164,7 +164,6 @@ public class HomeFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     User user=dataSnapshot.getValue(User.class);
                     if(user!=null){
-
                         ArrayList<QuestionWrapper> questionWrappers=user.getLastViewed();
                         ArrayList<Question> questions=new ArrayList<>();
                         for (QuestionWrapper questionWrapper:questionWrappers){
