@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="#73BFD8"
+        android:background="#179A8E"
         android:onClick="submitAnswer"
         android:text="@string/SubmitAnswer" />
 

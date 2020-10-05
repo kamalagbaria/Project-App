@@ -12,6 +12,7 @@ public class User {
     private String id;
     private String location;
     private ArrayList<QuestionWrapper> lastViewed=new ArrayList<>();
+    private ArrayList<Answer> UserAnswers = new ArrayList<>();
     private String phoneNumber;
 
     public ArrayList<QuestionWrapper> getLastViewed() {
@@ -92,7 +93,13 @@ public class User {
         return myQuestions;
     }
     public void addLastViewed(QuestionWrapper question){
-        this.lastViewed.add(question);
+        this.lastViewed.add(0,question);
     }
 
+    public ArrayList<Answer> getUserAnswers() {
+        return UserAnswers;
+    }
+    public void addNewAnswer(Answer answer){
+        this.UserAnswers.add(answer);
+    }
 }

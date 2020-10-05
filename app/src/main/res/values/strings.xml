@@ -37,10 +37,16 @@
     <string name="writeHere">type your answer</string>
     <string name="questionList">Question List</string>
     <string name="userQuestionBtn">Review My Questions</string>
-    <string name="label_submit">Submit</string>
+    <string name="label_submit">Save</string>
     <string name="label_cancel">Cancel</string>
     <string name="new_name">New Name</string>
     <string name="type_your_name"> type your name</string>
+
+    <string name="question_bar_title">Add New Question</string>
+    <string name="answer_bar_title">Add New Answer</string>
+    <string name="comment_bar_title">Add New Comment</string>
+    <string name="answerList">Answer List</string>
+    <string name="userAnswerBtn">Review My Answers</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">351140462696956</string>
@@ -57,6 +63,11 @@
     <string name="press_to_update">Press to update</string>
     <string name="last_viewed_questions">Last Viewed Questions</string>
     <string name="newly_added_questions">Newly Added Questions</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Search</string>
+    <string name="search2">Search:</string>
+    <string name="you_can_search_here">You Can Search here</string>
     <string name="msg_subscribed">Message Subscribed</string>
     <string name="msg_subscribe_failed">Message Subscribe Failure</string>
 </resources>

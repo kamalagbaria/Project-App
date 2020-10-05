@@ -8,9 +8,14 @@
 
     <TextView
         android:id="@+id/questionTV"
+        style="@style/FirebaseUI.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@android:color/transparent"
         android:text="Large Text"
+        android:layout_gravity="start"
+        android:textAlignment="gravity"
         android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="italic" />
@@ -20,62 +25,106 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
+        android:layout_marginStart="6dp"
         android:id="@+id/descriptionTV" />
 
 
     <LinearLayout
-        android:layout_width="353dp"
-        android:layout_height="57dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        >
 
         <RatingBar
             android:id="@+id/rating_rating_bar"
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:numStars="5"
-            android:stepSize=".5" />
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:stepSize=".5"
+            android:layout_marginRight="-20dp"
+
+            />
 
         <ImageButton
             android:id="@+id/imageButton"
-            android:layout_width="74dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:background="@drawable/__rate"
-            tools:ignore="contentDescription" />
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            tools:ignore="contentDescription"
+
+            />
 
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/answerBtn"
-        style="@style/FirebaseUI.Button.AccountChooser"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="#179A8E"
-        android:onClick="submitAnswer"
-        android:text="@string/addAnswer"
-        android:textColor="@color/colorWhite" />
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+        <Button
+            android:id="@+id/answerBtn"
+            style="@style/FirebaseUI.Button.AccountChooser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="#179A8E"
+            android:onClick="submitAnswer"
+            android:text="@string/addAnswer"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/colorWhite"
+            android:layout_alignParentStart="true"
+            />
 
-    <Button
-        android:id="@+id/button3"
-        style="@style/FirebaseUI.Button.AccountChooser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:onClick="GoTOComments"
-        android:text="@string/comments" />
+        <Button
+            android:id="@+id/button3"
+            style="@style/FirebaseUI.Button.AccountChooser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="130dp"
+            android:background="@color/colorAccent"
+            android:drawableStart="@drawable/comment_img"
+            android:onClick="GoTOComments"
+            android:text="@string/comments"
+            android:layout_marginEnd="5dp"
+            android:layout_alignParentEnd="true"
+            />
+
+
+
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/SubmittedAnswers"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_marginStart="8dp"
+        android:layout_gravity="start"
+        android:textAlignment="gravity"
+        android:background="@android:color/transparent"
+        style="@style/FirebaseUI.Button.AccountChooser"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        android:textSize="18sp"
+        />
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/answersLV" />
+        android:id="@+id/answersLV"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/border"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
+        android:layout_marginStart="6sp"
+        android:layout_marginEnd="6sp"
+        android:layout_marginBottom="10sp"
+        android:layout_marginTop="1sp"
+        android:alpha="0.95"/>
 
 
 </LinearLayout>

@@ -38,7 +38,7 @@ public class GeneralCategory extends AppCompatActivity {
         setContentView(R.layout.activity_general_category);
 
         category = Objects.requireNonNull(getIntent().getExtras()).getString("Category");
-
+        setTitle(category);
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);

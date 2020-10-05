@@ -63,6 +63,8 @@ public class SubmitQuestionActivity extends AppCompatActivity {
                                     intent.putExtra("Category",category);
                                     Toast.makeText(SubmitQuestionActivity.this,"Question submitted",
                                             Toast.LENGTH_SHORT).show();
+                                    startActivity(intent);
+                                    finish();
                                 }
                             }
                         });

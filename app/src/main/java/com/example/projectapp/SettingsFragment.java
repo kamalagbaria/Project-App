@@ -64,6 +64,7 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        MainActivity.setBarText("Settings");
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         this.accountButton = view.findViewById(R.id.account_button);

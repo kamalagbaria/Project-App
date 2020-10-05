@@ -1,12 +1,16 @@
 package com.example.projectapp;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +59,24 @@ public class AboutFragment extends Fragment {
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about, container, false);
+        View view=inflater.inflate(R.layout.fragment_about, container, false);
+        MainActivity.setBarText("About");
+        TextView aboutTtitle=view.findViewById(R.id.aboutTitle);
+        aboutTtitle.setText("ASK app");
+        TextView aboutText=view.findViewById(R.id.aboutFirstText);
+        aboutText.setText("This app was built as a final project for Post PC course at the Hebrew University in Jerusalem, by Kamal Igbarya, Anas Yousef, and Sarah Hegazi. ASK is an app that was made to share and grow its user's knowledge. We aim to connect the people who have the knowledge and ready to share with others who need it. The essence of ASK is questions, any user can ask a question that issues him/her, and the answers are provided by other users who understands the main issue in the question.");
+        TextView aboutTitle2=view.findViewById(R.id.aboutTitle2);
+        aboutTitle2.setText("Account and Profile Information");
+        TextView aboutText2=view.findViewById(R.id.aboutSecondText);
+        aboutText2.setText(
+                Html.fromHtml("When you create an account and profile on the ASK platform, we collect your name and photo. The information displayed in your profile are only available for you and save on the cloud. \n" +
+                        "<br><br><b>Your Content:</b> We collect the information that you post to the ASK platform, including your questions, answers, photos, and comments. These information are viewable by the other users as well. \n",Html.FROM_HTML_MODE_COMPACT));
+        return view;
     }
 }

@@ -36,6 +36,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 public class QuestionDetailActivity extends AppCompatActivity {
 
     private Button answerbt;
@@ -48,6 +50,8 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
     private String ownerOfQuestionId;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    ListView listView;
+    private Question question;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -55,7 +59,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_detail);
 
-        final Question question = (Question) getIntent().getSerializableExtra("question");
+        question = (Question) getIntent().getSerializableExtra("question");
         assert question != null;
         loadQuestion(question);
         mAuth = FirebaseAuth.getInstance();
@@ -85,7 +89,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
             }
         });
 
-        ListView listView = findViewById(R.id.answersLV);
+        listView = findViewById(R.id.answersLV);
         //get instance of database
         assert questionKey != null;
         Query answersDatabase = FirebaseDatabase.getInstance().getReference()
@@ -93,27 +97,30 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
         FirebaseListOptions<Answer> options = new FirebaseListOptions.Builder<Answer>()
                 .setQuery(answersDatabase, Answer.class)
-                .setLayout(R.layout.simple_list_item_1)
+                .setLayout(R.layout.answer_layout)
                 .build();
 
         answerAdapter = new FirebaseListAdapter<Answer>(options) {
             @Override
             protected void populateView(View view, Answer answer, final int position) {
 
+                ((TextView)view.findViewById(R.id.owner_name)).setText(answer.getOwnerName());
                 ((TextView)view.findViewById(R.id.answerText)).setText(answer.getText());
+                if(answer.getText().equals("")){
+                    ((TextView)view.findViewById(R.id.answerText)).setVisibility(View.GONE);}
                 final ImageView imageView=view.findViewById(R.id.answerImage);
-
                 if (answer.getImageUrl()!=null && !answer.getImageUrl().equals("None")){
                     FirebaseStorage storage = FirebaseStorage.getInstance();
                     StorageReference storageRef = storage.getReference();
                     storageRef.child("images/Answers/"+answer.getImageUrl()).getDownloadUrl().
                             addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    Picasso.get().load(Uri.parse(uri.toString())).into(imageView);
-                                    imageView.setVisibility(View.VISIBLE);
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Picasso.get().load(Uri.parse(uri.toString())).resize(1200, 1600)
+                                    .onlyScaleDown().into(imageView);
+                            imageView.setVisibility(View.VISIBLE);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
                             Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
@@ -124,21 +131,28 @@ public class QuestionDetailActivity extends AppCompatActivity {
             }
         };
         listView.setAdapter(answerAdapter);
-        FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener(){
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user=dataSnapshot.getValue(User.class);
-                assert user != null;
-                user.addLastViewed(new QuestionWrapper(question,questionKey));
-                FirebaseDatabase.getInstance().getReference().child("users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                    .addListenerForSingleValueEvent(new ValueEventListener(){
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            User user=snapshot.getValue(User.class);
+                            if( user != null){
+                                user.addLastViewed(new QuestionWrapper(question,questionKey));
+                                FirebaseDatabase.getInstance().getReference().child("users")
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .child("lastViewed").setValue(user.getLastViewed());
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+        }
 
-            }
-        });
     }
+
+
 
     private void getOwnerOfQuestionId()
     {
@@ -162,12 +176,15 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
         TextView descriptionTextView = findViewById(R.id.descriptionTV);
         descriptionTextView.setText(question.getContent());
+
+
     }
 
     public void submitAnswer(View view){
         Intent i = new Intent(this, SubmitAnswerActivity.class);
         i.putExtra("question_key", getIntent().getStringExtra("question_key"));
         i.putExtra("question_owner_id", ownerOfQuestionId);
+        i.putExtra("question_title",question.getTitle());
         startActivity(i);
     }
     //Added for comments

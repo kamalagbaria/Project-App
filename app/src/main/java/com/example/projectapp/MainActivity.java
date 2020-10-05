@@ -48,6 +48,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.internal.$Gson$Preconditions;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private static String name;
     private static Uri photoUrl;
     private static NavigationView navigationView;
+    private static TextView barTitle;
 
     //To Create Notification Channel
     private static final String CHANNEL_ID = "APP_PROJECT";
@@ -100,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        barTitle = findViewById(R.id.textTitle);
         navigationView = findViewById(R.id.navigationView);
         navigationView.setItemIconTintList(null);
 
@@ -287,5 +290,9 @@ public class MainActivity extends AppCompatActivity {
         else {
             resetProfilePic();
         }
+    }
+
+    protected static void setBarText(String fragment_name){
+        barTitle.setText(fragment_name);
     }
 }

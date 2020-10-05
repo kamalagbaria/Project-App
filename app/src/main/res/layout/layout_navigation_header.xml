@@ -22,17 +22,19 @@
         app:layout_constraintEnd_toEndOf="@id/imageProfile"
         app:layout_constraintStart_toStartOf="@id/imageProfile"
         app:layout_constraintTop_toTopOf="@id/imageProfile"/>
+
     <TextView
         android:id="@+id/username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="16dp"
         android:text="@string/user"
         android:textColor="@color/colorPrimaryText"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/viewSupporter"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/imageProfile"
+        app:layout_constraintTop_toTopOf="parent" />
         />
 
     <TextView

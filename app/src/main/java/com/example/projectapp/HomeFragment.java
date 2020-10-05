@@ -36,6 +36,7 @@ public class HomeFragment extends Fragment {
     private ListView lv;
     private ListView lv2;
     private HomeQuestionAdapter adapter;
+    private HomeQuestionAdapter arrayAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,63 +85,23 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        MainActivity.setBarText("Home");
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
-        if (mAuth.getCurrentUser() != null){
-            FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener(){
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    User user=dataSnapshot.getValue(User.class);
-                    if(user!=null){
-                        ArrayList<QuestionWrapper> questionWrappers=user.getLastViewed();
-                        ArrayList<Question> questions=new ArrayList<>();
-                        for (QuestionWrapper questionWrapper:questionWrappers){
-                            questions.add(questionWrapper.getQuestion());
-                        }
-                        showLastViewed(questionWrappers,questions,view);
-                    }
-
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
-
-        FirebaseDatabase.getInstance().getReference().child("questions").orderByChild("questionUploadTime").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<QuestionWrapper> wrappersList = new ArrayList<>();
-                ArrayList<Question>  questionsList=new ArrayList<>();
-
-                for(DataSnapshot ds : snapshot.getChildren()) {
-                    Question question=ds.getValue(Question.class);
-                    QuestionWrapper wrapper = new QuestionWrapper(question,ds.getKey());
-                    wrappersList.add(wrapper);
-                    questionsList.add(question);
-                }
-                Collections.reverse(wrappersList);
-                Collections.reverse(questionsList);
-                showNewlyAdded(wrappersList,questionsList,view);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
+        showNewlyAddedLists(view);
+        showLastViewedList(view);
         return view;
     }
 
     public void showLastViewed(final ArrayList<QuestionWrapper>questionWrappers, ArrayList<Question> questions, View view){
         lv = (ListView) view.findViewById(R.id.LastViewedQuestions);
-        HomeQuestionAdapter arrayAdapter = new HomeQuestionAdapter(view.getContext(),0,questions);
+        arrayAdapter = new HomeQuestionAdapter(view.getContext(),0,questions);
         lv.setAdapter(arrayAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getContext(), QuestionDetailActivity.class);
-                intent.putExtra("question", adapter.getItem(i));
+                intent.putExtra("question", arrayAdapter.getItem(i));
                 intent.putExtra("question_key", questionWrappers.get(i).getKey());
                 startActivity(intent);
 
@@ -165,4 +126,70 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    public void showNewlyAddedLists(final View view){
+        FirebaseDatabase.getInstance().getReference().child("questions").orderByChild("questionUploadTime").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<QuestionWrapper> wrappersList = new ArrayList<>();
+                ArrayList<Question>  questionsList=new ArrayList<>();
+
+                for(DataSnapshot ds : snapshot.getChildren()) {
+                    Question question=ds.getValue(Question.class);
+                    QuestionWrapper wrapper = new QuestionWrapper(question,ds.getKey());
+                    wrappersList.add(wrapper);
+                    questionsList.add(question);
+                }
+                int last=10;
+                if(wrappersList.size()<10){
+                    last=wrappersList.size();
+                }
+                Collections.reverse(wrappersList.subList(0,last));
+                Collections.reverse(questionsList.subList(0,last));
+                showNewlyAdded(wrappersList,questionsList,view);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+
+    }
+
+    public void showLastViewedList(final View view){
+        if (mAuth.getCurrentUser() != null){
+            FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().
+                    getCurrentUser()).getUid()).addListenerForSingleValueEvent(new ValueEventListener(){
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    User user=dataSnapshot.getValue(User.class);
+                    if(user!=null){
+
+                        ArrayList<QuestionWrapper> questionWrappers=user.getLastViewed();
+                        ArrayList<Question> questions=new ArrayList<>();
+                        for (QuestionWrapper questionWrapper:questionWrappers){
+                            questions.add(questionWrapper.getQuestion());
+                        }
+                        int last=10;
+                        if(questionWrappers.size()<10){
+                            last=questionWrappers.size();
+                        }
+                        //Collections.reverse(questionWrappers.subList(0,last));
+                        //Collections.reverse(questions.subList(0,last));
+                        showLastViewed(new ArrayList<>(questionWrappers.subList(0, last)), new ArrayList<>(questions.subList(0, last)),view);
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showLastViewedList(getView());
+    }
 }
