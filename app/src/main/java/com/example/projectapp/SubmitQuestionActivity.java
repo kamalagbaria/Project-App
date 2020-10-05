@@ -57,7 +57,8 @@ public class SubmitQuestionActivity extends AppCompatActivity {
                                             Toast.LENGTH_SHORT).show();
                                 } else {
 
-                                    addQuestionId(reference.getKey());
+                                    //Add question to Firestore
+                                    addQuestionToFirestore(reference.getKey(), question);
                                     Intent intent=new Intent(SubmitQuestionActivity.this,GeneralCategory.class);
                                     intent.putExtra("Category",category);
                                     Toast.makeText(SubmitQuestionActivity.this,"Question submitted",
@@ -69,10 +70,10 @@ public class SubmitQuestionActivity extends AppCompatActivity {
         });
     }
 
-    private void addQuestionId(String questionId)
+    private void addQuestionToFirestore(String questionId, final Question question)
     {
-        AnswerIdsForQuestion answerId = new AnswerIdsForQuestion(new ArrayList<Integer>(), 0);
-        db.collection("users").document(userId).collection("questions").document(questionId).set(answerId).addOnSuccessListener(new OnSuccessListener<Void>() {
+        //AnswerIdsForQuestion answerId = new AnswerIdsForQuestion(new ArrayList<Integer>(), 0);
+        db.collection("users").document(userId).collection("questions").document(questionId).set(question).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid)
             {
@@ -86,4 +87,22 @@ public class SubmitQuestionActivity extends AppCompatActivity {
             }
         });
     }
+
+//    private void addQuestionId(String questionId)
+//    {
+//        AnswerIdsForQuestion answerId = new AnswerIdsForQuestion(new ArrayList<Integer>(), 0);
+//        db.collection("users").document(userId).collection("questions").document(questionId).set(answerId).addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid)
+//            {
+//                //good
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e)
+//            {
+//                //raise exception
+//            }
+//        });
+//    }
 }

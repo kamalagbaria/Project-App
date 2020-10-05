@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    private SubscriptionToTopic subscriptionToTopic;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,13 +79,18 @@ public class MainActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        this.subscriptionToTopic = new SubscriptionToTopic();
+
+        subscribeToTopicId();
+        this.generateToken();
+
         //Create Notification Channel
         this.createNotificationChannel();
         this.br = new SendNotificationBroadcastReceiver();
         registerReceiver(this.br, new IntentFilter(SendNotificationBroadcastReceiver.actionQuestionAnswered));
         registerReceiver(this.br, new IntentFilter(SendNotificationBroadcastReceiver.actionQuestionRated));
         //this.listenToDataChangeRealTime();
-        this.listenToDataChangeFirestore();
+        //this.listenToDataChangeFirestore();
 
         final DrawerLayout drawerLayout=findViewById(R.id.drawerLayout);
         findViewById(R.id.imageMenu).setOnClickListener(new View.OnClickListener() {
@@ -101,22 +108,47 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void subscribeToTopicEmail()
+    public void subscribeToTopicId()
     {
         user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseMessaging.getInstance().subscribeToTopic(Objects.requireNonNull(user.getEmail()))
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = getString(R.string.msg_subscribed);
-                        if (!task.isSuccessful()) {
-                            msg = getString(R.string.msg_subscribe_failed);
+        //subscriptionToTopic.SubscribeToTopic(user.getUid());
+        if(user != null) {
+            FirebaseMessaging.getInstance().subscribeToTopic(Objects.requireNonNull(user.getUid()))
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = getString(R.string.msg_subscribed);
+                            if (!task.isSuccessful()) {
+                                msg = getString(R.string.msg_subscribe_failed);
+                            }
+                            //Log.d(TAG, msg);
+                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                         }
+                    });
+        }
+
+    }
+
+    private void generateToken()
+    {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            //Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+
+                        // Log and toast
+                        //String msg = getString(R.string.msg_token_fmt, token);
                         //Log.d(TAG, msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Got Token", Toast.LENGTH_SHORT).show();
                     }
                 });
-
     }
 
     private void listenToDataChangeRealTime()

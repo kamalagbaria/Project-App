@@ -20,11 +20,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -37,6 +39,11 @@ public class SubmitAnswerActivity extends AppCompatActivity {
     StorageReference storageReference;
     String imageId=UUID.randomUUID().toString();
     private Uri filePath;
+
+    //Firestore instance
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +71,10 @@ public class SubmitAnswerActivity extends AppCompatActivity {
         if (filePath!=null){
             imageUrl=imageId;
         }
-        Answer answer = new Answer(text, FirebaseAuth.getInstance().getCurrentUser().getUid(),imageUrl);
-        String questionKey = getIntent().getStringExtra("question_key");
+
+        final Answer answer = new Answer(text, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),imageUrl);
+        final String questionKey = getIntent().getStringExtra("question_key");
+        this.userId = getIntent().getStringExtra("question_owner_id");
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
@@ -80,12 +89,53 @@ public class SubmitAnswerActivity extends AppCompatActivity {
                             uploadImage();
                             Toast.makeText(SubmitAnswerActivity.this,"Answer submitted",
                                     Toast.LENGTH_SHORT).show();
-                            finish();
+
+                            addAnswerToFirestore(reference.getKey(), questionKey, answer);
+                            //finish();
                         }
                     }
                 });
 
 
+    }
+
+    private void addAnswerToFirestore(final String answerId, final String questionId, final Answer answer)
+    {
+        //Keep the Thread version in case
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                db.collection("users").document(userId).collection("questions")
+//                        .document(questionId).collection("answers").document(answerId).set(answer).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid)
+//                    {
+//                        //good
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e)
+//                    {
+//                        //raise exception
+//                    }
+//                });
+//            }
+//        }).start();
+        db.collection("users").document(userId).collection("questions")
+                .document(questionId).collection("answers").document(answerId).set(answer).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid)
+            {
+                //good
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e)
+            {
+                //raise exception
+            }
+        });
     }
 
     @Override

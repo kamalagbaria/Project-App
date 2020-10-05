@@ -42,6 +42,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.INVISIBLE;
@@ -77,6 +78,8 @@ public class ProfileFragment extends Fragment {
     private ImageButton editBtn ;
     FirebaseStorage storage;
     StorageReference storageReference;
+
+    private SubscriptionToTopic subscriptionToTopic;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -116,6 +119,8 @@ public class ProfileFragment extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
         this.activity = getActivity();
+
+        this.subscriptionToTopic = new SubscriptionToTopic();
 
         this.providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
@@ -270,12 +275,14 @@ public class ProfileFragment extends Fragment {
 
     private void signOut()
     {
+        final String userId = (Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         AuthUI.getInstance()
                 .signOut(activity)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful())
                         {
+                            subscriptionToTopic.unSubscribeToTopic(userId);
                             Toast.makeText(activity, "Signed-Out Successfully", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -334,13 +341,20 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN)
+        {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                addUserToFireStore(user);
+                assert user != null;
+                subscriptionToTopic.SubscribeToTopic(Objects.requireNonNull(user.getUid()));
+                assert response != null;
+                if(response.isNewUser())
+                {
+                    addUserToFireStore(user);
+                }
                 Toast.makeText(activity, "Signed-In Successfully", Toast.LENGTH_SHORT).show();
                 // ...
             } else {
@@ -360,7 +374,7 @@ public class ProfileFragment extends Fragment {
 
     private void addUserToFireStore(FirebaseUser user)
     {
-        User newUser = new User(user.getDisplayName(), "", "", user.getEmail(), "", user.getUid(), user.getPhoneNumber());
+        final User newUser = new User(user.getDisplayName(), "", "", user.getEmail(), "", user.getUid(), user.getPhoneNumber());
         FirebaseDatabase.getInstance().getReference().child(users).child(user.getUid())
             .setValue(newUser, new DatabaseReference.CompletionListener() {
                 @Override
@@ -368,13 +382,18 @@ public class ProfileFragment extends Fragment {
                 {
                 }
             });
-        db.collection(users).document(newUser.getId()).set(newUser);
-        FirebaseDatabase.getInstance().getReference().child(users).child(newUser.getId())
-                .setValue(newUser, new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError, @NonNull DatabaseReference reference) {
-                    }
-                });
+        db.collection(users).document(newUser.getId()).set(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid)
+            {
+                //subscriptionToTopic.SubscribeToTopic(newUser.getId());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 
     @Override

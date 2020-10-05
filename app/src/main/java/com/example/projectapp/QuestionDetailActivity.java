@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -45,6 +46,8 @@ public class QuestionDetailActivity extends AppCompatActivity {
     private float rateValue;
     private String questionKey ;
 
+    private String ownerOfQuestionId;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -72,6 +75,9 @@ public class QuestionDetailActivity extends AppCompatActivity {
         ratingBar.setFocusable(false);
 
         questionKey = getIntent().getStringExtra("question_key");
+
+        this.getOwnerOfQuestionId();
+
         rateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,6 +140,22 @@ public class QuestionDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void getOwnerOfQuestionId()
+    {
+        FirebaseDatabase.getInstance().getReference().child("questions").child(questionKey).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                ownerOfQuestionId = snapshot.child("ownerId").getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private void loadQuestion(final Question question){
         TextView questionTextView = findViewById(R.id.questionTV);
         questionTextView.setText(question.getTitle());
@@ -145,6 +167,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
     public void submitAnswer(View view){
         Intent i = new Intent(this, SubmitAnswerActivity.class);
         i.putExtra("question_key", getIntent().getStringExtra("question_key"));
+        i.putExtra("question_owner_id", ownerOfQuestionId);
         startActivity(i);
     }
     //Added for comments

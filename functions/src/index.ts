@@ -8,25 +8,32 @@ export const newAnswerSubmitted = functions.firestore
     .document('users/{userId}/questions/{questionId}/answers/{answerId}')
     .onCreate(async (snapshot, context) =>
     {
-
+        
         try
         {
-            const userId = context.params.userId;
-            const userDoc = await admin.firestore().collection('users').doc(userId).get()
+            const id = context.params.userId;
+            const userDoc = await admin.firestore().collection('users').doc(id).get()
             const userDocData = userDoc.data();
             if(userDocData !== undefined)
             {
-                const userEmail = userDocData.email
+                const userId = userDocData.id
                 const answerData = snapshot.data();
                 if (answerData) {
-                    const payload = {
-                        data: {
-                            name: answerData.name,
-                            type: 'new-answer'
-                        }
-                    };
+                    const userAnsweredData = (await admin.firestore().collection('users')
+                        .doc(answerData.ownerId).get()).data()
                     
-                    return admin.messaging().sendToTopic(userEmail, payload);
+                    if(userAnsweredData !== undefined)
+                    {
+                        const payload = {
+                            data: {
+                                name: userAnsweredData.fullName,
+                                type: 'new-answer-added'
+                            }
+                        };
+                        console.log(userId)
+                        return admin.messaging().sendToTopic(userId, payload);
+                    }
+                    
                 }
                 else {
                     return null;
@@ -37,6 +44,4 @@ export const newAnswerSubmitted = functions.firestore
         {
             return err;
         }
-
-        
     });
