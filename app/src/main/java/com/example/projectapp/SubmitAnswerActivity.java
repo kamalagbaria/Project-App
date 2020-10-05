@@ -52,7 +52,7 @@ public class SubmitAnswerActivity extends AppCompatActivity {
     //Firestore instance
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private String userId;
+    private String questionUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,7 @@ public class SubmitAnswerActivity extends AppCompatActivity {
 
         //final Answer answer = new Answer(text, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),imageUrl);
         final String questionKey = getIntent().getStringExtra("question_key");
-        this.userId = getIntent().getStringExtra("question_owner_id");
+        this.questionUserId = getIntent().getStringExtra("question_owner_id");
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final Answer answer = new Answer(text, user.getUid(), imageUrl,
                user.getDisplayName(),questionKey,questionTitle);
@@ -125,7 +125,7 @@ public class SubmitAnswerActivity extends AppCompatActivity {
 
     private void addAnswerToFirestore(final String answerId, final String questionId, final Answer answer)
     {
-        db.collection("users").document(userId).collection("questions")
+        db.collection("users").document(questionUserId).collection("questions")
                 .document(questionId).collection("answers").document(answerId).set(answer).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid)

@@ -22,6 +22,8 @@ public class CommentsList extends AppCompatActivity {
     private Button addComment;
     FirebaseListAdapter commentsAdapter;
 
+    private String questionKey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +35,8 @@ public class CommentsList extends AppCompatActivity {
         if(mAuth.getCurrentUser() == null){
             addComment.setVisibility(View.INVISIBLE);
         }
-        String questionKey = getIntent().getStringExtra("question_key");
+
+        this.questionKey = getIntent().getStringExtra("question_key");
         Query commentsDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("comments").child(questionKey);
 
@@ -55,6 +58,7 @@ public class CommentsList extends AppCompatActivity {
     public void addComment(View view){
         Intent i = new Intent(this, SubmitCommentActivity.class);
         i.putExtra("question_key", getIntent().getStringExtra("question_key"));
+        i.putExtra("question_owner_id", getIntent().getStringExtra("question_owner_id"));
         startActivity(i);
     }
 

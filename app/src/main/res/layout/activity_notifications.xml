@@ -1,10 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".NotificationsActivity">
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/question_notifications_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/question_notifications"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/new_answer_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:text="New answer added to question" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/new_comment_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:text="New comment added to question" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/new_rating_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:text="New rating on question" />
+
+</LinearLayout>

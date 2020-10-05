@@ -190,6 +190,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
     //Added for comments
     public void GoTOComments(View view){
         Intent i = new Intent(this, CommentsList.class);
+        i.putExtra("question_owner_id", ownerOfQuestionId);
         i.putExtra("question_key", getIntent().getStringExtra("question_key"));
         startActivity(i);
     }

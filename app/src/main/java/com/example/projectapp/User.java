@@ -19,13 +19,13 @@ public class User {
         return lastViewed;
     }
 
-    public User(String fullName, String firstName, String lastName, String email, String location, String id, String phoneNumber) {
+    public User(String fullName, String email, String id, String phoneNumber) {
         this.fullName = fullName;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = "";
+        this.lastName = "";
         this.email = email;
         this.id = id;
-        this.location = location;
+        this.location = "";
         this.phoneNumber = phoneNumber;
     }
 

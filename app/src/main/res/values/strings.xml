@@ -70,4 +70,5 @@
     <string name="you_can_search_here">You Can Search here</string>
     <string name="msg_subscribed">Message Subscribed</string>
     <string name="msg_subscribe_failed">Message Subscribe Failure</string>
+    <string name="question_notifications">Question Notifications</string>
 </resources>

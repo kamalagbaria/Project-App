@@ -61,6 +61,7 @@ public class ProfileFragment extends Fragment {
     private Activity activity;
     private static final int RC_SIGN_IN = 1;
     private final static String users = "users";
+
     private Button buttonSignIn;
     private Button buttonSignOut;
     private Button buttonQuestions;
@@ -414,7 +415,8 @@ public class ProfileFragment extends Fragment {
 
     private void addUserToFireStore(FirebaseUser user)
     {
-        final User newUser = new User(user.getDisplayName(), "", "", user.getEmail(), "", user.getUid(), user.getPhoneNumber());
+//        final User newUser = new User(user.getDisplayName(), "", "", user.getEmail(), "", user.getUid(), user.getPhoneNumber());
+        final User newUser = new User(user.getDisplayName(), user.getEmail(), user.getUid(), user.getPhoneNumber());
         FirebaseDatabase.getInstance().getReference().child(users).child(user.getUid())
             .setValue(newUser, new DatabaseReference.CompletionListener() {
                 @Override
@@ -431,6 +433,24 @@ public class ProfileFragment extends Fragment {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+        QuestionNotifications questionNotifications = new QuestionNotifications();
+        String notifications = "notifications";
+        String question_notifications = "question_notifications";
+        db.collection(users).document(newUser.getId()).collection(notifications).document(question_notifications)
+                .set(questionNotifications).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid)
+            {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e)
+            {
 
             }
         });
