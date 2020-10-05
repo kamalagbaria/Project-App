@@ -83,13 +83,12 @@ public class SubmitAnswerActivity extends AppCompatActivity {
             imageUrl=imageId;
         }
 
-        final Answer answer = new Answer(text, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),imageUrl);
+        //final Answer answer = new Answer(text, Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(),imageUrl);
         final String questionKey = getIntent().getStringExtra("question_key");
         this.userId = getIntent().getStringExtra("question_owner_id");
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final Answer answer = new Answer(text, user.getUid(), imageUrl,
                user.getDisplayName(),questionKey,questionTitle);
-        String questionKey = getIntent().getStringExtra("question_key");
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 

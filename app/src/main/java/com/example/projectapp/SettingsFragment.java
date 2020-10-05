@@ -72,6 +72,7 @@ public class SettingsFragment extends Fragment {
         this.inviteButton = view.findViewById(R.id.invite_friends_button);
 
         this.pressedAccountButton();
+        this.pressedNotificationsButton();
 
 
 
@@ -92,7 +93,13 @@ public class SettingsFragment extends Fragment {
 
     private void pressedNotificationsButton()
     {
-
+        this.notificationsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), NotificationsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void pressedInviteButton()

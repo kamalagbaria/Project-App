@@ -426,7 +426,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onSuccess(Void aVoid)
             {
-                //subscriptionToTopic.SubscribeToTopic(newUser.getId());
+                subscriptionToTopic.SubscribeToTopic(newUser.getId());
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
