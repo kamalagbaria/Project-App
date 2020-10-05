@@ -33,9 +33,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -396,6 +398,7 @@ public class ProfileFragment extends Fragment {
                 {
                     addUserToFireStore(user);
                 }
+
                 Toast.makeText(activity, "Signed-In Successfully", Toast.LENGTH_SHORT).show();
                 // ...
             } else {
@@ -413,7 +416,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void addUserToFireStore(FirebaseUser user)
+    private void addUserToFireStore(final FirebaseUser user)
     {
 //        final User newUser = new User(user.getDisplayName(), "", "", user.getEmail(), "", user.getUid(), user.getPhoneNumber());
         final User newUser = new User(user.getDisplayName(), user.getEmail(), user.getUid(), user.getPhoneNumber());
@@ -475,14 +478,14 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onSuccess(Uri uri) {
                         Toast.makeText(getActivity(), "Image Uploaded!!",
-                                Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_SHORT).show();
                         Picasso.get().load(uri).resize(2048, 1600)
                                 .onlyScaleDown().into(profile_image);
                         progressDialog.dismiss();
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         MainActivity.updateUserImage(user);
-                    }
-                });
+                 }
+        });
             }
         });
     }
