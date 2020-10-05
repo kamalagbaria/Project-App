@@ -8,7 +8,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme">
-        <activity android:name=".UserAnswerList"></activity>
+        <activity android:name=".UserAnswerList"
+            android:theme="@style/QuestionDetails" />
         <activity
             android:name=".UserQuestionList"
             android:theme="@style/QuestionDetails" />

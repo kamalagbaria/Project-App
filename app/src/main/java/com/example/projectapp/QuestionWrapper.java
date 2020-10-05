@@ -22,7 +22,7 @@ public class QuestionWrapper {
     }
 
     public String getKey() {
-        return key;
+        return this.key;
     }
 
     public void setKey(String key) {

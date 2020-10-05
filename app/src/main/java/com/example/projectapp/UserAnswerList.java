@@ -134,7 +134,6 @@ public class UserAnswerList extends AppCompatActivity {
                         });
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
