@@ -32,9 +32,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -376,9 +378,9 @@ public class ProfileFragment extends Fragment {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user==null){
-                    addUserToFireStore(user);
-                }
+
+                addUserToFireStore(user);
+
                 Toast.makeText(activity, "Signed-In Successfully", Toast.LENGTH_SHORT).show();
                 // ...
             } else {
@@ -396,17 +398,33 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void addUserToFireStore(FirebaseUser user)
+    private void addUserToFireStore(final FirebaseUser user)
     {
-        User newUser = new User(user.getDisplayName(), "", "", user.getEmail(), "", user.getUid());
+        final User newUser = new User(user.getDisplayName(), "", "", user.getEmail(), "", user.getUid());
         db.collection(users).document(newUser.getId()).set(newUser);
 
-        FirebaseDatabase.getInstance().getReference().child(users).child(newUser.getId())
-                .setValue(newUser, new DatabaseReference.CompletionListener() {
+
+        FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(
+                new ValueEventListener() {
                     @Override
-                    public void onComplete(DatabaseError databaseError, @NonNull DatabaseReference reference) {
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (!snapshot.hasChild(user.getUid())){
+                            FirebaseDatabase.getInstance().getReference().child(users).child(newUser.getId())
+                                    .setValue(newUser, new DatabaseReference.CompletionListener() {
+                                        @Override
+                                        public void onComplete(DatabaseError databaseError, @NonNull DatabaseReference reference) {
+                                        }
+                                    });
+                        }
                     }
-                });
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                }
+        );
+
     }
 
     @Override

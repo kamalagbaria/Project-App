@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -37,6 +38,7 @@ public class HomeFragment extends Fragment {
     private ListView lv2;
     private HomeQuestionAdapter adapter;
     private HomeQuestionAdapter arrayAdapter;
+    private ArrayList<String> qList = new ArrayList<>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -88,12 +90,16 @@ public class HomeFragment extends Fragment {
         MainActivity.setBarText("Home");
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
         showNewlyAddedLists(view);
+        getAllQuestionsKeys();
         showLastViewedList(view);
         return view;
     }
 
     public void showLastViewed(final ArrayList<QuestionWrapper>questionWrappers, ArrayList<Question> questions, View view){
         lv = (ListView) view.findViewById(R.id.LastViewedQuestions);
+        FirebaseDatabase.getInstance().getReference().child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("lastViewed").setValue(questionWrappers);
         arrayAdapter = new HomeQuestionAdapter(view.getContext(),0,questions);
         lv.setAdapter(arrayAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -165,17 +171,21 @@ public class HomeFragment extends Fragment {
                     User user=dataSnapshot.getValue(User.class);
                     if(user!=null){
                         ArrayList<QuestionWrapper> questionWrappers=user.getLastViewed();
+                        ArrayList<QuestionWrapper> newquestionWrappers=new ArrayList<>();
                         ArrayList<Question> questions=new ArrayList<>();
                         for (QuestionWrapper questionWrapper:questionWrappers){
-                            questions.add(questionWrapper.getQuestion());
+                            if(qList.contains(questionWrapper.getKey())){
+                                questions.add(questionWrapper.getQuestion());
+                                newquestionWrappers.add(questionWrapper);
+                            }
                         }
                         int last=10;
-                        if(questionWrappers.size()<10){
-                            last=questionWrappers.size();
+                        if(newquestionWrappers.size()<10){
+                            last=newquestionWrappers.size();
                         }
                         //Collections.reverse(questionWrappers.subList(0,last));
                         //Collections.reverse(questions.subList(0,last));
-                        showLastViewed(new ArrayList<>(questionWrappers.subList(0, last)), new ArrayList<>(questions.subList(0, last)),view);
+                        showLastViewed(new ArrayList<>(newquestionWrappers.subList(0, last)), new ArrayList<>(questions.subList(0, last)),view);
                     }
                 }
                 @Override
@@ -186,9 +196,25 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    private void getAllQuestionsKeys(){
+        FirebaseDatabase.getInstance().getReference().child("questions").
+                addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot child: snapshot.getChildren()){
+                            qList.add(child.getKey());
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
     @Override
     public void onResume() {
         super.onResume();
+        getAllQuestionsKeys();
         showLastViewedList(getView());
     }
 }
