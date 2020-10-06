@@ -26,6 +26,7 @@ import com.firebase.ui.database.FirebaseListOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -48,6 +49,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
     private float rateValue;
     private String questionKey ;
 
+    private FirebaseUser firebaseUser;
     private String ownerOfQuestionId;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     ListView listView;
@@ -63,11 +65,12 @@ public class QuestionDetailActivity extends AppCompatActivity {
         assert question != null;
         loadQuestion(question);
         mAuth = FirebaseAuth.getInstance();
+        this.firebaseUser = mAuth.getCurrentUser();
         answerbt = findViewById(R.id.answerBtn);
         rateBtn = findViewById(R.id.imageButton);
         ratingBar = findViewById(R.id.rating_rating_bar);
         ratingBar.setRating(question.getDifficulty());
-        if (mAuth.getCurrentUser() == null){
+        if (this.firebaseUser == null){
             answerbt.setVisibility(View.INVISIBLE);
             rateBtn.setVisibility(View.INVISIBLE);
         }
@@ -102,7 +105,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
         answerAdapter = new FirebaseListAdapter<Answer>(options) {
             @Override
-            protected void populateView(View view, Answer answer, final int position) {
+            protected void populateView(@NonNull View view, @NonNull Answer answer, final int position) {
 
                 ((TextView)view.findViewById(R.id.owner_name)).setText(answer.getOwnerName());
                 ((TextView)view.findViewById(R.id.answerText)).setText(answer.getText());
@@ -211,6 +214,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
                 ratingBar.setRating(question.getDifficulty());
                 FirebaseDatabase.getInstance().getReference()
                         .child("questions").child(Key).child("difficulty").setValue(rateValue);
+                setRateQuestionToFirestore(Key);
             }
         });
         builder.setNegativeButton("No,Thanks", new DialogInterface.OnClickListener() {
@@ -222,6 +226,22 @@ public class QuestionDetailActivity extends AppCompatActivity {
         builder.setCancelable(true);
         builder.setView(layout);
         builder.show();
+    }
+
+    private void setRateQuestionToFirestore(String questionId)
+    {
+        db.collection("users").document(this.firebaseUser.getUid()).collection("questions")
+                .document(questionId).update("difficulty", rateValue).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 
     @Override

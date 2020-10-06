@@ -12,8 +12,9 @@ export const newAnswerSubmitted = functions.firestore
         try
         {
             const answerId = context.params.answerId;
-            const id = context.params.userId;
-            const questionNotifications = await admin.firestore().collection('users').doc(id)
+            const userId = context.params.userId;
+            const questionId = context.params.questionId;
+            const questionNotifications = await admin.firestore().collection('users').doc(userId)
                     .collection("notifications").doc("question_notifications").get()
 
             const questionNotificationsData = questionNotifications.data();
@@ -24,13 +25,18 @@ export const newAnswerSubmitted = functions.firestore
                 {
                     return null;
                 }
-                const userDoc = await admin.firestore().collection('users').doc(id).get()
-                
+                const userDoc = await admin.firestore().collection('users').doc(userId).get()
+                const questionDoc = await admin.firestore().collection('users').doc(userId)
+                                    .collection("questions").doc(questionId).get();
+                        
+                const questionDocData = questionDoc.data();
+                const questionDocDataJson = JSON.stringify(questionDocData);
 
                 const userDocData = userDoc.data();
+                
                 if(userDocData !== undefined)
                 {
-                    const userId = userDocData.id
+                    //const userIdData = userDocData.id
                     const answerData = snapshot.data();
                     if (answerData)
                     {
@@ -41,7 +47,10 @@ export const newAnswerSubmitted = functions.firestore
                         {
                             const message = {
                                 data: {
-                                    id: answerId,
+                                    question: questionDocDataJson,
+                                    userId: userId,
+                                    questionId: questionId,
+                                    answerId: answerId,
                                     name: userAnsweredData.fullName,
                                     type: 'new_answer_added'
                                 }
@@ -75,8 +84,10 @@ export const newAnswerSubmitted = functions.firestore
         try
         {
             const commentId = context.params.commentId;
-            const id = context.params.userId;
-            const questionNotifications = await admin.firestore().collection('users').doc(id)
+            const userId = context.params.userId;
+            const questionId = context.params.questionId;
+
+            const questionNotifications = await admin.firestore().collection('users').doc(userId)
             .collection("notifications").doc("question_notifications").get()
 
             const questionNotificationsData = questionNotifications.data();
@@ -88,11 +99,11 @@ export const newAnswerSubmitted = functions.firestore
                     return null;
                 }
 
-                const userDoc = await admin.firestore().collection('users').doc(id).get()
+                const userDoc = await admin.firestore().collection('users').doc(userId).get()
                 const userDocData = userDoc.data();
                 if(userDocData !== undefined)
                 {
-                    const userId = userDocData.id
+                    //const userId = userDocData.id
                     const commentData = snapshot.data();
                     if (commentData)
                     {
@@ -103,7 +114,9 @@ export const newAnswerSubmitted = functions.firestore
                         {
                             const message = {
                                 data: {
-                                    id: commentId,
+                                    userId: userId,
+                                    questionId: questionId,
+                                    commentId: commentId,
                                     name: userCommentData.fullName,
                                     type: 'new_comment_added'
                                 }
