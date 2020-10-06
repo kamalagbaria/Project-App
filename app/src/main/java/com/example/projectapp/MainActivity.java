@@ -130,39 +130,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void listenToDataChangeRealTime()
-    {
-        //might need to use ValueEventListener
-        mDatabase.child("answers").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                int x = 0;
-                //Toast.makeText(MainActivity.this, "Changed", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                sendBroadcast(new Intent(SendNotificationBroadcastReceiver.actionQuestionAnswered));
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
 
     private void createNotificationChannel()
     {
