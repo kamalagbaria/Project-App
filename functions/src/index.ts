@@ -11,31 +11,52 @@ export const newAnswerSubmitted = functions.firestore
         
         try
         {
+            const answerId = context.params.answerId;
             const id = context.params.userId;
-            const userDoc = await admin.firestore().collection('users').doc(id).get()
-            const userDocData = userDoc.data();
-            if(userDocData !== undefined)
+            const questionNotifications = await admin.firestore().collection('users').doc(id)
+                    .collection("notifications").doc("question_notifications").get()
+
+            const questionNotificationsData = questionNotifications.data();
+
+            if(questionNotificationsData !== undefined)
             {
-                const userId = userDocData.id
-                const answerData = snapshot.data();
-                if (answerData) {
-                    const userAnsweredData = (await admin.firestore().collection('users')
-                        .doc(answerData.ownerId).get()).data()
-                    
-                    if(userAnsweredData !== undefined)
-                    {
-                        const payload = {
-                            data: {
-                                name: userAnsweredData.fullName,
-                                type: 'new-answer-added'
-                            }
-                        };
-                        console.log(userId)
-                        return admin.messaging().sendToTopic(userId, payload);
-                    }
-                    
+                if(!questionNotificationsData.newAnswer)
+                {
+                    return null;
                 }
-                else {
+                const userDoc = await admin.firestore().collection('users').doc(id).get()
+                
+
+                const userDocData = userDoc.data();
+                if(userDocData !== undefined)
+                {
+                    const userId = userDocData.id
+                    const answerData = snapshot.data();
+                    if (answerData)
+                    {
+                        const userAnsweredData = (await admin.firestore().collection('users')
+                            .doc(answerData.ownerId).get()).data()
+                        
+                        if(userAnsweredData !== undefined)
+                        {
+                            const message = {
+                                data: {
+                                    id: answerId,
+                                    name: userAnsweredData.fullName,
+                                    type: 'new_answer_added'
+                                }
+                            };
+                            return admin.messaging().sendToTopic(userId, message);
+                        }
+                        
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
                     return null;
                 }
             }
@@ -53,31 +74,52 @@ export const newAnswerSubmitted = functions.firestore
         
         try
         {
+            const commentId = context.params.commentId;
             const id = context.params.userId;
-            const userDoc = await admin.firestore().collection('users').doc(id).get()
-            const userDocData = userDoc.data();
-            if(userDocData !== undefined)
+            const questionNotifications = await admin.firestore().collection('users').doc(id)
+            .collection("notifications").doc("question_notifications").get()
+
+            const questionNotificationsData = questionNotifications.data();
+
+            if(questionNotificationsData !== undefined)
             {
-                const userId = userDocData.id
-                const commentData = snapshot.data();
-                if (commentData) {
-                    const userCommentData = (await admin.firestore().collection('users')
-                        .doc(commentData.ownerId).get()).data()
-                    
-                    if(userCommentData !== undefined)
-                    {
-                        const payload = {
-                            data: {
-                                name: userCommentData.fullName,
-                                type: 'new-comment-added'
-                            }
-                        };
-                        console.log(userId)
-                        return admin.messaging().sendToTopic(userId, payload);
-                    }
-                    
+                if(!questionNotificationsData.newComment)
+                {
+                    return null;
                 }
-                else {
+
+                const userDoc = await admin.firestore().collection('users').doc(id).get()
+                const userDocData = userDoc.data();
+                if(userDocData !== undefined)
+                {
+                    const userId = userDocData.id
+                    const commentData = snapshot.data();
+                    if (commentData)
+                    {
+                        const userCommentData = (await admin.firestore().collection('users')
+                            .doc(commentData.ownerId).get()).data()
+                        
+                        if(userCommentData !== undefined)
+                        {
+                            const message = {
+                                data: {
+                                    id: commentId,
+                                    name: userCommentData.fullName,
+                                    type: 'new_comment_added'
+                                }
+                            };
+                            console.log(userId)
+                            return admin.messaging().sendToTopic(userId, message);
+                        }
+                        
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
                     return null;
                 }
             }

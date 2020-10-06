@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".NotificationsActivity">
+
+    <ProgressBar
+        android:id="@+id/progress_bar_notifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateDrawable="@drawable/progress"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
+<LinearLayout
+    android:id="@+id/notifications_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/question_notifications_title"
@@ -18,7 +35,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-        />
+        android:paddingTop="8dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="0dp"/>
 
     <View
         android:layout_width="match_parent"
@@ -29,21 +48,37 @@
         android:id="@+id/new_answer_notify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:text="New answer added to question" />
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:checked="true"
+        android:textSize="17sp"
+        android:text="@string/new_answer_added"
+        android:paddingStart="10dp"
+        android:paddingEnd="0dp"/>
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/new_comment_notify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:text="New comment added to question" />
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:checked="true"
+        android:textSize="17sp"
+        android:text="@string/new_comment_added"
+        android:paddingStart="10dp"
+        android:paddingEnd="0dp"/>
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/new_rating_notify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:text="New rating on question" />
-
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:checked="true"
+        android:textSize="17sp"
+        android:text="@string/new_rating_added"
+        android:paddingStart="10dp"
+        android:paddingEnd="0dp"/>
 </LinearLayout>
+
+</RelativeLayout>

@@ -11,13 +11,16 @@
         android:theme="@style/AppTheme">
         <activity android:name=".UserAnswerList"
             android:theme="@style/QuestionDetails" />
-        <activity android:name=".NotificationsActivity"></activity>
+        <activity android:name=".NotificationsActivity" />
         <activity
             android:name=".UserQuestionList"
             android:theme="@style/QuestionDetails" />
         <activity android:name=".PersonalInfoActivity" />
         <activity android:name=".AccountActivity" />
-        <activity android:name=".GeneralCategory" />
+
+        <activity android:name=".GeneralCategory"
+            android:parentActivityName=".MainActivity"/>
+
         <activity android:name=".QuestionsActivity" />
         <activity
             android:name=".SubmitCommentActivity"
@@ -30,7 +33,8 @@
             android:label="@string/answer_bar_title" />
         <activity
             android:name=".QuestionDetailActivity"
-            android:theme="@style/QuestionDetails" />
+            android:theme="@style/QuestionDetails"
+            android:parentActivityName=".GeneralCategory"/>
         <activity
             android:name=".SubmitQuestionActivity"
             android:label="@string/question_bar_title" />
@@ -43,6 +47,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation"

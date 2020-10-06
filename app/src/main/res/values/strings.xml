@@ -71,4 +71,7 @@
     <string name="msg_subscribed">Message Subscribed</string>
     <string name="msg_subscribe_failed">Message Subscribe Failure</string>
     <string name="question_notifications">Question Notifications</string>
+    <string name="new_answer_added">New answer added to question</string>
+    <string name="new_comment_added">New comment added to question</string>
+    <string name="new_rating_added">New rating on question</string>
 </resources>
