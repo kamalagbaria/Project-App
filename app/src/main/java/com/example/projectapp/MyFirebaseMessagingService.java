@@ -116,7 +116,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         //Todo change id to later to not override older messages
         assert notificationId != null;
-        notificationManager.notify("Project-App", notificationId.hashCode(), builder.build());
+        notificationManager.notify(notificationId.hashCode(), builder.build());
         notificationManager.notify(SUMMARY_ID, summaryNotification);
     }
 
@@ -126,11 +126,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String type = data.get("type");
         String name = data.get("name");
         String notificationId = data.get("id");
-        String GROUP_KEY_NEW_ANSWER = "NEW_COMMENT";
+        String GROUP_KEY_NEW_COMMENT = "NEW_COMMENT";
 
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "com.example.projectapp.NEW_COMMENT";
-        int SUMMARY_ID = 0;
+        int SUMMARY_ID = 1;
 
 //        Intent resultIntent = new Intent(this, QuestionDetailActivity.class);
 //        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -157,9 +157,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon(R.drawable.notifications) //change later
                 .setContentTitle(name)
-                .setContentText("Added new Comment. Check it out!")
+                .setContentText("Added new comment. Check it out!")
                 .setContentInfo("Info")
-                .setGroup(GROUP_KEY_NEW_ANSWER);
+                .setGroup(GROUP_KEY_NEW_COMMENT);
 
 
         Notification summaryNotification =
@@ -173,15 +173,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 //.setBigContentTitle("2 new messages")
                                 .setSummaryText("You have new messages"))
                         //specify which group this notification belongs to
-                        .setGroup(GROUP_KEY_NEW_ANSWER)
+                        .setGroup(GROUP_KEY_NEW_COMMENT)
                         //set this notification as the summary for the group
                         .setGroupSummary(true)
                         .build();
 
         //Todo change id to later to not override older messages
         assert notificationId != null;
-        notificationManager.notify("Project-App", notificationId.hashCode(), builder.build());
-        notificationManager.notify(SUMMARY_ID, summaryNotification);
+        notificationManager.notify(notificationId.hashCode(), builder.build());
+        notificationManager.notify(1, summaryNotification);
     }
 
     private void showNotification(String title, String body)
@@ -210,7 +210,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentInfo("Info");
 
         //Todo change id to later to not override older messages
-        notificationManager.notify(1, builder.build());
+        notificationManager.notify(2, builder.build());
 
     }
 
