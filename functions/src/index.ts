@@ -25,18 +25,13 @@ export const newAnswerSubmitted = functions.firestore
                 {
                     return null;
                 }
-                const userDoc = await admin.firestore().collection('users').doc(userId).get()
+    
                 const questionDoc = await admin.firestore().collection('users').doc(userId)
                                     .collection("questions").doc(questionId).get();
                         
                 const questionDocData = questionDoc.data();
                 const questionDocDataJson = JSON.stringify(questionDocData);
 
-                const userDocData = userDoc.data();
-                
-                if(userDocData !== undefined)
-                {
-                    //const userIdData = userDocData.id
                     const answerData = snapshot.data();
                     if (answerData)
                     {
@@ -63,11 +58,7 @@ export const newAnswerSubmitted = functions.firestore
                     {
                         return null;
                     }
-                }
-                else
-                {
-                    return null;
-                }
+                
             }
         }
         catch(err)
@@ -98,12 +89,6 @@ export const newAnswerSubmitted = functions.firestore
                 {
                     return null;
                 }
-
-                const userDoc = await admin.firestore().collection('users').doc(userId).get()
-                const userDocData = userDoc.data();
-                if(userDocData !== undefined)
-                {
-                    //const userId = userDocData.id
                     const commentData = snapshot.data();
                     if (commentData)
                     {
@@ -130,11 +115,7 @@ export const newAnswerSubmitted = functions.firestore
                     {
                         return null;
                     }
-                }
-                else
-                {
-                    return null;
-                }
+                
             }
         }
         catch(err)
