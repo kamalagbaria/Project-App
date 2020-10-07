@@ -97,11 +97,11 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    public void showLastViewed(final ArrayList<QuestionWrapper>questionWrappers, ArrayList<Question> questions, View view){
+    public void showLastViewed(final ArrayList<String>questionWrappers, ArrayList<Question> questions, View view){
         lv = (ListView) view.findViewById(R.id.LastViewedQuestions);
-        FirebaseDatabase.getInstance().getReference().child("users")
+        /*FirebaseDatabase.getInstance().getReference().child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("lastViewed").setValue(questionWrappers);
+                .child("lastViewed").setValue(questionWrappers);*/
         arrayAdapter = new HomeQuestionAdapter(view.getContext(),0,questions);
         lv.setAdapter(arrayAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -110,7 +110,7 @@ public class HomeFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getContext(), QuestionDetailActivity.class);
                 intent.putExtra("question", arrayAdapter.getItem(i));
-                intent.putExtra("question_key", questionWrappers.get(i).getKey());
+                intent.putExtra("question_key", questionWrappers.get(i));
                 startActivity(intent);
 
             }
@@ -173,14 +173,14 @@ public class HomeFragment extends Fragment {
                     User user=dataSnapshot.getValue(User.class);
                     if(user!=null){
                         ArrayList<String> questionKeys=user.getLastViewed();
-                        ArrayList<QuestionWrapper> newquestionWrappers=new ArrayList<>();
+                        ArrayList<String> newquestionWrappers=new ArrayList<>();
                         ArrayList<Question> questions=new ArrayList<>();
 
                         for (String questionKey:questionKeys){
                             if(qList.contains(questionKey)){
                                 Question question=allQuestions.get(questionKey);
                                 questions.add(question);
-                                newquestionWrappers.add(new QuestionWrapper(question,questionKey));
+                                newquestionWrappers.add(questionKey);
                             }
                         }
                         int last=10;
