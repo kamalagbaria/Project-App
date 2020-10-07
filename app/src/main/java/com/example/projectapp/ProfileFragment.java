@@ -280,6 +280,7 @@ public class ProfileFragment extends Fragment {
                                     }
                                 });
                         fullName.setText(editText.getText());
+                        updateNameToFirebase(editText.getText().toString(), user.getUid());
                         dialogBuilder.dismiss();
                     }
                 });
@@ -287,6 +288,26 @@ public class ProfileFragment extends Fragment {
                 dialogBuilder.show();
             }
         });
+    }
+
+    private void updateNameToFirebase(String newFullName, String userId)
+    {
+        db.collection("users").document(userId).update("fullName", newFullName)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+        databaseReference.child("users").child(userId).child("fullName").setValue(newFullName);
+
+
     }
 
     private void signIn()
@@ -425,7 +446,6 @@ public class ProfileFragment extends Fragment {
 
     private void addUserToFireStore(final FirebaseUser user)
     {
-//        final User newUser = new User(user.getDisplayName(), "", "", user.getEmail(), "", user.getUid(), user.getPhoneNumber());
         final User newUser = new User(user.getDisplayName(), user.getEmail(), user.getUid(), user.getPhoneNumber());
         FirebaseDatabase.getInstance().getReference().child(users).child(user.getUid())
             .setValue(newUser, new DatabaseReference.CompletionListener() {

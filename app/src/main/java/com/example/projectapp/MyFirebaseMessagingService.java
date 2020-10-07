@@ -10,26 +10,27 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.databind.*;
 
 import java.util.Map;
 import java.util.Objects;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "FCM";
+    ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
         Log.d("TOKENFIREBASE", s);
-        int x = 0;
     }
 
     @Override
@@ -41,7 +42,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
         else
         {
-            //Toast.makeText(this, remoteMessage.getMessageId(), Toast.LENGTH_SHORT).show();
             Map<String, String> data = remoteMessage.getData();
             if(Objects.equals(data.get("type"), "new_answer_added"))
             {
@@ -52,16 +52,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 showNotificationNewComment(data);
             }
         }
-        //sendBroadcast(new Intent(SendNotificationBroadcastReceiver.actionQuestionAnswered));
-        int x = 0;
     }
 
     private void showNotificationNewAnswer(Map<String, String> data)
     {
-        String title = data.get("name");
-        String type = data.get("type");
+        Question question = null;
+        try {
+            question = objectMapper.readValue(Objects.requireNonNull(data.get("question")), Question.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        String questionId = data.get("questionId");
         String name = data.get("name");
-        String notificationId = data.get("id");
+        String answerId = data.get("answerId");
         String GROUP_KEY_NEW_ANSWER = "NEW_ANSWER";
 
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
@@ -69,6 +73,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         int SUMMARY_ID = 0;
 
         Intent resultIntent = new Intent(this, QuestionDetailActivity.class);
+        assert question != null;
+        resultIntent.putExtra("question", question);
+        resultIntent.putExtra("question_key", questionId);
+
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(resultIntent);
         PendingIntent resultPendingIntent =
@@ -94,13 +102,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setSmallIcon(R.drawable.notifications) //change later
                 .setContentTitle(name)
                 .setContentText("Added new answer. Check it out!")
-                .setContentInfo("Info")
+                .setContentInfo("New answer")
                 .setGroup(GROUP_KEY_NEW_ANSWER);
 
 
         Notification summaryNotification =
                 new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                        .setContentTitle(title)
+                        .setAutoCancel(true)
+                        .setContentTitle("New answers")
                         //set content text to support devices running API level < 24
                         .setContentText("You have new messages")
                         .setSmallIcon(R.drawable.notifications)
@@ -115,28 +124,31 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .build();
 
         //Todo change id to later to not override older messages
-        assert notificationId != null;
-        notificationManager.notify(notificationId.hashCode(), builder.build());
+        assert answerId != null;
+        notificationManager.notify(answerId.hashCode(), builder.build());
         notificationManager.notify(SUMMARY_ID, summaryNotification);
     }
 
     private void showNotificationNewComment(Map<String, String> data)
     {
-        String title = data.get("name");
-        String type = data.get("type");
+        String userId = data.get("userId");
+        String questionId = data.get("questionId");
         String name = data.get("name");
-        String notificationId = data.get("id");
+        String commentId = data.get("commentId");
         String GROUP_KEY_NEW_COMMENT = "NEW_COMMENT";
 
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "com.example.projectapp.NEW_COMMENT";
         int SUMMARY_ID = 1;
 
-//        Intent resultIntent = new Intent(this, QuestionDetailActivity.class);
-//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-//        stackBuilder.addNextIntentWithParentStack(resultIntent);
-//        PendingIntent resultPendingIntent =
-//                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent resultIntent = new Intent(this, CommentsList.class);
+        resultIntent.putExtra("question_key", questionId);
+        resultIntent.putExtra("question_owner_id", userId);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
@@ -152,19 +164,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 NOTIFICATION_CHANNEL_ID);
 
         builder.setAutoCancel(true)
-                //.setContentIntent(resultPendingIntent)
+                .setContentIntent(resultPendingIntent)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon(R.drawable.notifications) //change later
                 .setContentTitle(name)
                 .setContentText("Added new comment. Check it out!")
-                .setContentInfo("Info")
+                .setContentInfo("New comment")
                 .setGroup(GROUP_KEY_NEW_COMMENT);
 
 
         Notification summaryNotification =
                 new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                        .setContentTitle(title)
+                        .setAutoCancel(true)
+                        .setContentTitle("New comments")
                         //set content text to support devices running API level < 24
                         .setContentText("You have new messages")
                         .setSmallIcon(R.drawable.notifications)
@@ -179,9 +192,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .build();
 
         //Todo change id to later to not override older messages
-        assert notificationId != null;
-        notificationManager.notify(notificationId.hashCode(), builder.build());
-        notificationManager.notify(1, summaryNotification);
+        assert commentId != null;
+        notificationManager.notify(commentId.hashCode(), builder.build());
+        notificationManager.notify(SUMMARY_ID, summaryNotification);
     }
 
     private void showNotification(String title, String body)

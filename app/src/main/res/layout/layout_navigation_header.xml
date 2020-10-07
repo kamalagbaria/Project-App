@@ -21,11 +21,7 @@
         app:layout_constraintBottom_toBottomOf="@id/imageProfile"
         app:layout_constraintEnd_toEndOf="@id/imageProfile"
         app:layout_constraintStart_toStartOf="@id/imageProfile"
-        app:layout_constraintTop_toTopOf="@id/imageProfile"/><![CDATA[
-
-    />
-
-    ]]>
+        app:layout_constraintTop_toTopOf="@id/imageProfile"/>
 
     <TextView
         android:id="@+id/username"
@@ -39,7 +35,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/imageProfile"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.177" />
+        app:layout_constraintVertical_bias="0.177"
+        android:paddingBottom="15dp"/>
 
     <TextView
         android:layout_width="0dp"

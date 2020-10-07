@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
         this.subscriptionToTopic = new SubscriptionToTopic();
 
         subscribeToTopicId();
-        this.generateToken();
 
         //Create Notification Channel
         this.createNotificationChannel();
@@ -114,108 +113,22 @@ public class MainActivity extends AppCompatActivity {
     public void subscribeToTopicId()
     {
         user = FirebaseAuth.getInstance().getCurrentUser();
-        //subscriptionToTopic.SubscribeToTopic(user.getUid());
         if(user != null) {
             FirebaseMessaging.getInstance().subscribeToTopic(Objects.requireNonNull(user.getUid()))
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            String msg = getString(R.string.msg_subscribed);
-                            if (!task.isSuccessful()) {
-                                msg = getString(R.string.msg_subscribe_failed);
+                            if (!task.isSuccessful())
+                            {
+                                //handle error
                             }
-                            //Log.d(TAG, msg);
-                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+
                         }
                     });
         }
 
     }
 
-    private void generateToken()
-    {
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            //Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-                            return;
-                        }
-
-                        // Get new FCM registration token
-                        String token = task.getResult();
-
-                        // Log and toast
-                        //String msg = getString(R.string.msg_token_fmt, token);
-                        //Log.d(TAG, msg);
-                        Toast.makeText(MainActivity.this, "Got Token", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void listenToDataChangeRealTime()
-    {
-        //might need to use ValueEventListener
-        mDatabase.child("answers").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                int x = 0;
-                //Toast.makeText(MainActivity.this, "Changed", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                sendBroadcast(new Intent(SendNotificationBroadcastReceiver.actionQuestionAnswered));
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
-    private void listenToDataChangeFirestore() {
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null)
-        {
-            final AtomicBoolean isFirstListener = new AtomicBoolean(true);
-            final Query docRef = db.collection("users").document(user.getUid()).collection("questions");
-            docRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                    if (isFirstListener.get())
-                    {
-                        isFirstListener.set(false);
-                        //TODO Handle the entire list.
-                        return;
-                    }
-                        if (error != null) {
-                            //something bad happened
-                        } else {
-                            assert value != null;
-                            for(DocumentChange dc : value.getDocumentChanges())
-                            {
-
-                            }
-                            sendBroadcast(new Intent(SendNotificationBroadcastReceiver.actionQuestionAnswered));
-                        }
-                    }
-                });
-            }
-    }
 
 
     private void createNotificationChannel()
@@ -224,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, NOTIFICATION_TITLE, importance);
             channel.setDescription(NOTIFICATION_TITLE);
-            NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(NotificationManager.class);
+            NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
             if (notificationManager != null) {
                 notificationManager.createNotificationChannel(channel);
             }
@@ -253,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         updateUserName(user);
         photoUrl = user.getPhotoUrl();
         StorageReference profileRef = storageReference.child("profilePictures/"+
-                FirebaseAuth.getInstance().getCurrentUser().getUid());
+                Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
