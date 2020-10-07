@@ -145,10 +145,8 @@ public class ProfileFragment extends Fragment {
         this.buttonAnswers = root.findViewById(R.id.AnswersButton);
         this.editBtn = root.findViewById(R.id.edit_profile);
         this.name_image = root.findViewById(R.id.imageName);
-     //   this.mail_image = root.findViewById(R.id.imageMail);
         this.NameText = root.findViewById(R.id.Name);
         this.EmailText = root.findViewById(R.id.email);
-        //this.list_image = root.findViewById(R.id.imagelist);
         this.relativeLayout = root.findViewById(R.id.relativeLayout);
         this.card_view = root.findViewById(R.id.card_view);
 
@@ -189,12 +187,9 @@ public class ProfileFragment extends Fragment {
                     email.setVisibility(INVISIBLE);
                     buttonQuestions.setVisibility(INVISIBLE);
                     buttonAnswers.setVisibility(INVISIBLE);
-                   // editBtn.setVisibility(INVISIBLE);
-                   // mail_image.setVisibility(INVISIBLE);
                     name_image.setVisibility(INVISIBLE);
                     EmailText.setVisibility(INVISIBLE);
                     NameText.setVisibility(INVISIBLE);
-                    //list_image.setVisibility(INVISIBLE);
                     relativeLayout.setVisibility(INVISIBLE);
                     card_view.setVisibility(INVISIBLE);
 
@@ -523,6 +518,8 @@ public class ProfileFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
             updateProfile(user);
+            this.ReviewQuestion();
+            this.ReviewAnswers();
         }
     }
 }
