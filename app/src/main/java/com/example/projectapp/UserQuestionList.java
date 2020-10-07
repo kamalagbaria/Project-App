@@ -1,21 +1,18 @@
 package com.example.projectapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,8 +22,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
 
 public class UserQuestionList extends AppCompatActivity {
@@ -83,7 +78,7 @@ public class UserQuestionList extends AppCompatActivity {
                                                     Snapshot.getRef().removeValue();
                                                     DeleteComments(ref,key);
                                                     DeleteAnswers(ref,key);
-                                                    deleteQuestionFormLastViewed(key);
+                                                    //deleteQuestionFormLastViewed(key);
                                                 }
                                             }
                                             @Override
@@ -103,7 +98,7 @@ public class UserQuestionList extends AppCompatActivity {
         };
         questionList.setAdapter(Adapter);
     }
-    private void deleteQuestionFormLastViewed(final String key){
+    /*private void deleteQuestionFormLastViewed(final String key){
         if (FirebaseAuth.getInstance().getCurrentUser() != null){
             final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users")
                     .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
@@ -112,11 +107,12 @@ public class UserQuestionList extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             User user = dataSnapshot.getValue(User.class);
                             if (user != null) {
-                                ArrayList<QuestionWrapper> questionWrappers = user.getLastViewed();
+                                ArrayList<String> questionKeys = user.getLastViewed();
                                 ArrayList<QuestionWrapper> updatedQuestionWrappers = new ArrayList<>();
-                                for (QuestionWrapper questionWrapper : questionWrappers) {
-                                    if (!questionWrapper.getKey().equals(key)) {
-                                        updatedQuestionWrappers.add(questionWrapper);
+                                for (String questionKey : questionKeys) {
+                                    if (!questionKey.equals(key)) {
+
+                                        updatedQuestionWrappers.add(new );
                                     }
                                 }
                                 mDatabase.child("lastViewed").setValue(updatedQuestionWrappers).
@@ -135,7 +131,7 @@ public class UserQuestionList extends AppCompatActivity {
                         }
                     });
         }
-    }
+    }*/
 
     private void DeleteComments(DatabaseReference reference, final String key){
         Query Query = reference.child("comments").

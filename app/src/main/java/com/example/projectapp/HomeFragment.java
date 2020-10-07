@@ -22,7 +22,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -39,6 +40,7 @@ public class HomeFragment extends Fragment {
     private HomeQuestionAdapter adapter;
     private HomeQuestionAdapter arrayAdapter;
     private ArrayList<String> qList = new ArrayList<>();
+    private Map<String,Question> allQuestions=new HashMap<>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -170,21 +172,21 @@ public class HomeFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     User user=dataSnapshot.getValue(User.class);
                     if(user!=null){
-                        ArrayList<QuestionWrapper> questionWrappers=user.getLastViewed();
+                        ArrayList<String> questionKeys=user.getLastViewed();
                         ArrayList<QuestionWrapper> newquestionWrappers=new ArrayList<>();
                         ArrayList<Question> questions=new ArrayList<>();
-                        for (QuestionWrapper questionWrapper:questionWrappers){
-                            if(qList.contains(questionWrapper.getKey())){
-                                questions.add(questionWrapper.getQuestion());
-                                newquestionWrappers.add(questionWrapper);
+
+                        for (String questionKey:questionKeys){
+                            if(qList.contains(questionKey)){
+                                Question question=allQuestions.get(questionKey);
+                                questions.add(question);
+                                newquestionWrappers.add(new QuestionWrapper(question,questionKey));
                             }
                         }
                         int last=10;
                         if(newquestionWrappers.size()<10){
                             last=newquestionWrappers.size();
                         }
-                        //Collections.reverse(questionWrappers.subList(0,last));
-                        //Collections.reverse(questions.subList(0,last));
                         showLastViewed(new ArrayList<>(newquestionWrappers.subList(0, last)), new ArrayList<>(questions.subList(0, last)),view);
                     }
                 }
@@ -203,6 +205,7 @@ public class HomeFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot child: snapshot.getChildren()){
                             qList.add(child.getKey());
+                            allQuestions.put(child.getKey(),child.getValue(Question.class));
                         }
                     }
                     @Override

@@ -141,7 +141,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             User user=snapshot.getValue(User.class);
                             if( user != null){
-                                user.addLastViewed(new QuestionWrapper(question,questionKey));
+                                user.addLastViewed(questionKey);
                                 FirebaseDatabase.getInstance().getReference().child("users")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .child("lastViewed").setValue(user.getLastViewed());

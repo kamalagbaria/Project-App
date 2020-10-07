@@ -11,11 +11,11 @@ public class User {
     private String email;
     private String id;
     private String location;
-    private ArrayList<QuestionWrapper> lastViewed=new ArrayList<>();
+    private ArrayList<String> lastViewed=new ArrayList<>();
     private ArrayList<Answer> UserAnswers = new ArrayList<>();
     private String phoneNumber;
 
-    public ArrayList<QuestionWrapper> getLastViewed() {
+    public ArrayList<String> getLastViewed() {
         return lastViewed;
     }
 
@@ -92,8 +92,8 @@ public class User {
         this.myQuestions.add(newQuestion);
         return myQuestions;
     }
-    public void addLastViewed(QuestionWrapper question){
-        this.lastViewed.add(0,question);
+    public void addLastViewed(String questionKey){
+        this.lastViewed.add(0,questionKey);
     }
 
     public ArrayList<Answer> getUserAnswers() {
