@@ -68,6 +68,7 @@ public class ProfileFragment extends Fragment {
     private Button buttonSignOut;
     private Button buttonQuestions;
     private Button buttonAnswers;
+    private ImageButton notificationButton;
 
     private static final int GALLERY_REQUEST_CODE =100;
     private List<AuthUI.IdpConfig> providers;
@@ -149,6 +150,7 @@ public class ProfileFragment extends Fragment {
         this.EmailText = root.findViewById(R.id.email);
         this.relativeLayout = root.findViewById(R.id.relativeLayout);
         this.card_view = root.findViewById(R.id.card_view);
+        this.notificationButton = root.findViewById(R.id.notifications_button);
 
         this.mAuth = FirebaseAuth.getInstance();
 
@@ -162,7 +164,20 @@ public class ProfileFragment extends Fragment {
         this.buttonSignOutPressed();
         this.buttonEditPicture();
         this.updateUserName();
+        this.notificationButtonClicked();
+
         return root;
+    }
+
+    private void notificationButtonClicked()
+    {
+        this.notificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), NotificationsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 

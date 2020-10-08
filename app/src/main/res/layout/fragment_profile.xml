@@ -38,6 +38,17 @@
                 android:src="@drawable/profile_pic"
                />
 
+            <ImageButton
+                android:id="@+id/notifications_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/colorPrimaryText"
+                android:src="@android:drawable/ic_popup_reminder"
+                android:foreground="?android:attr/selectableItemBackground"/>
+
         </RelativeLayout>
 
         <LinearLayout
@@ -73,7 +84,7 @@
                         android:layout_marginEnd="50dp"
                         android:layout_marginBottom="15dp"
                         android:background="@android:color/transparent"
-                        android:text="Change Profile Photo"
+                        android:text="@string/change_profile_photo"
                         android:textAlignment="center"
                         android:textColor="@color/colorPrimaryText"
                         android:textSize="17sp" />
@@ -90,7 +101,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="11dp"
-            android:text="Name"
+            android:text="@string/full_name"
             android:textColor="#7A7474"
             android:textSize="18sp"/>
 
@@ -128,7 +139,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="11dp"
-            android:text="Email"
+            android:text="@string/email"
             android:textColor="#7A7474"
             android:textSize="18sp"
             />
