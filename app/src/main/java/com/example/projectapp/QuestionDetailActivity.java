@@ -137,23 +137,13 @@ public class QuestionDetailActivity extends AppCompatActivity {
                 .build();
 
 
-//        try {
-//            populateRecyclerView();
-//        } catch (ExecutionException | InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
-        //populate();
-//        FirebaseListOptions<Answer> options = new FirebaseListOptions.Builder<Answer>()
-//                .setQuery(answersDatabase, Answer.class)
-//                .setLayout(R.layout.answer_layout)
-//                .build();
-
         adapter = new FirebaseRecyclerAdapter<Answer, AnswerLayoutViewHolder>(options) { //new
             @Override
             protected void onBindViewHolder(@NonNull final AnswerLayoutViewHolder holder, final int position, @NonNull Answer answer) {
                 holder.ownerName.setText(answer.getOwnerName());
                 holder.answerText.setText(answer.getText());
+                holder.newAnswerBar.setVisibility(View.GONE);
+
                 if (answer.getText().equals("")) {
                     holder.answerText.setVisibility(View.GONE);
                 }
@@ -216,13 +206,19 @@ public class QuestionDetailActivity extends AppCompatActivity {
                 return new AnswerLayoutViewHolder(view);
             }
 
+            @NonNull
+            @Override
+            public Answer getItem(int position) {
+                return super.getItem(getItemCount() - position - 1);
+            }
+
             @Override
             public void onDataChanged() {
                 super.onDataChanged();
                 if (answerId != null) {
                     for (int i = 0; i < adapter.getItemCount(); i++) {
                         if (adapter.getItem(i).getAnswerId().equals(answerId)) {
-                            scrollTo(i);
+                            scrollToAnswer(i);
                             break;
                         }
                     }
@@ -232,9 +228,8 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
 
         if (this.answerId == null) {
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
-            mLayoutManager.setStackFromEnd(true);
             recyclerView.setLayoutManager(mLayoutManager);
 
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
@@ -299,9 +294,8 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
     }
 
-    private void scrollTo(int position) {
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
-        mLayoutManager.setStackFromEnd(true);
+    private void scrollToAnswer(int position) {
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mLayoutManager.scrollToPositionWithOffset(position, 0);
         recyclerView.setLayoutManager(mLayoutManager);
 

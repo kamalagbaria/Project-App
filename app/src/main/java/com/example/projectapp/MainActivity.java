@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseUser user;
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    //private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private SubscriptionToTopic subscriptionToTopic;
 
@@ -86,10 +86,10 @@ public class MainActivity extends AppCompatActivity {
         subscribeToTopicId();
 
         //Create Notification Channel
-        this.createNotificationChannel();
-        this.br = new SendNotificationBroadcastReceiver();
-        registerReceiver(this.br, new IntentFilter(SendNotificationBroadcastReceiver.actionQuestionAnswered));
-        registerReceiver(this.br, new IntentFilter(SendNotificationBroadcastReceiver.actionQuestionRated));
+//        this.createNotificationChannel();
+//        this.br = new SendNotificationBroadcastReceiver();
+//        registerReceiver(this.br, new IntentFilter(SendNotificationBroadcastReceiver.actionQuestionAnswered));
+//        registerReceiver(this.br, new IntentFilter(SendNotificationBroadcastReceiver.actionQuestionRated));
         //this.listenToDataChangeRealTime();
         //this.listenToDataChangeFirestore();
 

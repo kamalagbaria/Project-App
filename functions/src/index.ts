@@ -76,7 +76,6 @@ export const newAnswerSubmitted = functions.firestore
         
         try
         {
-            const commentId = context.params.commentId;
             const userId = context.params.userId;
             const questionId = context.params.questionId;
 
@@ -94,6 +93,7 @@ export const newAnswerSubmitted = functions.firestore
                     const commentData = snapshot.data();
                     if (commentData)
                     {
+                        const commentId = commentData.commentId;
                         const userCommentData = (await admin.firestore().collection('users')
                             .doc(commentData.ownerId).get()).data()
                         

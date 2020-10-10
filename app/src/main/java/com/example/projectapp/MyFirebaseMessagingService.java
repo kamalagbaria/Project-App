@@ -145,6 +145,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent resultIntent = new Intent(this, CommentsList.class);
         resultIntent.putExtra("question_key", questionId);
         resultIntent.putExtra("question_owner_id", userId);
+        resultIntent.putExtra("comment_id", commentId);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(resultIntent);
