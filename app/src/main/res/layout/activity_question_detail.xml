@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".QuestionDetailActivity">
 
@@ -112,9 +113,10 @@
         android:textSize="18sp"
         />
 
-    <ListView
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/answersRecyclerView"
         android:layout_width="match_parent"
-        android:id="@+id/answersLV"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@drawable/border"
@@ -124,7 +126,21 @@
         android:layout_marginEnd="6sp"
         android:layout_marginBottom="10sp"
         android:layout_marginTop="1sp"
-        android:alpha="0.95"/>
+        android:alpha="0.95" />
+
+<!--    <ListView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:id="@+id/answersLV"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:background="@drawable/border"-->
+<!--        android:paddingEnd="5dp"-->
+<!--        android:paddingStart="5dp"-->
+<!--        android:layout_marginStart="6sp"-->
+<!--        android:layout_marginEnd="6sp"-->
+<!--        android:layout_marginBottom="10sp"-->
+<!--        android:layout_marginTop="1sp"-->
+<!--        android:alpha="0.95"/>-->
 
 
 </LinearLayout>

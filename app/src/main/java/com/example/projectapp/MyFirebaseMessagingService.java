@@ -76,6 +76,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         assert question != null;
         resultIntent.putExtra("question", question);
         resultIntent.putExtra("question_key", questionId);
+        resultIntent.putExtra("answer_id", answerId);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(resultIntent);

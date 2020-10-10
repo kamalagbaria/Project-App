@@ -11,7 +11,8 @@ export const newAnswerSubmitted = functions.firestore
         
         try
         {
-            const answerId = context.params.answerId;
+            
+            //const answerId = context.params.answerId;
             const userId = context.params.userId;
             const questionId = context.params.questionId;
             const questionNotifications = await admin.firestore().collection('users').doc(userId)
@@ -35,6 +36,7 @@ export const newAnswerSubmitted = functions.firestore
                     const answerData = snapshot.data();
                     if (answerData)
                     {
+                        const answerId = answerData.answerId;
                         const userAnsweredData = (await admin.firestore().collection('users')
                             .doc(answerData.ownerId).get()).data()
                         
