@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -31,7 +30,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -457,13 +455,26 @@ public class ProfileFragment extends Fragment {
     private void addUserToFireStore(final FirebaseUser user)
     {
         final User newUser = new User(user.getDisplayName(), user.getEmail(), user.getUid(), user.getPhoneNumber());
-        FirebaseDatabase.getInstance().getReference().child(users).child(user.getUid())
-            .setValue(newUser, new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(DatabaseError databaseError, @NonNull DatabaseReference reference)
-                {
+        FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (!snapshot.hasChild(user.getUid())){
+                            FirebaseDatabase.getInstance().getReference().child(users).child(newUser.getId())
+                                    .setValue(newUser, new DatabaseReference.CompletionListener() {
+                                        @Override
+                                        public void onComplete(DatabaseError databaseError, @NonNull DatabaseReference reference) {
+                                        }
+                                    });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
                 }
-            });
+        );
         db.collection(users).document(newUser.getId()).set(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid)
