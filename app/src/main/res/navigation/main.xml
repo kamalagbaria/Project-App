@@ -8,27 +8,27 @@
 
     <fragment
         android:id="@+id/menuProfile"
-        android:name="com.example.projectapp.ProfileFragment"
+        android:name="PostPc.Ask.projectapp.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/menuAbout"
-        android:name="com.example.projectapp.AboutFragment"
+        android:name="PostPc.Ask.projectapp.AboutFragment"
         android:label="About"
         tools:layout="@layout/fragment_about" />
     <fragment
         android:id="@+id/menuCategories"
-        android:name="com.example.projectapp.CategoriesFragment"
+        android:name="PostPc.Ask.projectapp.CategoriesFragment"
         android:label="Categories"
         tools:layout="@layout/fragment_categories" />
     <fragment
         android:id="@+id/menuHome"
-        android:name="com.example.projectapp.HomeFragment"
+        android:name="PostPc.Ask.projectapp.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/menuSearch"
-        android:name="com.example.projectapp.Search"
+        android:name="PostPc.Ask.projectapp.Search"
         android:label="Search"
         tools:layout="@layout/fragment_search"
         />

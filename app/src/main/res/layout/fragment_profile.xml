@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
-    tools:context=".ProfileFragment"
+    tools:context="PostPc.Ask.projectapp.ProfileFragment"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:background="@color/colorWhite"

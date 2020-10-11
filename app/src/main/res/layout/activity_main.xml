@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
     <androidx.drawerlayout.widget.DrawerLayout
-    tools:context=".MainActivity"
+    tools:context="PostPc.Ask.projectapp.MainActivity"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:id="@+id/drawerLayout"
