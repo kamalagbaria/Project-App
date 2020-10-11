@@ -107,14 +107,10 @@ public class SubmitAnswerActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             uploadImage();
-                            Toast.makeText(SubmitAnswerActivity.this,"Answer submitted",
-                                    Toast.LENGTH_SHORT).show();
+
 
                             addAnswerToFirestore(reference.getKey(), questionKey, answer);
-                            //finish();
                             if(filePath == null){
-                                Toast.makeText(SubmitAnswerActivity.this,"Answer submitted",
-                                        Toast.LENGTH_SHORT).show();
                                 //addAnswerToUser(answer);
                                 //finish();
 
@@ -123,6 +119,8 @@ public class SubmitAnswerActivity extends AppCompatActivity {
                                 //addAnswerToUser(answer);
                             }
                             addAnswerToUser(answer);
+                            Toast.makeText(SubmitAnswerActivity.this,"Answer submitted",
+                                    Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }
@@ -176,8 +174,6 @@ public class SubmitAnswerActivity extends AppCompatActivity {
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        Toast.makeText(SubmitAnswerActivity.this,
-                                                "added Answer", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }

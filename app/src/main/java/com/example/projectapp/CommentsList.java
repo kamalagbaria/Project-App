@@ -63,7 +63,6 @@ public class CommentsList extends AppCompatActivity {
 
         this.questionKey = getIntent().getStringExtra("question_key");
         this.commentId = getIntent().getStringExtra("comment_id");
-        Toast.makeText(this, this.commentId, Toast.LENGTH_LONG).show();
 
         final Query commentsDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("comments").child(questionKey);
