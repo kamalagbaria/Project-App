@@ -430,10 +430,7 @@ public class ProfileFragment extends Fragment {
                 assert user != null;
                 subscriptionToTopic.SubscribeToTopic(Objects.requireNonNull(user.getUid()));
                 assert response != null;
-                if(response.isNewUser())
-                {
-                    addUserToFireStore(user);
-                }
+                addUserToFireStore(user);
 
                 Toast.makeText(activity, "Signed-In Successfully", Toast.LENGTH_SHORT).show();
                 // ...

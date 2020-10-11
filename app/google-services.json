@@ -8,12 +8,65 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1013506733785:android:d4e2805e0d9f648eca70c8",
+        "mobilesdk_app_id": "1:1013506733785:android:ca9b666635c325a6ca70c8",
         "android_client_info": {
           "package_name": "PostPc.Ask.projectapp"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1013506733785-ijrjsnclgo9f2p7rsaa2cnf5nmafg9so.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPQowAKQ053TVS4u7wrX7fP5prjtKinTY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013506733785-ijrjsnclgo9f2p7rsaa2cnf5nmafg9so.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013506733785:android:d4e2805e0d9f648eca70c8",
+        "android_client_info": {
+          "package_name": "com.example.projectapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013506733785-35ipr7kltuk2u00gj9ldtsi1h8i2vl86.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.projectapp",
+            "certificate_hash": "3485abe0595ce6ff888311c376999f9dde2f0e56"
+          }
+        },
+        {
+          "client_id": "1013506733785-fhh5s83bseqfjt0ec6tupc6obfv0gv35.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.projectapp",
+            "certificate_hash": "3bd953dd47a6721fb8bb41e2cd6b08ee216f7ce7"
+          }
+        },
+        {
+          "client_id": "1013506733785-g7n55s90j0edk2jssr5j38nkdnjoeg6r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.projectapp",
+            "certificate_hash": "5ca57950a22a5b1d567570835cb22335ee8b9dab"
+          }
+        },
         {
           "client_id": "1013506733785-ijrjsnclgo9f2p7rsaa2cnf5nmafg9so.apps.googleusercontent.com",
           "client_type": 3
