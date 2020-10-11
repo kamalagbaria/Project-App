@@ -52,22 +52,6 @@ public class SubmitCommentActivity extends AppCompatActivity {
                     }
                 });
 
-
-//        FirebaseDatabase.getInstance().getReference().child("comments").child(questionKey).push()
-//                .setValue(comment, new DatabaseReference.CompletionListener() {
-//                    @Override
-//                    public void onComplete(DatabaseError databaseError, DatabaseReference reference) {
-//                        if (databaseError != null) {
-//                            Toast.makeText(SubmitCommentActivity.this,"Unable to submit comment",
-//                                    Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            Toast.makeText(SubmitCommentActivity.this,"Comment submitted",
-//                                    Toast.LENGTH_SHORT).show();
-//                            addCommentToFirestore(reference.getKey(), questionKey, comment);
-//                            finish();
-//                        }
-//                    }
-//                });
     }
 
     private void addCommentToDatabase(final String questionKey, final Comment comment)

@@ -15,11 +15,8 @@
         <activity
             android:name=".UserQuestionList"
             android:theme="@style/QuestionDetails" />
-        <activity android:name=".PersonalInfoActivity" />
-        <activity android:name=".AccountActivity" />
 
-        <activity android:name=".GeneralCategory"
-            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".GeneralCategory" />
 
         <activity android:name=".QuestionsActivity" />
         <activity
@@ -28,14 +25,13 @@
         <activity
             android:name=".CommentsList"
             android:label="@string/comments"
-            android:parentActivityName=".MainActivity"/>
+            />
         <activity
             android:name=".SubmitAnswerActivity"
             android:label="@string/answer_bar_title" />
         <activity
             android:name=".QuestionDetailActivity"
-            android:theme="@style/QuestionDetails"
-            android:parentActivityName=".MainActivity"/>
+            android:label="@string/description"/>
         <activity
             android:name=".SubmitQuestionActivity"
             android:label="@string/question_bar_title" />

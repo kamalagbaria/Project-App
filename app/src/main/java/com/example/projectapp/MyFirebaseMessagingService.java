@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -68,6 +69,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String answerId = data.get("answerId");
         String GROUP_KEY_NEW_ANSWER = "NEW_ANSWER";
 
+
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "com.example.projectapp.NEW_ANSWER";
         int SUMMARY_ID = 0;
@@ -78,10 +80,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         resultIntent.putExtra("question_key", questionId);
         resultIntent.putExtra("answer_id", answerId);
 
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addNextIntentWithParentStack(resultIntent);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        assert answerId != null;
         PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.getActivity(
+                        this, answerId.hashCode(), resultIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                );
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
@@ -125,7 +130,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .build();
 
         //Todo change id to later to not override older messages
-        assert answerId != null;
         notificationManager.notify(answerId.hashCode(), builder.build());
         notificationManager.notify(SUMMARY_ID, summaryNotification);
     }
@@ -147,10 +151,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         resultIntent.putExtra("question_owner_id", userId);
         resultIntent.putExtra("comment_id", commentId);
 
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addNextIntentWithParentStack(resultIntent);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        assert commentId != null;
         PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.getActivity(
+                        this, commentId.hashCode(), resultIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                );
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
@@ -194,7 +201,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .build();
 
         //Todo change id to later to not override older messages
-        assert commentId != null;
         notificationManager.notify(commentId.hashCode(), builder.build());
         notificationManager.notify(SUMMARY_ID, summaryNotification);
     }

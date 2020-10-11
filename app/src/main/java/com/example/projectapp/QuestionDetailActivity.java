@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +29,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ceylonlabs.imageviewpopup.ImagePopup;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -79,6 +82,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
     ListView listView;
     private Question question;
 
+
     private FirebaseRecyclerOptions<Answer> options; //new
     private FirebaseRecyclerAdapter<Answer, AnswerLayoutViewHolder> adapter; //new
     private RecyclerView recyclerView;
@@ -89,6 +93,12 @@ public class QuestionDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_detail);
+
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        final ImagePopup imagePopup = new ImagePopup(this);
 
         question = (Question) getIntent().getSerializableExtra("question");
         assert question != null;
@@ -113,6 +123,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
         questionKey = getIntent().getStringExtra("question_key");
         this.answerId = getIntent().getStringExtra("answer_id");
+
 
         this.getOwnerOfQuestionId();
 
@@ -173,6 +184,15 @@ public class QuestionDetailActivity extends AppCompatActivity {
                     });
 
                 }
+
+                holder.answerImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        imagePopup.setFullScreen(true);
+                        imagePopup.initiatePopup(holder.answerImage.getDrawable());
+                        imagePopup.viewPopup();
+                    }
+                });
 
                 if (answer.getImageUrl() != null && !answer.getImageUrl().equals("None")) {
                     holder.progressBarAnswerImage.setVisibility(View.VISIBLE);
@@ -294,6 +314,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
     }
 
+
     private void scrollToAnswer(int position) {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mLayoutManager.scrollToPositionWithOffset(position, 0);
@@ -404,7 +425,21 @@ public class QuestionDetailActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         //answerAdapter.stopListening();
-        adapter.startListening();
+        adapter.stopListening();
+    }
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        if(this.answerId != null)
+        {
+            Intent intent = new Intent(this, MainActivity.class);
+            super.onBackPressed();
+            startActivity(intent);
+        }
+        else
+        {
+            super.onBackPressed();
+        }
+        return true;
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.projectapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -47,6 +49,10 @@ public class CommentsList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments_list);
 
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         mAuth = FirebaseAuth.getInstance();
         //commentsLV = findViewById(R.id.commentsLV);
         this.recyclerView = findViewById(R.id.commentsRecyclerView);
@@ -57,6 +63,8 @@ public class CommentsList extends AppCompatActivity {
 
         this.questionKey = getIntent().getStringExtra("question_key");
         this.commentId = getIntent().getStringExtra("comment_id");
+        Toast.makeText(this, this.commentId, Toast.LENGTH_LONG).show();
+
         final Query commentsDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("comments").child(questionKey);
 
@@ -235,5 +243,27 @@ public class CommentsList extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        adapter.stopListening();
+    }
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+
+        if(this.commentId != null)
+        {
+            Intent intent = new Intent(this, MainActivity.class);
+            super.onBackPressed();
+            startActivity(intent);
+        }
+        else
+        {
+            super.onBackPressed();
+        }
+        return true;
+
     }
 }

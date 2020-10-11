@@ -76,4 +76,5 @@
     <string name="new_rating_added">New rating on question</string>
     <string name="change_profile_photo">Change Profile Photo</string>
     <string name="newAnswer">New</string>
+    <string name="description">Description</string>
 </resources>

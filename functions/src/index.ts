@@ -108,7 +108,7 @@ export const newAnswerSubmitted = functions.firestore
                                     type: 'new_comment_added'
                                 }
                             };
-                            console.log(userId)
+                            console.log(commentId)
                             return admin.messaging().sendToTopic(userId, message);
                         }
                         
