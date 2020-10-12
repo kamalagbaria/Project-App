@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "1013506733785-77op69rd6dm0nhvtgmd8ksq0e9vmg5qv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "PostPc.Ask.projectapp",
+            "certificate_hash": "5ca57950a22a5b1d567570835cb22335ee8b9dab"
+          }
+        },
+        {
+          "client_id": "1013506733785-0c7a2damefgr0j4h2l8k9aqut1334fq4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "PostPc.Ask.projectapp",
+            "certificate_hash": "3bd953dd47a6721fb8bb41e2cd6b08ee216f7ce7"
+          }
+        },
+        {
+          "client_id": "1013506733785-2ti90io36nitel8d75jl85f4tl5ecso7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "PostPc.Ask.projectapp",
+            "certificate_hash": "3485abe0595ce6ff888311c376999f9dde2f0e56"
+          }
+        },
+        {
           "client_id": "1013506733785-ijrjsnclgo9f2p7rsaa2cnf5nmafg9so.apps.googleusercontent.com",
           "client_type": 3
         }

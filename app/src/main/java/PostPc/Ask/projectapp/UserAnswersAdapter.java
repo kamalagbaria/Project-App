@@ -61,6 +61,8 @@ public class UserAnswersAdapter extends ArrayAdapter<Answer> {
                 holder.text1 = (TextView) vi.findViewById(R.id.owner_name);
                 holder.text2 = (TextView) vi.findViewById(R.id.answerText);
                 holder.text3 = (TextView) vi.findViewById(R.id.questionState);
+                holder.text3.setVisibility(View.GONE); //new
+
                 holder.imageView = vi.findViewById(R.id.answerImage);
                 vi.setTag(holder);
             } else {
@@ -87,6 +89,7 @@ public class UserAnswersAdapter extends ArrayAdapter<Answer> {
                     addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    holder.text3.setVisibility(View.GONE);
                     if(!snapshot.hasChild(answer.getKey())){
                         holder.text3.setVisibility(View.VISIBLE);
                     }
