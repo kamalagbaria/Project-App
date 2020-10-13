@@ -1,0 +1,16 @@
+Ask
+This is the final project for post-pc course of at the Hebrew University in Jerusalem.
+Team Members
+Anas Yousef – 209418029 - anas.yousef@mail.huji.ac.il
+Kamal Igbarya – 314782806 – Kamal.agbarua@mail.huji.ac.il 
+Sarah Hegazi – 206711236 – sarahhegazia@gmial.com
+App Version
+1.0
+Features: 
+1.	Add new question in any possible category.
+2.	Append answers: text and/or photo.
+3.	Rate question.
+4.	Add comments about a question.
+5.	Review or delete one's questions and answers.
+Technical details
+The essence of the application is adding and displaying data – user information, question, answer, and comments. We used Firebase to preserve all the data that we gather from the application:  Questions, answers, comments, and user info are all saved with Firebase database, while all users profile pictures and images used to answer questions are stored in Firebase Storage. Moreover, for signing in users with email addresses and passwords, and federated identity providers such as Google Sign-In, and Facebook Login we used FirebaseUI. 
