@@ -2,7 +2,7 @@ Ask
 This is the final project for post-pc course of at the Hebrew University in Jerusalem.
 Team Members
 Anas Yousef – 209418029 - anas.yousef@mail.huji.ac.il
-Kamal Igbarya – 314782806 – Kamal.agbarua@mail.huji.ac.il 
+Kamal Igbarya – 314782806 – Kamal.agbaria@mail.huji.ac.il 
 Sarah Hegazi – 206711236 – sarahhegazia@gmial.com
 App Version
 1.0
